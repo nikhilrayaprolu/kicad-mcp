@@ -90,6 +90,8 @@ class BoardSpec(BaseModel):
     title: str = ""
     rev: str = "A"
     silk_refs: Literal["all", "large"] = "all"   # "large": small passives' designators on the fab layer only
+    silk_texts: list[dict] = Field(default_factory=list)   # [{text, x, y | ref, dx, dy, side, size: 0.8, rot: 0}]
+    fiducials: list[list] = Field(default_factory=list)     # [[x, y, "top"|"bottom"], ...] global assembly fiducials
 
 
 class Design(BaseModel):

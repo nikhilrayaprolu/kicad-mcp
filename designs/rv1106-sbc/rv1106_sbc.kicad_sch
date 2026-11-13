@@ -439,8 +439,8 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "2a356546-afde-54a3-b762-c92c489e05fb")
-		(property "Sheetname" "ui"
+		(uuid "50fa8733-e3a5-5e06-85b6-1f11dc1316e8")
+		(property "Sheetname" "test"
 			(at 86.36 75.5 0)
 			(effects
 				(font
@@ -449,7 +449,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "ui.kicad_sch"
+		(property "Sheetfile" "test.kicad_sch"
 			(at 86.36 107.3 0)
 			(effects
 				(font
@@ -481,8 +481,8 @@
 		(fill
 			(color 0 0 0 0)
 		)
-		(uuid "6954d3ae-b527-5827-83bd-3f84897b6782")
-		(property "Sheetname" "usb"
+		(uuid "2a356546-afde-54a3-b762-c92c489e05fb")
+		(property "Sheetname" "ui"
 			(at 147.32 75.5 0)
 			(effects
 				(font
@@ -491,7 +491,7 @@
 				(justify left bottom)
 			)
 		)
-		(property "Sheetfile" "usb.kicad_sch"
+		(property "Sheetfile" "ui.kicad_sch"
 			(at 147.32 107.3 0)
 			(effects
 				(font
@@ -504,6 +504,48 @@
 			(project "rv1106_sbc"
 				(path "/4437ca3d-76b9-5959-a120-c77d748e3138"
 					(page "10")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 208.28 76.2)
+		(size 50.8 30.48)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0)
+		)
+		(uuid "6954d3ae-b527-5827-83bd-3f84897b6782")
+		(property "Sheetname" "usb"
+			(at 208.28 75.5 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "usb.kicad_sch"
+			(at 208.28 107.3 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "rv1106_sbc"
+				(path "/4437ca3d-76b9-5959-a120-c77d748e3138"
+					(page "11")
 				)
 			)
 		)
@@ -777,7 +819,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "a9fe9a93-cd5a-5f50-af05-8a37c82f95d5")
+		(uuid "5a994a79-0f86-54ad-ac78-438f6e5e25a6")
 		(property "Reference" "#FLG04"
 			(at 165.1 195.66 0)
 			(effects
@@ -814,7 +856,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "c0863d9e-c13f-51bd-a1ff-ad93bbe5d55b")
+			(uuid "99670476-666c-53ca-8322-69c3c761825a")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -825,7 +867,7 @@
 			)
 		)
 	)
-	(global_label "VCC_1V8"
+	(global_label "VBUS"
 		(shape bidirectional)
 		(at 165.1 200.66 270)
 		(fields_autoplaced yes)
@@ -835,7 +877,7 @@
 			)
 			(justify right)
 		)
-		(uuid "c845ac7f-bdea-5978-b43e-0bc88c34a834")
+		(uuid "7a8dc309-cbf6-521d-a391-da54acc25644")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 165.1 200.66 0)
 			(effects
@@ -846,7 +888,7 @@
 			)
 		)
 	)
-	(text "rail VCC_1V8"
+	(text "rail VBUS"
 		(at 168.1 204.66 0)
 		(effects
 			(font
@@ -854,7 +896,7 @@
 			)
 			(justify left)
 		)
-		(uuid "03a88802-ee94-59c6-93a5-210c0725870d")
+		(uuid "516b67ed-296e-5642-86b0-e14e4cbb6f00")
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -864,7 +906,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "f79c4912-5ff8-58f9-8abb-bf4a9026be39")
+		(uuid "a9fe9a93-cd5a-5f50-af05-8a37c82f95d5")
 		(property "Reference" "#FLG05"
 			(at 210.82 195.66 0)
 			(effects
@@ -901,7 +943,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "3362a067-a43f-594c-a555-5dd9bd5728e5")
+			(uuid "c0863d9e-c13f-51bd-a1ff-ad93bbe5d55b")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -912,7 +954,7 @@
 			)
 		)
 	)
-	(global_label "VCC_1V8_CODEC"
+	(global_label "VCC_1V8"
 		(shape bidirectional)
 		(at 210.82 200.66 270)
 		(fields_autoplaced yes)
@@ -922,7 +964,7 @@
 			)
 			(justify right)
 		)
-		(uuid "73a6a0bd-f259-5f75-bd3d-b9339d70538e")
+		(uuid "2130169d-96e0-5e12-82ce-cda68832b97d")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 210.82 200.66 0)
 			(effects
@@ -933,7 +975,7 @@
 			)
 		)
 	)
-	(text "rail VCC_1V8_CODEC"
+	(text "rail VCC_1V8"
 		(at 213.82 204.66 0)
 		(effects
 			(font
@@ -941,7 +983,7 @@
 			)
 			(justify left)
 		)
-		(uuid "1aacfbc8-84f3-5644-bc88-bfab033f7ffb")
+		(uuid "03a88802-ee94-59c6-93a5-210c0725870d")
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -951,7 +993,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "7f04e2b7-590e-56dc-b862-a102171111a8")
+		(uuid "f79c4912-5ff8-58f9-8abb-bf4a9026be39")
 		(property "Reference" "#FLG06"
 			(at 254 195.66 0)
 			(effects
@@ -988,7 +1030,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "93eba8de-4dfc-5c5f-a08a-139f350ef3ba")
+			(uuid "3362a067-a43f-594c-a555-5dd9bd5728e5")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -999,7 +1041,7 @@
 			)
 		)
 	)
-	(global_label "VCC_1V8_MIPI"
+	(global_label "VCC_1V8_CODEC"
 		(shape bidirectional)
 		(at 254 200.66 270)
 		(fields_autoplaced yes)
@@ -1009,7 +1051,7 @@
 			)
 			(justify right)
 		)
-		(uuid "45765102-c3d8-5c4e-8dca-ffd5dc8ba7de")
+		(uuid "549a2bf1-366a-5550-a6c2-453f8625db75")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 254 200.66 0)
 			(effects
@@ -1020,7 +1062,7 @@
 			)
 		)
 	)
-	(text "rail VCC_1V8_MIPI"
+	(text "rail VCC_1V8_CODEC"
 		(at 257 204.66 0)
 		(effects
 			(font
@@ -1028,7 +1070,7 @@
 			)
 			(justify left)
 		)
-		(uuid "27352191-aee1-58e1-b7ec-0e7871203378")
+		(uuid "1aacfbc8-84f3-5644-bc88-bfab033f7ffb")
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -1038,7 +1080,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "39478bdd-e5f3-5dbb-a732-8e7041f7fdac")
+		(uuid "7f04e2b7-590e-56dc-b862-a102171111a8")
 		(property "Reference" "#FLG07"
 			(at 299.72 195.66 0)
 			(effects
@@ -1075,7 +1117,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "41c66a6c-7f6f-55f6-a698-c8fc2e66ec74")
+			(uuid "93eba8de-4dfc-5c5f-a08a-139f350ef3ba")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -1086,7 +1128,7 @@
 			)
 		)
 	)
-	(global_label "VCC_1V8_PLL"
+	(global_label "VCC_1V8_MIPI"
 		(shape bidirectional)
 		(at 299.72 200.66 270)
 		(fields_autoplaced yes)
@@ -1096,7 +1138,7 @@
 			)
 			(justify right)
 		)
-		(uuid "a5706f4a-15f4-516c-85fe-457b4de69f65")
+		(uuid "504152ff-588c-5bcb-a4de-41d6fb45114a")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 299.72 200.66 0)
 			(effects
@@ -1107,7 +1149,7 @@
 			)
 		)
 	)
-	(text "rail VCC_1V8_PLL"
+	(text "rail VCC_1V8_MIPI"
 		(at 302.72 204.66 0)
 		(effects
 			(font
@@ -1115,7 +1157,7 @@
 			)
 			(justify left)
 		)
-		(uuid "c190c10a-3dd5-5d3b-afca-ab3ae7b27ea2")
+		(uuid "27352191-aee1-58e1-b7ec-0e7871203378")
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -1125,7 +1167,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "be479b06-cc8d-53ac-8032-af084e479194")
+		(uuid "39478bdd-e5f3-5dbb-a732-8e7041f7fdac")
 		(property "Reference" "#FLG08"
 			(at 345.44 195.66 0)
 			(effects
@@ -1162,7 +1204,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "e924baec-f15f-5ccf-a78a-8a75a278bc56")
+			(uuid "41c66a6c-7f6f-55f6-a698-c8fc2e66ec74")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -1173,7 +1215,7 @@
 			)
 		)
 	)
-	(global_label "VCC_3V3"
+	(global_label "VCC_1V8_PLL"
 		(shape bidirectional)
 		(at 345.44 200.66 270)
 		(fields_autoplaced yes)
@@ -1183,7 +1225,7 @@
 			)
 			(justify right)
 		)
-		(uuid "61c03723-ba3c-58c5-9e53-468f76704251")
+		(uuid "7a60cd1e-f105-5e3b-8206-86f58d8860df")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 345.44 200.66 0)
 			(effects
@@ -1194,7 +1236,7 @@
 			)
 		)
 	)
-	(text "rail VCC_3V3"
+	(text "rail VCC_1V8_PLL"
 		(at 348.44 204.66 0)
 		(effects
 			(font
@@ -1202,7 +1244,7 @@
 			)
 			(justify left)
 		)
-		(uuid "202f7855-fe99-5c60-b5c7-3ef39cb5ff16")
+		(uuid "c190c10a-3dd5-5d3b-afca-ab3ae7b27ea2")
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -1212,7 +1254,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "2b0a999e-a6ff-53bc-9925-649004096421")
+		(uuid "be479b06-cc8d-53ac-8032-af084e479194")
 		(property "Reference" "#FLG09"
 			(at 30.48 215.98 0)
 			(effects
@@ -1249,7 +1291,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "5fcc57e4-98ad-54b9-ae68-a1dec6007fca")
+			(uuid "e924baec-f15f-5ccf-a78a-8a75a278bc56")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -1260,7 +1302,7 @@
 			)
 		)
 	)
-	(global_label "VCC_DDR"
+	(global_label "VCC_3V3"
 		(shape bidirectional)
 		(at 30.48 220.98 270)
 		(fields_autoplaced yes)
@@ -1270,7 +1312,7 @@
 			)
 			(justify right)
 		)
-		(uuid "5c1da146-bd01-52a8-8a69-7236a74e3111")
+		(uuid "c4e3f0a3-4fe5-5303-a8ad-176dab036dea")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 30.48 220.98 0)
 			(effects
@@ -1281,7 +1323,7 @@
 			)
 		)
 	)
-	(text "rail VCC_DDR"
+	(text "rail VCC_3V3"
 		(at 33.48 224.98 0)
 		(effects
 			(font
@@ -1289,7 +1331,7 @@
 			)
 			(justify left)
 		)
-		(uuid "2506a232-585d-59b5-80e9-8d895c9730ee")
+		(uuid "202f7855-fe99-5c60-b5c7-3ef39cb5ff16")
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -1299,7 +1341,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "7e73bd92-1965-5177-ad5c-419df4e3f40e")
+		(uuid "2b0a999e-a6ff-53bc-9925-649004096421")
 		(property "Reference" "#FLG10"
 			(at 76.2 215.98 0)
 			(effects
@@ -1336,7 +1378,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "7056f45c-ef8a-590c-a657-a479fa5a897d")
+			(uuid "5fcc57e4-98ad-54b9-ae68-a1dec6007fca")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -1347,7 +1389,7 @@
 			)
 		)
 	)
-	(global_label "VCC_RTC"
+	(global_label "VCC_DDR"
 		(shape bidirectional)
 		(at 76.2 220.98 270)
 		(fields_autoplaced yes)
@@ -1357,7 +1399,7 @@
 			)
 			(justify right)
 		)
-		(uuid "085697e6-c9e0-517b-a2ea-bf37f28e094a")
+		(uuid "4e51e158-1a5c-5cdd-906a-e6c6bea44e3f")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 76.2 220.98 0)
 			(effects
@@ -1368,7 +1410,7 @@
 			)
 		)
 	)
-	(text "rail VCC_RTC"
+	(text "rail VCC_DDR"
 		(at 79.2 224.98 0)
 		(effects
 			(font
@@ -1376,7 +1418,7 @@
 			)
 			(justify left)
 		)
-		(uuid "fae51352-28f1-5c8b-909e-db276ad10187")
+		(uuid "2506a232-585d-59b5-80e9-8d895c9730ee")
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -1386,7 +1428,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "657e764e-300b-58c7-8b87-353d53bad73a")
+		(uuid "7e73bd92-1965-5177-ad5c-419df4e3f40e")
 		(property "Reference" "#FLG11"
 			(at 119.38 215.98 0)
 			(effects
@@ -1423,7 +1465,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "72690ada-44c3-5048-b8f1-cdd36093efed")
+			(uuid "7056f45c-ef8a-590c-a657-a479fa5a897d")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -1434,7 +1476,7 @@
 			)
 		)
 	)
-	(global_label "VDD_0V9"
+	(global_label "VCC_RTC"
 		(shape bidirectional)
 		(at 119.38 220.98 270)
 		(fields_autoplaced yes)
@@ -1444,7 +1486,7 @@
 			)
 			(justify right)
 		)
-		(uuid "8b38cc28-eefa-5d8d-9676-fe043f714d1d")
+		(uuid "96e1bc86-6fa1-581e-ad88-5330757e5ffc")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 119.38 220.98 0)
 			(effects
@@ -1455,7 +1497,7 @@
 			)
 		)
 	)
-	(text "rail VDD_0V9"
+	(text "rail VCC_RTC"
 		(at 122.38 224.98 0)
 		(effects
 			(font
@@ -1463,7 +1505,7 @@
 			)
 			(justify left)
 		)
-		(uuid "81946913-eb64-53ed-8817-7ef007ff7f7a")
+		(uuid "fae51352-28f1-5c8b-909e-db276ad10187")
 	)
 	(symbol
 		(lib_id "power:PWR_FLAG")
@@ -1473,7 +1515,7 @@
 		(in_bom yes)
 		(on_board yes)
 		(dnp no)
-		(uuid "edf6a166-7842-5ba4-987a-6f2ba45c224f")
+		(uuid "657e764e-300b-58c7-8b87-353d53bad73a")
 		(property "Reference" "#FLG12"
 			(at 165.1 215.98 0)
 			(effects
@@ -1510,7 +1552,7 @@
 			)
 		)
 		(pin "1"
-			(uuid "7e9e7b3f-e565-5214-8ce6-dccad76540aa")
+			(uuid "72690ada-44c3-5048-b8f1-cdd36093efed")
 		)
 		(instances
 			(project "rv1106_sbc"
@@ -1521,7 +1563,7 @@
 			)
 		)
 	)
-	(global_label "VSYS"
+	(global_label "VDD_0V9"
 		(shape bidirectional)
 		(at 165.1 220.98 270)
 		(fields_autoplaced yes)
@@ -1531,7 +1573,7 @@
 			)
 			(justify right)
 		)
-		(uuid "1831147e-8f95-5025-a475-a4b3acab0b1b")
+		(uuid "c3507d82-c8de-5b3a-8aea-74ea409e9bb3")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 165.1 220.98 0)
 			(effects
@@ -1542,7 +1584,7 @@
 			)
 		)
 	)
-	(text "rail VSYS"
+	(text "rail VDD_0V9"
 		(at 168.1 224.98 0)
 		(effects
 			(font
@@ -1550,7 +1592,181 @@
 			)
 			(justify left)
 		)
+		(uuid "81946913-eb64-53ed-8817-7ef007ff7f7a")
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 210.82 220.98 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "edf6a166-7842-5ba4-987a-6f2ba45c224f")
+		(property "Reference" "#FLG13"
+			(at 210.82 215.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 210.82 217.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 210.82 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 210.82 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "7e9e7b3f-e565-5214-8ce6-dccad76540aa")
+		)
+		(instances
+			(project "rv1106_sbc"
+				(path "/4437ca3d-76b9-5959-a120-c77d748e3138"
+					(reference "#FLG13")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VSYS"
+		(shape bidirectional)
+		(at 210.82 220.98 270)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "776477e2-7830-593c-a4dc-ca09879ae903")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 210.82 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+	)
+	(text "rail VSYS"
+		(at 213.82 224.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
 		(uuid "3ace0b41-5527-5a44-b202-e669fdb7d447")
+	)
+	(symbol
+		(lib_id "power:PWR_FLAG")
+		(at 254 220.98 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "0425f2e1-b8e5-5584-be68-f1617c7bb177")
+		(property "Reference" "#FLG14"
+			(at 254 215.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "PWR_FLAG"
+			(at 254 217.18 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 254 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 254 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "0cb78fb5-5b87-56c5-b696-4aac266523ff")
+		)
+		(instances
+			(project "rv1106_sbc"
+				(path "/4437ca3d-76b9-5959-a120-c77d748e3138"
+					(reference "#FLG14")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(global_label "VSYS_HDR"
+		(shape bidirectional)
+		(at 254 220.98 270)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "54d29ae4-4b20-5166-bf12-cd3ec8aa241f")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 254 220.98 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+	)
+	(text "rail VSYS_HDR"
+		(at 257 224.98 0)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "5d01a2a4-1272-5edd-9677-3ceb723117a4")
 	)
 	(text "LP-1106: Linux SBC on Rockchip RV1106G3 (Cortex-A7, 1 TOPS NPU, 256MB DDR3L in package). USB-C power+OTG, 10/100 Ethernet, SPI NAND boot, microSD, 2-lane MIPI CSI, debug UART, 2x10 GPIO.\n- 5V from USB-C (sink, 5.1k Rd), reverse-current Schottky to VSYS\n- Rails per RV1106 DS Table 3-2: VDD_0V9 0.81-0.95V, VCC_DDR 1.283-1.45V (DDR3L), VCC_1V8 1.62-1.98V, VCC_3V3 3.0-3.465V\n- Sequencing like Luckfox reference: 0.9V first, then DDR+1.8V (RC delay), then 3.3V\n- 4-layer JLC 7628 stackup, single-sided assembly, In1=GND plane\n- Boot from SPI NAND (FSPI), microSD on SDMMC0, console UART2_M1 115200"
 		(at 25.4 170 0)

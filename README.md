@@ -14,8 +14,9 @@ It was built and evaluated by designing a **130-part Rockchip RV1106 Linux singl
 
 - 4-layer, 65 × 50 mm
 - USB-C, 10/100 Ethernet, SPI NAND, microSD, MIPI-CSI, 4 regulators
-- **KiCad ERC 0 errors, DRC 0 errors, 0 unconnected, 0 schematic-parity issues**
-- differential pairs matched to ≤ 0.83 mm
+- **KiCad ERC 0 errors; DRC 0 errors, 0 warnings, 0 unconnected, 0 schematic-parity issues**
+- differential pairs length-matched with 45°-mitred serpentines (0.15–0.4 mm; ETH RX 1.96 mm)
+- expert finishing: fiducials, labelled test points, edge via fence, legalised silkscreen
 
 See [`docs/EVALUATION.md`](docs/EVALUATION.md).
 

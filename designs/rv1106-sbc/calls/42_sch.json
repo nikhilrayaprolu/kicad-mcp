@@ -1,0 +1,3 @@
+[{"tool":"schematic_build"},
+ {"tool":"drc"},
+ {"tool":"export_fab"}]

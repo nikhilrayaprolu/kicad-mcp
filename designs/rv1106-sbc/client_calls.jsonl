@@ -258,3 +258,69 @@
 {"tool": "render_view", "args": {"kind": "2d"}, "s": 0.06, "resp_bytes": 121295, "is_error": false}
 {"tool": "render_view", "args": {"kind": "3d", "side": "top"}, "s": 1.37, "resp_bytes": 204311, "is_error": false}
 {"tool": "render_view", "args": {"kind": "3d", "side": "bottom"}, "s": 1.42, "resp_bytes": 149014, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.02, "resp_bytes": 778, "is_error": false}
+{"tool": "ir_edit", "args": {"ops": [{"op": "add_part", "symbol": "Connector:TestPoint", "footprint": "TestPoint:TestPoint_Pad_D1.0mm", "ref": "TP1", "block": "test", "value": "VSYS", "conn": {"1": "VSYS"}}, {"op": "add_part", "symbol": "Connector:TestPoint", "footprint": "TestPoint:TestPoint_Pad_D1.0mm", "ref": "TP2", "block": "test", "value": "3V3", "conn": {"1": "VCC_3V3"}}, {"op": "add_part", "symbol": "Connector:TestPoint", "footprint": "TestPoint:TestPoint_Pad_D1.0mm", "ref": "TP3", "block": "test", "value": "1V8", "conn": {"1": "VCC_1V8"}}, {"op": "add_part", "symbol": "Connector:TestPoint", "footprint": "TestPoint:TestPoint_Pad_D1.0mm", "ref": "TP4", "block": "test", "value": "VDDR", "conn": {"1": "VCC_DDR"}}, {"op": "add_part", "symbol": "Connector:TestPoint", "footprint": "TestPoint:TestPoint_Pad_D1.0mm", "ref": "TP5", "block": "test", "value": "0V9", "conn": {"1": "VDD_0V9"}}, {"op": "add_part", "symbol": "Connector:TestPoint", "footprint": "TestPoint:TestPoint_Pad_D1.0mm", "ref": "TP6", "block": "test", "value": "GND", "conn": {"1": "GND"}}, {"op": "constraint", "kind": "side", "ref": "TP*", "side": "bottom", "note": "rail test pads on the bottom for probing / bed-of-nails"}, {"op": "constraint", "kind": "near", "ref": "TP1", "target": "D1", "max_mm": 8}, {"op": "constraint", "kind": "near", "ref": "TP2", "target": "L4", "max_mm": 8}, {"op": "constraint", "kind": "near", "ref": "TP3", "target": "L3", "max_mm": 8}, {"op": "constraint", "kind": "near", "ref": "TP4", "target": "L2", "max_mm": 8}, {"op": "constraint", "kind": "near", "ref": "TP5", "target": "L1", "max_mm": 8}, {"op": "constraint", "kind": "near", "ref": "TP6", "target": "TP1", "max_mm": 6}, {"op": "board", "fiducials": [[7.0, 2.4, "top"], [21.5, 2.4, "top"], [57.0, 47.6, "top"], [7.0, 2.4, "bottom"], [57.0, 47.6, "bottom"]]}, {"op": "constraint", "kind": "keepout", "rect": [5.3, 0.7, 8.7, 4.1], "note": "fiducial FID1/FID4 (both sides)"}, {"op": "constraint", "kind": "keepout", "rect": [19.8, 0.7, 23.2, 4.1], "note": "fiducial FID2"}, {"op": "constraint", "kind": "keepout", "rect": [55.3, 45.9, 58.7, 49.3], "note": "fiducial FID3/FID5 (both sides)"}, {"op": "constraint", "kind": "keepout", "rect": [51.0, 12.6, 64.6, 31.4], "note": "no_pour: no tracks, vias or pours under the RJ45 body / magnetics (beyond its pin rows)"}, {"op": "board", "silk_refs": "large"}, {"op": "note", "text": "v3 (expert pass): identical buck cells, regular orientations, rail test points, fiducials, RJ45 keepout, In2 power pours, edge via fence, chamfered routing, silkscreen labels."}]}, "s": 1.35, "resp_bytes": 229, "is_error": false}
+{"tool": "schematic_build", "args": {}, "s": 5.55, "resp_bytes": 334, "is_error": false}
+{"tool": "place", "args": {"effort": 1.0, "seeds": 64, "unlock_all": true, "image": true}, "s": 615.1, "resp_bytes": 99949, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.02, "resp_bytes": 845, "is_error": false}
+{"tool": "route", "args": {"engine": "hybrid", "candidates": 16, "profiles": ["human", "fewvias"], "critical_nets": ["U10_XIN", "U10_XOUT*", "*_SW", "VSYS", "VBUS"], "passes": 100, "timeout_s": 1200, "image": false}, "s": 1254.92, "resp_bytes": 2083, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 876, "is_error": false}
+{"tool": "zones", "args": {"gnd_pour_outer": true, "add": [{"net": "VCC_3V3", "layer": "In2.Cu", "priority": 1, "connect": "thermal"}, {"net": "VDD_0V9", "layer": "In2.Cu", "poly": [[23.4, 19.2], [36.4, 19.2], [36.4, 32.2], [23.4, 32.2]], "priority": 3, "connect": "solid"}]}, "s": 5.86, "resp_bytes": 112, "is_error": false}
+{"tool": "copper", "args": {"action": "restitch", "net": "GND", "pitch": 5.0, "edge_pitch": 2.5}, "s": 0.23, "resp_bytes": 24, "is_error": false}
+{"tool": "copper", "args": {"action": "min_width"}, "s": 0.24, "resp_bytes": 26, "is_error": false}
+{"tool": "drc", "args": {}, "s": 4.58, "resp_bytes": 2721, "is_error": false}
+{"tool": "copper", "args": {"action": "repair", "pitch": 32}, "s": 640.71, "resp_bytes": 632, "is_error": false}
+{"tool": "copper", "args": {"action": "repair", "pitch": 32}, "s": 638.31, "resp_bytes": 623, "is_error": false}
+{"tool": "tune_lengths", "args": {}, "s": 2.84, "resp_bytes": 695, "is_error": false}
+{"tool": "copper", "args": {"action": "smooth"}, "s": 0.52, "resp_bytes": 42, "is_error": false}
+{"tool": "copper", "args": {"action": "dangling_vias"}, "s": 0.29, "resp_bytes": 37, "is_error": false}
+{"tool": "copper", "args": {"action": "restitch", "net": "GND", "pitch": 5.0, "edge_pitch": 2.5}, "s": 0.24, "resp_bytes": 25, "is_error": false}
+{"tool": "ir_edit", "args": {"ops": [{"op": "board", "silk_texts": [{"text": "USB-C 5V", "ref": "J1", "dx": 0.0, "dy": 6.6, "size": 0.8}, {"text": "ETH 10/100", "ref": "J4", "dx": 9.0, "dy": 5.9, "size": 0.9}, {"text": "CAMERA  MIPI-CSI", "ref": "J5", "dx": 0.0, "dy": 3.5, "size": 0.7}, {"text": "UART", "ref": "J6", "dx": -3.4, "dy": 0.0, "size": 0.8}, {"text": "G", "ref": "J6", "dx": 0.0, "dy": 2.2, "size": 0.7}, {"text": "TX", "ref": "J6", "dx": 2.54, "dy": 2.2, "size": 0.7}, {"text": "RX", "ref": "J6", "dx": 5.08, "dy": 2.2, "size": 0.7}, {"text": "1", "ref": "J7", "dx": -1.9, "dy": 0.0, "size": 0.8}, {"text": "GPIO", "ref": "J7", "dx": 11.43, "dy": -3.6, "size": 0.8}, {"text": "RST", "ref": "SW1", "dx": 0.0, "dy": 4.6, "size": 0.8}, {"text": "BOOT", "ref": "SW2", "dx": 0.0, "dy": 4.6, "size": 0.8}, {"text": "PWR", "ref": "D2", "dx": 0.0, "dy": 1.5, "size": 0.6}, {"text": "STAT", "ref": "D3", "dx": 0.0, "dy": 1.5, "size": 0.6}, {"text": "microSD", "ref": "J3", "dx": 0.0, "dy": -9.9, "size": 0.8}]}]}, "s": 0.01, "resp_bytes": 60, "is_error": false}
+{"tool": "schematic_build", "args": {}, "s": 1.41, "resp_bytes": 334, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.67, "resp_bytes": 1941, "is_error": false}
+{"tool": "design_review", "args": {}, "s": 0.03, "resp_bytes": 1738, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.02, "resp_bytes": 1717, "is_error": false}
+{"tool": "copper", "args": {"action": "ripup", "nets": ["GND"], "rect": [11.85, 27.25, 11.95, 27.4]}, "s": 5.96, "resp_bytes": 37, "is_error": false}
+{"tool": "connect_pads", "args": {"a": "J7.1", "b": "J7.2", "layer": "B.Cu", "width": 0.4}, "s": 0.01, "resp_bytes": 144, "is_error": false}
+{"tool": "schematic_build", "args": {}, "s": 1.42, "resp_bytes": 334, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.04, "resp_bytes": 1746, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 1717, "is_error": false}
+{"tool": "connect_pads", "args": {"a": "J7.2", "b": "J7.4", "layer": "B.Cu", "width": 0.4}, "s": 5.69, "resp_bytes": 56, "is_error": false}
+{"tool": "drc", "args": {}, "s": 4.96, "resp_bytes": 1735, "is_error": false}
+{"tool": "tune_lengths", "args": {}, "s": 0.31, "resp_bytes": 641, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.0, "resp_bytes": 1733, "is_error": false}
+{"tool": "design_review", "args": {}, "s": 0.03, "resp_bytes": 1641, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 1717, "is_error": false}
+{"tool": "tune_lengths", "args": {"reset": true}, "s": 9.26, "resp_bytes": 893, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.0, "resp_bytes": 1735, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 1717, "is_error": false}
+{"tool": "tune_lengths", "args": {"reset": true}, "s": 10.12, "resp_bytes": 893, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.24, "resp_bytes": 1733, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 1717, "is_error": false}
+{"tool": "copper", "args": {"action": "min_width"}, "s": 5.75, "resp_bytes": 26, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.11, "resp_bytes": 1185, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 1717, "is_error": false}
+{"tool": "copper", "args": {"action": "min_width"}, "s": 5.69, "resp_bytes": 26, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.09, "resp_bytes": 169, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.02, "resp_bytes": 1717, "is_error": false}
+{"tool": "render_view", "args": {"kind": "2d"}, "s": 0.11, "resp_bytes": 120707, "is_error": false}
+{"tool": "render_view", "args": {"kind": "3d", "side": "top"}, "s": 1.73, "resp_bytes": 211731, "is_error": false}
+{"tool": "render_view", "args": {"kind": "3d", "side": "bottom"}, "s": 1.73, "resp_bytes": 153570, "is_error": false}
+{"tool": "design_review", "args": {}, "s": 5.49, "resp_bytes": 1546, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.02, "resp_bytes": 1717, "is_error": false}
+{"tool": "copper", "args": {"action": "min_width"}, "s": 6.06, "resp_bytes": 26, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.35, "resp_bytes": 169, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 1717, "is_error": false}
+{"tool": "render_view", "args": {"kind": "2d"}, "s": 0.11, "resp_bytes": 120707, "is_error": false}
+{"tool": "render_view", "args": {"kind": "3d", "side": "top"}, "s": 1.71, "resp_bytes": 211731, "is_error": false}
+{"tool": "render_view", "args": {"kind": "3d", "side": "bottom"}, "s": 1.89, "resp_bytes": 156534, "is_error": false}
+{"tool": "design_review", "args": {}, "s": 5.6, "resp_bytes": 1546, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 1717, "is_error": false}
+{"tool": "schematic_build", "args": {}, "s": 6.98, "resp_bytes": 334, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.14, "resp_bytes": 169, "is_error": false}
+{"tool": "export_fab", "args": {}, "s": 5.88, "resp_bytes": 174, "is_error": false}
+{"tool": "tune_lengths", "args": {}, "s": 0.34, "resp_bytes": 538, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.02, "resp_bytes": 1717, "is_error": false}
+{"tool": "schematic_build", "args": {}, "s": 7.84, "resp_bytes": 334, "is_error": false}
+{"tool": "drc", "args": {}, "s": 5.43, "resp_bytes": 169, "is_error": false}
+{"tool": "export_fab", "args": {}, "s": 5.95, "resp_bytes": 174, "is_error": false}

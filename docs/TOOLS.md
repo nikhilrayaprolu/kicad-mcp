@@ -44,7 +44,7 @@ Pins: number, exact name, a '/'-segment of the name, or a glob ('DVDD*'). Nets a
 | [`route`](#route) | Autoroute with Freerouting (planes from 'plane' constraints become pours), then refill zones + DRC. |
 | [`zones`](#zones) | Copper pours. add: [{net, layer, poly?[[x,y]..], priority?, clearance?, connect?}]. gnd_pour_outer adds |
 | [`copper`](#copper) | Deterministic copper helpers. action=plane_fanout: drop a via + stub next to every SMD pad of the given |
-| [`tune_lengths`](#tune_lengths) | Length-match differential pairs: serpentine meanders on the shorter leg, sized to the skew and checked |
+| [`tune_lengths`](#tune_lengths) | Length-match differential pairs: 45-degree-mitered serpentine meanders on the shorter leg, sized to the skew |
 | [`drc`](#drc) | Refill zones, run KiCad DRC (incl. schematic parity), return grouped violations with examples. |
 | [`design_review`](#design_review) | Engineering review beyond DRC: near-constraint misses (decoupling/crystal), diff-pair skew, current vs width, |
 | [`render_view`](#render_view) | Look at the design: kind=2d (fast placement/routing view), 3d (kicad-cli render), schematic (page N). |
@@ -250,25 +250,30 @@ Copper pours. add: [{net, layer, poly?[[x,y]..], priority?, clearance?, connect?
 Deterministic copper helpers. action=plane_fanout: drop a via + stub next to every SMD pad of the given
     plane nets (run BEFORE route so the router only has signals left). action=stitch: grid of `net` vias in free
     space (after routing, ties pours/planes). action=clear: remove all tracks/vias (keep locked unless
-    clear_unlocked_routes=False is overridden).
+    clear_unlocked_routes=False is overridden). action=ripup: remove copper of `nets`; with rect=[x1,y1,x2,y2]
+    only tracks/vias touching that rectangle (local surgery on one bad link).
 
 | Parameter | Type | Default | Required |
 |---|---|---|---|
 | `action` | string |  | yes |
 | `nets` | array / null | null |  |
 | `net` | string | "GND" |  |
-| `pitch` | number | 3.0 |  |
+| `pitch` | number | 5.0 |  |
 | `clear_unlocked_routes` | boolean | false |  |
+| `edge_pitch` | number | 2.5 |  |
+| `rect` | array / null | null |  |
 
 ### `tune_lengths`
 
-Length-match differential pairs: serpentine meanders on the shorter leg, sized to the skew and checked
-    against copper on that layer with netclass clearance. pairs = optional list of net names to limit to.
+Length-match differential pairs: 45-degree-mitered serpentine meanders on the shorter leg, sized to the skew
+    and checked against copper on that layer with netclass clearance. pairs = optional list of net names to limit
+    to. reset=True first strips earlier meanders/bevels on those pairs and re-tunes from the routed geometry.
 
 | Parameter | Type | Default | Required |
 |---|---|---|---|
 | `pairs` | array / null | null |  |
 | `default_tol` | number | 0.5 |  |
+| `reset` | boolean | false |  |
 
 ### `drc`
 

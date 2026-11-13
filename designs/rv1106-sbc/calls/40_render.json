@@ -1,0 +1,4 @@
+[{"tool":"render_view","args":{"kind":"2d"}},
+ {"tool":"render_view","args":{"kind":"3d","side":"top"}},
+ {"tool":"render_view","args":{"kind":"3d","side":"bottom"}},
+ {"tool":"design_review"}]

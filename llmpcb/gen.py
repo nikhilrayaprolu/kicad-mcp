@@ -183,12 +183,17 @@ def qfn(name: str, pins: int, pitch: float, body_x: float, body_y: float, pad_l:
                     items.append(S("pad", epn, Sym("thru_hole"), Sym("circle"), S("at", vx, vy), S("size", 0.5, 0.5),
                                    S("drill", 0.25), S("layers", "*.Cu"), S("zone_connect", 2)))
     hx, hy = body_x / 2, body_y / 2
+    # corner marks just outside the pad ring, never reaching a pad (silk-to-mask clearance 0.2 mm)
+    ox = max(hx, cx + pad_l / 2) + 0.2
+    oy = max(hy, cy_ + pad_l / 2) + 0.2
+    end_x = (nx - 1) / 2 * pitch + pad_w / 2 + 0.25      # outermost pad edge along a horizontal row
+    end_y = (ny - 1) / 2 * pitch + pad_w / 2 + 0.25
     tick = 0.6
     for sxn in (-1, 1):
         for syn in (-1, 1):
-            items.append(_line(sxn * hx, syn * hy, sxn * (hx - tick), syn * hy, "F.SilkS"))
-            items.append(_line(sxn * hx, syn * hy, sxn * hx, syn * (hy - tick), "F.SilkS"))
-    items.append(S("fp_circle", S("center", -hx - 0.5, -hy - 0.5), S("end", -hx - 0.35, -hy - 0.5),
+            items.append(_line(sxn * ox, syn * oy, sxn * max(ox - tick, end_x), syn * oy, "F.SilkS"))
+            items.append(_line(sxn * ox, syn * oy, sxn * ox, syn * max(oy - tick, end_y), "F.SilkS"))
+    items.append(S("fp_circle", S("center", -ox - 0.35, -oy - 0.35), S("end", -ox - 0.2, -oy - 0.35),
                    S("stroke", S("width", 0.12), S("type", Sym("solid"))), S("fill", Sym("yes")), S("layer", "F.SilkS")))
     items.append(_rect(-hx, -hy, hx, hy, "F.Fab", 0.1))
     ext = max(cx + pad_l / 2, cy_ + pad_l / 2, hx, hy) + 0.25

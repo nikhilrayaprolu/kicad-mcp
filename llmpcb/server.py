@@ -575,20 +575,25 @@ def zones(add: list[dict] | None = None, clear: bool = False, gnd_pour_outer: bo
 
 
 @tool
-def copper(action: str, nets: list[str] | None = None, net: str = "GND", pitch: float = 3.0,
-           clear_unlocked_routes: bool = False) -> dict:
+def copper(action: str, nets: list[str] | None = None, net: str = "GND", pitch: float = 5.0,
+           clear_unlocked_routes: bool = False, edge_pitch: float = 2.5,
+           rect: list[float] | None = None) -> dict:
     """Deterministic copper helpers. action=plane_fanout: drop a via + stub next to every SMD pad of the given
     plane nets (run BEFORE route so the router only has signals left). action=stitch: grid of `net` vias in free
     space (after routing, ties pours/planes). action=clear: remove all tracks/vias (keep locked unless
-    clear_unlocked_routes=False is overridden)."""
+    clear_unlocked_routes=False is overridden). action=ripup: remove copper of `nets`; with rect=[x1,y1,x2,y2]
+    only tracks/vias touching that rectangle (local surgery on one bad link)."""
     prj = _prj()
     if action == "plane_fanout":
         res = router.plane_fanout(prj, nets or ["GND"])
     elif action == "stitch":
-        res = router.stitch_vias(prj, net=net, pitch=pitch)
+        res = router.stitch_vias(prj, net=net, pitch=pitch, edge_pitch=edge_pitch)
     elif action == "restitch":
         removed = router.remove_free_vias(prj, net)
-        res = {"removed": removed, **router.stitch_vias(prj, net=net, pitch=pitch)}
+        res = {"removed": removed, **router.stitch_vias(prj, net=net, pitch=pitch, edge_pitch=edge_pitch)}
+    elif action == "smooth":            # merge collinear points, chamfer 90-degree corners (clearance-checked)
+        from . import tune as _tune
+        res = _tune.smooth_tracks(prj)
     elif action == "dangling_vias":     # remove one-layer vias, then trim the stubs they leave
         res = {"removed_vias": router.remove_dangling_vias(prj), "trimmed_points": router.prune_stubs(prj)}
     elif action == "repair":       # parallel rip-up/re-route variants scored by KiCad DRC
@@ -596,8 +601,11 @@ def copper(action: str, nets: list[str] | None = None, net: str = "GND", pitch: 
     elif action == "ripup":        # remove all (incl. locked) copper of the given nets so they can be re-routed
         ns = set(nets or [])
         nt, nv = len(prj.layout.tracks), len(prj.layout.vias)
-        prj.layout.tracks = [t for t in prj.layout.tracks if t.net not in ns]
-        prj.layout.vias = [v for v in prj.layout.vias if v.net not in ns]
+        def inr(x, y):
+            return rect is None or (rect[0] <= x <= rect[2] and rect[1] <= y <= rect[3])
+        prj.layout.tracks = [t for t in prj.layout.tracks
+                             if t.net not in ns or not any(inr(q[0], q[1]) for q in t.pts)]
+        prj.layout.vias = [v for v in prj.layout.vias if v.net not in ns or not inr(v.x, v.y)]
         res = {"removed_tracks": nt - len(prj.layout.tracks), "removed_vias": nv - len(prj.layout.vias)}
     elif action == "min_width":    # widen tracks below the fab minimum (router neck-down artefacts)
         mn = schematic.FAB_RULES.get(prj.design.board.fab, schematic.FAB_RULES["jlcpcb"])["min_track_width"]
@@ -611,19 +619,20 @@ def copper(action: str, nets: list[str] | None = None, net: str = "GND", pitch: 
         prj.layout.tracks, prj.layout.vias = [], []
         res = {"cleared": True}
     else:
-        raise ValueError("action must be plane_fanout|stitch|restitch|repair|ripup|min_width|clear")
+        raise ValueError("action must be plane_fanout|stitch|restitch|smooth|repair|ripup|min_width|dangling_vias|clear")
     prj.save()
     _write_board(prj)
     return res
 
 
 @tool
-def tune_lengths(pairs: list[str] | None = None, default_tol: float = 0.5) -> dict:
-    """Length-match differential pairs: serpentine meanders on the shorter leg, sized to the skew and checked
-    against copper on that layer with netclass clearance. pairs = optional list of net names to limit to."""
+def tune_lengths(pairs: list[str] | None = None, default_tol: float = 0.5, reset: bool = False) -> dict:
+    """Length-match differential pairs: 45-degree-mitered serpentine meanders on the shorter leg, sized to the skew
+    and checked against copper on that layer with netclass clearance. pairs = optional list of net names to limit
+    to. reset=True first strips earlier meanders/bevels on those pairs and re-tunes from the routed geometry."""
     from . import tune
     prj = _prj()
-    res = tune.tune_all(prj, default_tol, only=pairs)
+    res = tune.tune_all(prj, default_tol, only=pairs, reset=reset)
     prj.save()
     _write_board(prj)
     return res

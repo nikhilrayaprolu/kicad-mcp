@@ -125,7 +125,7 @@ def _stackup(n: int, thickness: float) -> list:
 
 def _xform_footprint(node: list, ref: str, value: str, x: float, y: float, rot: float, netmap: dict[str, tuple[int, str]],
                      path: str, sheetname: str, sheetfile: str, extra_props: dict, board_only=False, dnp=False,
-                     side: str = "top", hide_ref: bool = False) -> list:
+                     side: str = "top", hide_ref: bool = False, ref_at: tuple | None = None) -> list:
     fp = copy.deepcopy(node)
     for k in ("version", "generator", "generator_version"):
         sx.remove(fp, k)
@@ -145,6 +145,17 @@ def _xform_footprint(node: list, ref: str, value: str, x: float, y: float, rot: 
                     lay = sx.find(c, "layer")
                     if lay is not None:
                         lay[1] = "B.Fab" if str(lay[1]).startswith("B.") else "F.Fab"
+                elif ref_at:      # silkscreen legaliser: absolute position, reading angle, uniform size
+                    X, Y, ang, size = ref_at
+                    lx, ly = libs.rot(X - x, Y - y, -rot)
+                    at = sx.find(c, "at")
+                    at[:] = [Sym("at"), round(lx, 4), round(ly, 4), ang]
+                    font = sx.find(sx.find(c, "effects") or [], "font")
+                    if font is not None:
+                        sx.remove(font, "size"); sx.remove(font, "thickness")
+                        font += [S("size", size, size), S("thickness", 0.12)]
+                    out.append(c)
+                    continue
             elif c[1] == "Value":
                 c[2] = value
             elif c[1] in extra_props:
@@ -223,6 +234,11 @@ def build(prj: Project) -> dict:
     ncu = d.board.layers
     root_uuid = str(uuid.uuid5(uuid.NAMESPACE_URL, "llmpcb/" + "/".join([d.name, "root"])))
     missing = []
+    from . import silk as _silk
+    try:
+        sp = _silk.plan(prj)
+    except Exception:  # noqa: BLE001  (never block board writing on cosmetics)
+        sp = None
     for ref, c in sorted(d.components.items()):
         pl = L.placement.get(ref)
         if pl is None:
@@ -245,13 +261,42 @@ def build(prj: Project) -> dict:
             props["LCSC"] = c.lcsc
         items.append(_xform_footprint(fp.node, ref, c.value, round(pl.x, 4), round(pl.y, 4), pl.rot % 360, netmap,
                                       path, f"/{c.block}/", f"{_safe(c.block)}.kicad_sch", props, dnp=c.dnp,
-                                      side=pl.side, hide_ref=small))
+                                      side=pl.side,
+                                      hide_ref=(sp["refs"].get(ref) is None) if sp else small,
+                                      ref_at=sp["refs"].get(ref) if sp else None))
     # mounting holes (board-only)
     for i, mh in enumerate(d.board.mounting_holes):
         fpid = "MountingHole:MountingHole_3.2mm_M3" if (len(mh) < 3 or mh[2] >= 3.0) else "MountingHole:MountingHole_2.2mm_M2"
         fp = libs.get_footprint(fpid)
         items.append(_xform_footprint(fp.node, f"H{i+1}", "MountingHole", mh[0], mh[1], 0, {}, "", "", "", {},
-                                      board_only=True))
+                                      board_only=True, hide_ref=True))
+    # global fiducials (board-only)
+    for i, fd in enumerate(d.board.fiducials):
+        side = fd[2] if len(fd) > 2 else "top"
+        fp = libs.get_footprint_side("Fiducial:Fiducial_1mm_Mask2mm", side)
+        items.append(_xform_footprint(fp.node, f"FID{i+1}", "Fiducial", fd[0], fd[1], 0, {}, "", "", "", {},
+                                      board_only=True, side=side, hide_ref=True))
+    # silkscreen labels (connector names, pin-outs, button functions, ...)
+    for i, st in enumerate(d.board.silk_texts):
+        st = dict(st)
+        if sp and i < len(sp["texts"]) and sp["texts"][i]:
+            st["x"], st["y"], st["size"] = sp["texts"][i]
+            st.pop("ref", None)
+            st.setdefault("side", L.placement[d.board.silk_texts[i]["ref"]].side
+                          if d.board.silk_texts[i].get("ref") in L.placement else "top")
+        if st.get("ref"):     # anchored to a part: follows it through re-placement
+            pl_ = L.placement.get(st["ref"])
+            if pl_ is None:
+                continue
+            st["x"] = round(pl_.x + st.get("dx", 0.0), 3)
+            st["y"] = round(pl_.y + st.get("dy", 0.0), 3)
+            st.setdefault("side", pl_.side)
+        bottom = st.get("side", "top") == "bottom"
+        eff = S("effects", S("font", S("size", st.get("size", 0.8), st.get("size", 0.8)), S("thickness", 0.12)))
+        if bottom:
+            eff.append(S("justify", Sym("mirror")))
+        items.append(S("gr_text", st["text"], S("at", st["x"], st["y"], st.get("rot", 0)),
+                       S("layer", "B.SilkS" if bottom else "F.SilkS"), S("uuid", _uid("silk", i)), eff))
     # outline
     poly = outline_poly(d)
     for i in range(len(poly)):
@@ -261,7 +306,8 @@ def build(prj: Project) -> dict:
                        S("uuid", _uid("edge", i))))
     if d.board.title:
         # board title on the bottom silkscreen (mirrored, readable from below), centred near the lower edge
-        items.append(S("gr_text", f"{d.board.title} rev {d.board.rev}", S("at", d.board.width / 2, d.board.height - 1.4, 0),
+        tx, ty = (sp["title"][0], sp["title"][1]) if sp and sp.get("title") else (d.board.width / 2, d.board.height - 1.4)
+        items.append(S("gr_text", f"{d.board.title} rev {d.board.rev}", S("at", tx, ty, 0),
                        S("layer", "B.SilkS"), S("uuid", _uid("title")),
                        S("effects", S("font", S("size", 0.8, 0.8), S("thickness", 0.12)), S("justify", Sym("mirror")))))
     # tracks / vias
@@ -292,8 +338,20 @@ def build(prj: Project) -> dict:
                        S("uuid", _uid("zone", zi)), S("hatch", Sym("edge"), 0.5), S("priority", z.priority), cp,
                        S("min_thickness", z.min_width), S("filled_areas_thickness", Sym("no")),
                        S("fill", Sym("yes"), S("thermal_gap", z.thermal_gap), S("thermal_bridge_width", z.thermal_spoke),
-                         S("island_removal_mode", 1), S("island_area_min", 0.5)),
+                         S("island_removal_mode", 0), S("island_area_min", 0.5)),
                        S("polygon", S("pts", *[S("xy", round(p[0], 4), round(p[1], 4)) for p in pts]))))
+    # rule areas: keepout constraints marked "no_pour" also forbid copper pours (e.g. under an RJ45 body)
+    for ki, c in enumerate(d.constraints):
+        if c.kind == "keepout" and c.rect and "no_pour" in (c.note or ""):
+            x1, y1, x2, y2 = c.rect
+            lays = [l for l in (c.layers or cul) if l in cul] or cul
+            items.append(S("zone", S("net", 0), S("net_name", ""), S("layers", *lays), S("uuid", _uid("rulearea", ki)),
+                           S("name", "keepout"), S("hatch", Sym("edge"), 0.5), S("connect_pads", S("clearance", 0)),
+                           S("min_thickness", 0.25), S("filled_areas_thickness", Sym("no")),
+                           S("keepout", S("tracks", Sym("not_allowed")), S("vias", Sym("not_allowed")),
+                             S("pads", Sym("allowed")), S("copperpour", Sym("not_allowed")), S("footprints", Sym("allowed"))),
+                           S("fill", S("thermal_gap", 0.5), S("thermal_bridge_width", 0.5)),
+                           S("polygon", S("pts", *[S("xy", px, py) for px, py in ((x1, y1), (x2, y1), (x2, y2), (x1, y2))]))))
     net_nodes = [S("net", 0, "")] + [S("net", netid[n], n) for n in nets]
     tree = S("kicad_pcb", S("version", PCB_VERSION), S("generator", "llmpcb"), S("generator_version", "10.0"),
              S("general", S("thickness", d.board.thickness), S("legacy_teardrops", Sym("no"))),

@@ -40,7 +40,134 @@
   "mh_drill": 3.2,
   "title": "LP-1106 RV1106 SBC",
   "rev": "A",
-  "silk_refs": "large"
+  "silk_refs": "large",
+  "silk_texts": [
+   {
+    "text": "USB-C 5V",
+    "ref": "J1",
+    "dx": 0.0,
+    "dy": 6.6,
+    "size": 0.8
+   },
+   {
+    "text": "ETH 10/100",
+    "ref": "J4",
+    "dx": 9.0,
+    "dy": 5.9,
+    "size": 0.9
+   },
+   {
+    "text": "CAMERA  MIPI-CSI",
+    "ref": "J5",
+    "dx": 0.0,
+    "dy": 3.5,
+    "size": 0.7
+   },
+   {
+    "text": "UART",
+    "ref": "J6",
+    "dx": -3.4,
+    "dy": 0.0,
+    "size": 0.8
+   },
+   {
+    "text": "G",
+    "ref": "J6",
+    "dx": 0.0,
+    "dy": 2.2,
+    "size": 0.7
+   },
+   {
+    "text": "TX",
+    "ref": "J6",
+    "dx": 2.54,
+    "dy": 2.2,
+    "size": 0.7
+   },
+   {
+    "text": "RX",
+    "ref": "J6",
+    "dx": 5.08,
+    "dy": 2.2,
+    "size": 0.7
+   },
+   {
+    "text": "1",
+    "ref": "J7",
+    "dx": -1.9,
+    "dy": 0.0,
+    "size": 0.8
+   },
+   {
+    "text": "GPIO",
+    "ref": "J7",
+    "dx": 11.43,
+    "dy": -3.6,
+    "size": 0.8
+   },
+   {
+    "text": "RST",
+    "ref": "SW1",
+    "dx": 0.0,
+    "dy": 4.6,
+    "size": 0.8
+   },
+   {
+    "text": "BOOT",
+    "ref": "SW2",
+    "dx": 0.0,
+    "dy": 4.6,
+    "size": 0.8
+   },
+   {
+    "text": "PWR",
+    "ref": "D2",
+    "dx": 0.0,
+    "dy": 1.5,
+    "size": 0.6
+   },
+   {
+    "text": "STAT",
+    "ref": "D3",
+    "dx": 0.0,
+    "dy": 1.5,
+    "size": 0.6
+   },
+   {
+    "text": "microSD",
+    "ref": "J3",
+    "dx": 0.0,
+    "dy": -9.9,
+    "size": 0.8
+   }
+  ],
+  "fiducials": [
+   [
+    7.0,
+    2.4,
+    "top"
+   ],
+   [
+    21.5,
+    2.4,
+    "top"
+   ],
+   [
+    57.0,
+    47.6,
+    "top"
+   ],
+   [
+    7.0,
+    2.4,
+    "bottom"
+   ],
+   [
+    57.0,
+    47.6,
+    "bottom"
+   ]
+  ]
  },
  "components": {
   "J1": {
@@ -2559,6 +2686,108 @@
    "fields": {},
    "dnp": false,
    "note": "protects VSYS from shorts on the expansion header"
+  },
+  "TP1": {
+   "ref": "TP1",
+   "symbol": "Connector:TestPoint",
+   "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+   "value": "VSYS",
+   "part": "",
+   "mpn": "",
+   "lcsc": "",
+   "block": "test",
+   "pins": {
+    "1": "VSYS"
+   },
+   "nc": [],
+   "fields": {},
+   "dnp": false,
+   "note": ""
+  },
+  "TP2": {
+   "ref": "TP2",
+   "symbol": "Connector:TestPoint",
+   "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+   "value": "3V3",
+   "part": "",
+   "mpn": "",
+   "lcsc": "",
+   "block": "test",
+   "pins": {
+    "1": "VCC_3V3"
+   },
+   "nc": [],
+   "fields": {},
+   "dnp": false,
+   "note": ""
+  },
+  "TP3": {
+   "ref": "TP3",
+   "symbol": "Connector:TestPoint",
+   "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+   "value": "1V8",
+   "part": "",
+   "mpn": "",
+   "lcsc": "",
+   "block": "test",
+   "pins": {
+    "1": "VCC_1V8"
+   },
+   "nc": [],
+   "fields": {},
+   "dnp": false,
+   "note": ""
+  },
+  "TP4": {
+   "ref": "TP4",
+   "symbol": "Connector:TestPoint",
+   "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+   "value": "VDDR",
+   "part": "",
+   "mpn": "",
+   "lcsc": "",
+   "block": "test",
+   "pins": {
+    "1": "VCC_DDR"
+   },
+   "nc": [],
+   "fields": {},
+   "dnp": false,
+   "note": ""
+  },
+  "TP5": {
+   "ref": "TP5",
+   "symbol": "Connector:TestPoint",
+   "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+   "value": "0V9",
+   "part": "",
+   "mpn": "",
+   "lcsc": "",
+   "block": "test",
+   "pins": {
+    "1": "VDD_0V9"
+   },
+   "nc": [],
+   "fields": {},
+   "dnp": false,
+   "note": ""
+  },
+  "TP6": {
+   "ref": "TP6",
+   "symbol": "Connector:TestPoint",
+   "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+   "value": "GND",
+   "part": "",
+   "mpn": "",
+   "lcsc": "",
+   "block": "test",
+   "pins": {
+    "1": "GND"
+   },
+   "nc": [],
+   "fields": {},
+   "dnp": false,
+   "note": ""
   }
  },
  "netclasses": {
@@ -5101,11 +5330,274 @@
    "net": null,
    "layer": null,
    "note": ""
+  },
+  {
+   "kind": "side",
+   "ref": "TP*",
+   "target": null,
+   "block": null,
+   "side": "bottom",
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": null,
+   "rect": null,
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": "rail test pads on the bottom for probing / bed-of-nails"
+  },
+  {
+   "kind": "near",
+   "ref": "TP1",
+   "target": "D1",
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": 8.0,
+   "rect": null,
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": ""
+  },
+  {
+   "kind": "near",
+   "ref": "TP2",
+   "target": "L4",
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": 8.0,
+   "rect": null,
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": ""
+  },
+  {
+   "kind": "near",
+   "ref": "TP3",
+   "target": "L3",
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": 8.0,
+   "rect": null,
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": ""
+  },
+  {
+   "kind": "near",
+   "ref": "TP4",
+   "target": "L2",
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": 8.0,
+   "rect": null,
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": ""
+  },
+  {
+   "kind": "near",
+   "ref": "TP5",
+   "target": "L1",
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": 8.0,
+   "rect": null,
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": ""
+  },
+  {
+   "kind": "near",
+   "ref": "TP6",
+   "target": "TP1",
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": 6.0,
+   "rect": null,
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": ""
+  },
+  {
+   "kind": "keepout",
+   "ref": null,
+   "target": null,
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": null,
+   "rect": [
+    5.3,
+    0.7,
+    8.7,
+    4.1
+   ],
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": "fiducial FID1/FID4 (both sides)"
+  },
+  {
+   "kind": "keepout",
+   "ref": null,
+   "target": null,
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": null,
+   "rect": [
+    19.8,
+    0.7,
+    23.2,
+    4.1
+   ],
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": "fiducial FID2"
+  },
+  {
+   "kind": "keepout",
+   "ref": null,
+   "target": null,
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": null,
+   "rect": [
+    55.3,
+    45.9,
+    58.7,
+    49.3
+   ],
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": "fiducial FID3/FID5 (both sides)"
+  },
+  {
+   "kind": "keepout",
+   "ref": null,
+   "target": null,
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": null,
+   "rect": [
+    51.0,
+    12.6,
+    64.6,
+    31.4
+   ],
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": "no_pour: no tracks, vias or pours under the RJ45 body / magnetics (beyond its pin rows)"
   }
  ],
  "notes": [
   "ETH/CSI clearance 0.1: with 0.35 mm pin pitch a pair class needs track+2*clearance<=0.35 to escape; router necks down at the pins.",
   "v2: double-sided assembly (SoC decoupling, ZQ/EXTR, crystal network allowed on bottom); routed with llm-pcb hroute + Freerouting completion",
-  "PWR_HI current_a=1.0: estimated board load ~3 W at 5 V (~0.6 A) incl. buck losses; 1 A rating with margin. Buck SW nodes carry inductor ripple ~0.5 A pk-pk on top of load."
+  "PWR_HI current_a=1.0: estimated board load ~3 W at 5 V (~0.6 A) incl. buck losses; 1 A rating with margin. Buck SW nodes carry inductor ripple ~0.5 A pk-pk on top of load.",
+  "v3 (expert pass): identical buck cells, regular orientations, rail test points, fiducials, RJ45 keepout, In2 power pours, edge via fence, chamfered routing, silkscreen labels."
  ]
 }

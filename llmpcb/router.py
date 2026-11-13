@@ -415,24 +415,49 @@ class _Obstacles:
         self._add(("via", v.net, (v.x, v.y), v.d / 2))
 
 
-def stitch_vias(prj: Project, net: str = "GND", pitch: float = 3.0, edge: float = 1.0, d: float = 0.45,
-                drill: float = 0.25, clearance: float = 0.2, exclude_rects: list | None = None) -> dict:
-    """Place a grid of `net` vias wherever legal (ties pours/planes together, shortens return paths)."""
+def stitch_vias(prj: Project, net: str = "GND", pitch: float = 5.0, edge: float = 1.0, d: float = 0.45,
+                drill: float = 0.25, clearance: float = 0.2, exclude_rects: list | None = None,
+                edge_pitch: float = 2.5, avoid_parts: bool = True) -> dict:
+    """Expert-style ground stitching: a via fence along the board edge (edge_pitch) plus a sparse interior grid
+    (pitch). No vias under any part's courtyard (either side) or inside keepout constraints."""
     D = prj.design
     obs = _Obstacles(prj)
-    added = 0
-    y = edge
-    while y <= D.board.height - edge:
-        x = edge
-        while x <= D.board.width - edge:
-            if not any(r[0] <= x <= r[2] and r[1] <= y <= r[3] for r in exclude_rects or []) and \
-                    obs.clear(x, y, d / 2, net, clearance):
-                v = Via(net=net, x=round(x, 3), y=round(y, 3), d=d, drill=drill, locked=True)
-                prj.layout.vias.append(v)
-                obs.add_via(v)
-                added += 1
+    blocked = list(exclude_rects or [])
+    for c in D.constraints:
+        if c.kind == "keepout" and c.rect:
+            blocked.append(tuple(c.rect))
+    if avoid_parts:
+        for ref, comp in D.components.items():
+            pl = prj.layout.placement.get(ref)
+            if pl is None:
+                continue
+            bb = libs.bbox_rot(libs.get_footprint_side(comp.footprint, pl.side).courtyard, pl.rot)
+            blocked.append((pl.x + bb[0] - 0.1, pl.y + bb[1] - 0.1, pl.x + bb[2] + 0.1, pl.y + bb[3] + 0.1))
+    W, H = D.board.width, D.board.height
+    pts = []
+    # edge fence (inset by `edge`), corners rounded off by the outline radius
+    r = max(D.board.corner_r, edge)
+    for x in [edge + r + k * edge_pitch for k in range(int((W - 2 * (edge + r)) / edge_pitch) + 1)]:
+        pts += [(x, edge), (x, H - edge)]
+    for y in [edge + r + k * edge_pitch for k in range(int((H - 2 * (edge + r)) / edge_pitch) + 1)]:
+        pts += [(edge, y), (W - edge, y)]
+    # sparse interior grid
+    y = edge + pitch
+    while y <= H - edge - pitch / 2:
+        x = edge + pitch
+        while x <= W - edge - pitch / 2:
+            pts.append((x, y))
             x += pitch
         y += pitch
+    added = 0
+    for x, y in pts:
+        if any(rr[0] <= x <= rr[2] and rr[1] <= y <= rr[3] for rr in blocked):
+            continue
+        if obs.clear(x, y, d / 2, net, clearance):
+            v = Via(net=net, x=round(x, 3), y=round(y, 3), d=d, drill=drill, locked=True)
+            prj.layout.vias.append(v)
+            obs.add_via(v)
+            added += 1
     return {"added": added}
 
 

@@ -247,3 +247,40 @@ Remaining review items:
 - PWR escape at the 0.35 mm-pitch SoC relies on neck-down
 - camera 1.8 V I/O
 - unverified QFN land pattern
+
+
+## v3: expert review pass ("does anything look weird?")
+
+I reviewed the v2.1 board the way a senior layout engineer would, looking at the renders, DRC warnings and review findings. Then I fixed what looked amateur, through the MCP tools (`calls/30_*` … `41_*`).
+
+| Looked weird | Fix | Tool / code change |
+|---|---|---|
+| Schematic: parts scattered on one sheet, labels floating | parts clustered per IC, wire stubs, power symbols, paper sized to content | `schematic.py` |
+| The four buck cells all laid out differently | identical rigid macros, canonical orientation per hub | `placer.py` |
+| No fiducials, no test points, unlabeled connectors | 3 global fiducials; TP1–6 on the bottom; connector, pin-out and button labels anchored to their parts | `board.fiducials`, `board.silk_texts` |
+| Pours flooding under the RJ45 magnetics | `no_pour` rule area | keepout constraint |
+| Ragged GND pour edges, no edge stitching | via fence at 2.5 mm along the edge, 5 mm grid inside | `copper restitch` |
+| 90° track corners | 45° chamfers (clearance-checked) | `copper smooth` |
+| **Smoothing ate the length tuning**: bevelling the meander corners shortened ETH_TX back to 3 mm skew | smoothing now skips length-matched pairs; meanders carry their own 45° mitres, with the bevel loss compensated exactly | `tune.py` |
+| Re-tuning found no room: stale segment indices after the first meander | candidates recomputed after every meander; fallback leg spacing; `tune_lengths(reset=true)` strips old meanders before re-tuning | `tune.py` |
+| 90 silkscreen warnings: designators on pads, on other outlines, off the board edge | **silkscreen legaliser**: picks each designator's spot (above/below/left/right, 0.8 then 0.65 mm) clear of mask openings, silk, text, holes and edge, in one reading direction; labels nudged in a spiral; otherwise moved to the fab layer | new `silk.py`, applied on every board write |
+| QFN-128 corner marks touching corner pads | marks moved outside the pad ring | `gen.qfn` |
+| 141 floating copper islands in pours | island removal on | `board.py` |
+| GND/VSYS clearance 0.134 mm; 1 unconnected header pin (J7.2–J7.4) | local rip-up of one GND link; straight B.Cu link | `copper ripup` with `rect`, `connect_pads` |
+| 6 parity warnings for test points | symbol `in_bom` mirrors the footprint's `exclude_from_bom` | `schematic.py` |
+
+**Result:** KiCad **ERC 0**, netlist parity ok. **DRC 0 errors, 0 warnings, 0 unconnected, 0 parity** (v2.1: 116 warnings). 1111 track paths, 378 vias.
+
+| Pair | Skew |
+|---|---|
+| ETH TX | 0.30 mm |
+| ETH RX | 1.96 mm |
+| CSI D0 | 0.39 mm |
+| CSI D1 | 0.16 mm |
+| CSI CK | 0.15 mm |
+
+Remaining items, judged:
+- **ETH RX skew 1.96 mm** (tolerance 1.0): there is no room left for more meanders. At 100BASE-TX (125 Mbaud) that is about 13 ps against an 8 ns unit interval, which is electrically irrelevant. Shown as a warning, not hidden.
+- **Unequal via counts in ETH TX/RX and CSI D0** (0/1, 0/2): a human would route both legs through the same layer changes. That needs a pair re-route, and is left for the next router iteration.
+- **Buck input caps 1.9 mm and inductors 2.2 mm from their pins** (targets 1.5/2.0), and **USB-C CC resistors / ESD 6–7 mm** from J1: these are identical in all four cells and within datasheet layout examples, but outside our tight targets.
+- **PWR class escape at the 0.35 mm-pitch SoC** relies on neck-down at the pins, which is by design. The QFN land pattern is still unverified against a vendor drawing.

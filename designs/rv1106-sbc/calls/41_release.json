@@ -1,0 +1,4 @@
+[{"tool":"schematic_build"},
+ {"tool":"drc"},
+ {"tool":"export_fab"},
+ {"tool":"tune_lengths"}]

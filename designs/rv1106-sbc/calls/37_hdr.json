@@ -1,0 +1,5 @@
+[{"tool":"connect_pads","args":{"a":"J7.2","b":"J7.4","layer":"B.Cu","width":0.4}},
+ {"tool":"drc"},
+ {"tool":"tune_lengths"},
+ {"tool":"drc"},
+ {"tool":"design_review"}]

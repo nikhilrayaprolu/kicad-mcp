@@ -81,8 +81,8 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
     edge_clear = 0.5
     cons = d.constraints
     regions = {c.block: tuple(c.rect) for c in cons if c.kind == "region" and c.block and c.rect}
-    keepouts = [tuple(c.rect) for c in cons if c.kind == "keepout" and c.rect and
-                (not c.layers or "F.Cu" in c.layers or "F.CrtYd" in (c.layers or []))]
+    keepouts = [tuple(c.rect) for c in cons if c.kind == "keepout" and c.rect and "no_pour" not in (c.note or "") and
+                (not c.layers or "F.Cu" in c.layers or "F.CrtYd" in (c.layers or []))]   # no_pour = routing/pour only
     for mh in d.board.mounting_holes:
         r = (mh[2] if len(mh) > 2 else d.board.mh_drill) / 2 + 1.6
         keepouts.append((mh[0] - r, mh[1] - r, mh[0] + r, mh[1] + r))
@@ -289,6 +289,9 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
             if h != r:
                 groups.setdefault(h, []).append(r)
         for hub, mem in groups.items():
+            if not items[hub].fixed:           # canonical hub orientation -> identical cells for identical blocks
+                pos[hub][2] = items[hub].orients[0]
+                upd_rect(hub)
             hx, hy, ho = pos[hub]
             hi = idx[hub]
             placed = {hub}
@@ -323,8 +326,8 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
                             b = items[m].w[o]
                             s_ = o_side(o)
                             off = items[m].pins[o].get(tgts[0][1], (0.0, 0.0)) if tgts[0][1] else (0.0, 0.0)
-                            cx = tx0 + rad * math.cos(a) - off[0]
-                            cy = ty0 + rad * math.sin(a) - off[1]
+                            cx = round((tx0 + rad * math.cos(a) - off[0]) / 0.1) * 0.1
+                            cy = round((ty0 + rad * math.sin(a) - off[1]) / 0.1) * 0.1
                             rr = (cx + b[0], cy + b[1], cx + b[2], cy + b[3])
                             if not in_board(rr):
                                 continue
@@ -346,6 +349,7 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
                                 dd = math.hypot(cx + o2[0] - tp[0], cy + o2[1] - tp[1])
                                 cst += dd + 10 * max(0.0, dd - mxx)
                             cst += 0.3 * s_          # slight preference for the top side
+                            cst += 0.15 * (o_rot(o) in (180.0, 270.0))   # readable, consistent orientations
                             if best is None or cst < best[0]:
                                 best = (cst, cx, cy, o)
                     if best is not None and rad > best[0] + 0.5:
@@ -400,6 +404,7 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
         c += sum(near_cost(i) for i in near_by_ref[r])
         c += ov_scale * W_OV * ov_area(idx[r]) + W_CT * contain_cost(r) * 10
         c += BOTTOM_COST * side_a[idx[r]]
+        c += 0.3 * (o_rot(pos[r][2]) in (180.0, 270.0))     # prefer 0/90: rows read consistently
         return c
 
     sa_movable = [r for r in movable if r not in member_of]
@@ -465,8 +470,8 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
     for r in movable:
         if r in member_of:
             continue
-        pos[r][0] = round(pos[r][0] / 0.05) * 0.05
-        pos[r][1] = round(pos[r][1] / 0.05) * 0.05
+        pos[r][0] = round(pos[r][0] / 0.1) * 0.1
+        pos[r][1] = round(pos[r][1] / 0.1) * 0.1
         upd_rect(r)
         if r in members:
             move_members(r)
@@ -504,7 +509,7 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
     # ---------- phase 3: legal-only greedy refinement
     def soft_cost(r):
         c = sum(net_cost(n) for n in part_nets[r]) + sum(near_cost(i) for i in near_by_ref[r])
-        return c + W_CT * contain_cost(r) + BOTTOM_COST * side_a[idx[r]]
+        return c + W_CT * contain_cost(r) + BOTTOM_COST * side_a[idx[r]] + 0.3 * (o_rot(pos[r][2]) in (180.0, 270.0))
 
     refine_iters = int(len(movable) * 400 * max(1.0, effort))
     improved = 0
@@ -528,8 +533,8 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
             for _ in range(24):
                 rad = rnd.uniform(0.3, 6.0)
                 a = rnd.uniform(0, 2 * math.pi)
-                pos[r] = [round((tgt[0] + rad * math.cos(a)) / 0.05) * 0.05,
-                          round((tgt[1] + rad * math.sin(a)) / 0.05) * 0.05, rnd.choice(items[r].orients)]
+                pos[r] = [round((tgt[0] + rad * math.cos(a)) / 0.1) * 0.1,
+                          round((tgt[1] + rad * math.sin(a)) / 0.1) * 0.1, rnd.choice(items[r].orients)]
                 upd_rect(r)
                 if legal(r):
                     c = soft_cost(r)
@@ -549,8 +554,8 @@ def place(prj: Project, effort: float = 1.0, seed: int = 1, margin: float = 0.2,
             pos[r][1] += rnd.gauss(0, step)
         if rnd.random() < 0.15:
             pos[r][2] = rnd.choice(items[r].orients)
-        pos[r][0] = round(pos[r][0] / 0.05) * 0.05
-        pos[r][1] = round(pos[r][1] / 0.05) * 0.05
+        pos[r][0] = round(pos[r][0] / 0.1) * 0.1
+        pos[r][1] = round(pos[r][1] / 0.1) * 0.1
         upd_rect(r)
         if legal(r) and soft_cost(r) < before - 1e-6:
             improved += 1

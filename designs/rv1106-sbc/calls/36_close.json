@@ -1,0 +1,4 @@
+[{"tool":"copper","args":{"action":"ripup","nets":["GND"],"rect":[11.85,27.25,11.95,27.4]}},
+ {"tool":"connect_pads","args":{"a":"J7.1","b":"J7.2","layer":"B.Cu","width":0.4}},
+ {"tool":"schematic_build"},
+ {"tool":"drc"}]

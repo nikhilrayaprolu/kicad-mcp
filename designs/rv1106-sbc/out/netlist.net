@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "/home/nikhil.r/llm-pcb/designs/rv1106-sbc/rv1106_sbc.kicad_sch")
-		(date "2026-11-13T01:03:36")
+		(date "2026-11-13T02:59:13")
 		(tool "Eeschema 10.0.8-10.0.8~ubuntu24.04.1")
 		(sheet
 			(number "1")
@@ -390,6 +390,54 @@
 		)
 		(sheet
 			(number "9")
+			(name "/test/")
+			(tstamps "/50fa8733-e3a5-5e06-85b6-1f11dc1316e8/")
+			(title_block
+				(title "LP-1106 RV1106 SBC - test")
+				(company)
+				(rev "A")
+				(date)
+				(source "test.kicad_sch")
+				(comment
+					(number "1")
+					(value "")
+				)
+				(comment
+					(number "2")
+					(value "")
+				)
+				(comment
+					(number "3")
+					(value "")
+				)
+				(comment
+					(number "4")
+					(value "")
+				)
+				(comment
+					(number "5")
+					(value "")
+				)
+				(comment
+					(number "6")
+					(value "")
+				)
+				(comment
+					(number "7")
+					(value "")
+				)
+				(comment
+					(number "8")
+					(value "")
+				)
+				(comment
+					(number "9")
+					(value "")
+				)
+			)
+		)
+		(sheet
+			(number "10")
 			(name "/ui/")
 			(tstamps "/2a356546-afde-54a3-b762-c92c489e05fb/")
 			(title_block
@@ -437,7 +485,7 @@
 			)
 		)
 		(sheet
-			(number "10")
+			(number "11")
 			(name "/usb/")
 			(tstamps "/6954d3ae-b527-5827-83bd-3f84897b6782/")
 			(title_block
@@ -7716,6 +7764,330 @@
 			)
 		)
 		(comp
+			(ref "TP1")
+			(value "VSYS")
+			(footprint "TestPoint:TestPoint_Pad_D1.0mm")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Pad_D1.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "test")
+			)
+			(property
+				(name "Sheetfile")
+				(value "test.kicad_sch")
+			)
+			(property
+				(name "exclude_from_bom")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/test/")
+				(tstamps "/50fa8733-e3a5-5e06-85b6-1f11dc1316e8/")
+			)
+			(tstamps "eec1bec9-aa86-5762-81f2-c996d4f434e9")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "TP2")
+			(value "3V3")
+			(footprint "TestPoint:TestPoint_Pad_D1.0mm")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Pad_D1.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "test")
+			)
+			(property
+				(name "Sheetfile")
+				(value "test.kicad_sch")
+			)
+			(property
+				(name "exclude_from_bom")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/test/")
+				(tstamps "/50fa8733-e3a5-5e06-85b6-1f11dc1316e8/")
+			)
+			(tstamps "ecf96d66-e6e3-5f1e-8675-8dfcd82e0d3c")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "TP3")
+			(value "1V8")
+			(footprint "TestPoint:TestPoint_Pad_D1.0mm")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Pad_D1.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "test")
+			)
+			(property
+				(name "Sheetfile")
+				(value "test.kicad_sch")
+			)
+			(property
+				(name "exclude_from_bom")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/test/")
+				(tstamps "/50fa8733-e3a5-5e06-85b6-1f11dc1316e8/")
+			)
+			(tstamps "2782bf67-3ecd-5344-a5ee-1ca6abcc4e16")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "TP4")
+			(value "VDDR")
+			(footprint "TestPoint:TestPoint_Pad_D1.0mm")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Pad_D1.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "test")
+			)
+			(property
+				(name "Sheetfile")
+				(value "test.kicad_sch")
+			)
+			(property
+				(name "exclude_from_bom")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/test/")
+				(tstamps "/50fa8733-e3a5-5e06-85b6-1f11dc1316e8/")
+			)
+			(tstamps "394b088d-5492-5055-ab05-1737cf118b67")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "TP5")
+			(value "0V9")
+			(footprint "TestPoint:TestPoint_Pad_D1.0mm")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Pad_D1.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "test")
+			)
+			(property
+				(name "Sheetfile")
+				(value "test.kicad_sch")
+			)
+			(property
+				(name "exclude_from_bom")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/test/")
+				(tstamps "/50fa8733-e3a5-5e06-85b6-1f11dc1316e8/")
+			)
+			(tstamps "fdb536fd-399a-5b2f-ba71-7adb147b44d4")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
+			(ref "TP6")
+			(value "GND")
+			(footprint "TestPoint:TestPoint_Pad_D1.0mm")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Pad_D1.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "test")
+			)
+			(property
+				(name "Sheetfile")
+				(value "test.kicad_sch")
+			)
+			(property
+				(name "exclude_from_bom")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/test/")
+				(tstamps "/50fa8733-e3a5-5e06-85b6-1f11dc1316e8/")
+			)
+			(tstamps "aeff8df1-3753-5046-a547-2da3726c395e")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "C57")
 			(value "1n")
 			(footprint "Capacitor_SMD:C_0402_1005Metric")
@@ -8492,6 +8864,36 @@
 				(pin
 					(num "SH")
 					(name "")
+					(type "passive")
+				)
+			)
+		)
+		(libpart
+			(lib "Connector")
+			(part "TestPoint")
+			(description "test point")
+			(footprints
+				(fp "Pin*")
+				(fp "Test*")
+			)
+			(fields
+				(field
+					(name "Reference") "TP")
+				(field
+					(name "Value") "TestPoint")
+				(field
+					(name "Footprint")
+				)
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description") "test point")
+			)
+			(pins
+				(pin
+					(num "1")
+					(name "1")
 					(type "passive")
 				)
 			)
@@ -10032,7 +10434,7 @@
 	(libraries
 		(library
 			(logical "llmpcb")
-			(uri "/home/nikhil.r/llm-pcb/llmpcb/library/symbols/llmpcb.kicad_sym")
+			(uri "${KIPRJMOD}/../../llmpcb/library/symbols/llmpcb.kicad_sym")
 		)
 	)
 	(nets
@@ -11101,6 +11503,12 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "TP6")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
 				(ref "U1")
 				(pin "2")
 				(pinfunction "GND_2")
@@ -11996,6 +12404,12 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "TP3")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
 				(ref "U10")
 				(pin "24")
 				(pinfunction "SARADC_USB_AVDD1V8_24")
@@ -12290,6 +12704,12 @@
 				(pintype "passive")
 			)
 			(node
+				(ref "TP2")
+				(pin "1")
+				(pinfunction "1_1")
+				(pintype "passive")
+			)
+			(node
 				(ref "U10")
 				(pin "108")
 				(pinfunction "GPIO5_VCC_108")
@@ -12429,6 +12849,12 @@
 			(node
 				(ref "R6")
 				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "TP4")
+				(pin "1")
+				(pinfunction "1_1")
 				(pintype "passive")
 			)
 			(node
@@ -12592,6 +13018,12 @@
 			(node
 				(ref "R3")
 				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "TP5")
+				(pin "1")
+				(pinfunction "1_1")
 				(pintype "passive")
 			)
 			(node
@@ -12772,6 +13204,12 @@
 			(node
 				(ref "R8")
 				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "TP1")
+				(pin "1")
+				(pinfunction "1_1")
 				(pintype "passive")
 			)
 			(node

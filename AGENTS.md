@@ -112,7 +112,7 @@ Work through these in order and re-run `drc` after each:
 2. `copper(action="repair", pitch=32)`: **32 concurrent rip-up/re-route variants, each scored by real KiCad DRC.** The best is applied only if it improves on the current board. This closed the RV1106 from 8 to 1, then from 1 to 0 unconnected.
 3. `route(mode="complete")` for what remains, `connect_pads(a, b, layer)` for trivial same-net straight links, and `place_part(ref, near)` when a new part must be added to a routed board.
 4. `copper(action="dangling_vias")` removes one-layer vias and the stubs they leave.
-5. `copper(action="ripup", nets=[...])`, then repair or complete, when a net is boxed in. Rip up the blockers too.
+5. `copper(action="ripup", nets=[...])`, then repair or complete, when a net is boxed in. Rip up the blockers too. Add `rect=[x1,y1,x2,y2]` to remove only the copper touching that area, e.g. one link that violates clearance.
 
 Never use `run_script` to fake geometry. Each use is logged as a capability gap.
 
@@ -123,6 +123,7 @@ tune_lengths(default_tol=0.5)     # serpentine meanders on the shorter leg, clea
 drc ; design_review
 ```
 
+- Order matters: `copper smooth` **before** `tune_lengths`. Smoothing skips length-matched pairs, and meanders carry their own 45° mitres. To re-tune after any change to a pair, use `tune_lengths(reset=true)`, which strips old meanders first.
 - Coupled pairs from hroute are usually already matched (0.4–0.8 mm on the RV1106). Single-ended fallbacks get meanders; the RV1106 went from 6.6, 3.2 and 8.1 mm to 0.3, 0.15 and 0.15 mm.
 - Multi-pin pairs, such as USB with ESD branches or A/B rows, are reported as such and are not tuned.
 - `design_review` also checks decap and crystal distances, current versus width, escape feasibility, unconnected power pins and single-pin nets. Fix errors and judge warnings, then explain to the user whatever you accept.
@@ -136,7 +137,9 @@ export_fab           # Gerbers, drill, CPL, JLC BOM, IPC-D-356, PDFs, zip
 render_view(kind="3d", side="top") ; render_view(kind="3d", side="bottom")
 ```
 
-Set `{"op":"board","silk_refs":"large"}` on dense boards. It moves small-passive designators to the fab layer.
+Set `{"op":"board","silk_refs":"large"}` on dense boards. It moves small-passive designators to the fab layer. The silkscreen legaliser runs on every board write. It places designators clear of pads, outlines, text, holes and the edge, and nudges `silk_texts` labels. Aim for **0 DRC warnings**: silk and pour-island warnings are what make a board look amateur.
+
+Expert finish checklist: fiducials (`board.fiducials`), labelled test points on key rails, connector and pin-1 labels (`silk_texts` anchored to parts), an edge via fence (`copper restitch`), `no_pour` rule areas under magnetics and antennas, 45° corners (`copper smooth`), and identical layouts for repeated cells.
 
 ## 9. Pitfalls already paid for (do not repeat)
 
