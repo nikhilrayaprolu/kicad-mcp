@@ -1,0 +1,6 @@
+=== project_open (0.0s, 690B)
+{"project":"/home/nikhil.r/llm-pcb/designs/rv1106-sbc","name":"rv1106_sbc","components":129,"nets":88,"single_pin_nets":[],"blocks":{"power":47,"soc":49,"ui":8,"usb":3,"flash":6,"sd":4,"eth":5,"camera":5,"io":2},"board":{"width":65.0,"height":50.0,"corner_r":2.0,"layers":4,"thickness":1.6,"fab":"jlcpcb","mounting_holes":[[3.0,3.0,2.2],[62.0,3.0,2.2],[3.0,47.0,2.2],[62.0,47.0,2.2]],"mh_drill":3.2,"title":"LP-1106 RV1106 SBC","rev":"A"},"netclasses":["Default","PWR_HI","PWR","USB","ETH","CSI"],"constraints":104,"placed":129,"unplaced":0,"tracks":702,"vias":211,"zones":["GND@In1.Cu"],"last_checks":{"erc.json":"08:35:26","drc.json":"10:05:45"},"next":"drc / design_review / export_fab"}
+=== ir_edit (0.0s, 80B)
+{"applied":3,"summary":["nc:USB","nc:PWR","c:plane"],"components":129,"nets":88}
+=== route (0.0s, 207B)
+{"error":"AttributeError: module 'llmpcb.router' has no attribute 'route_placements'","where":"    res = router.route_placements(prj, cands, passes=passes, timeout_s=timeout_s, fanout_planes=fanout_planes)"}

@@ -1,0 +1,2 @@
+[{"tool":"ir_edit","args":{"ops":[{"op":"clear_constraints","kind":"edge","ref":"J6"},{"op":"constraint","kind":"edge","ref":"J6","side":"top","offset":49,"rot":90}]}},
+ {"tool":"place","args":{"effort":3.0,"seed":2,"unlock_all":true}}]

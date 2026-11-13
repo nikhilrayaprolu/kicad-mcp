@@ -1,0 +1,1 @@
+[{"tool":"tune_lengths"},{"tool":"copper","args":{"action":"dangling_vias"}},{"tool":"drc"},{"tool":"design_review"},{"tool":"export_fab"},{"tool":"render_view","args":{"kind":"2d"}},{"tool":"render_view","args":{"kind":"3d","side":"top"}},{"tool":"render_view","args":{"kind":"3d","side":"bottom"}}]

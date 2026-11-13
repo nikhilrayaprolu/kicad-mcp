@@ -1,0 +1,5 @@
+[{"tool":"copper","args":{"action":"min_width"}},
+ {"tool":"route","args":{"mode":"complete","passes":100,"timeout_s":900,"image":false}},
+ {"tool":"copper","args":{"action":"min_width"}},
+ {"tool":"copper","args":{"action":"restitch","net":"GND","pitch":2.5}},
+ {"tool":"drc"}]

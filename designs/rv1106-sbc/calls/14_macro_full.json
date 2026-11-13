@@ -1,0 +1,7 @@
+[{"tool":"place","args":{"effort":1.5,"seeds":72,"unlock_all":true,"image":false}},
+ {"tool":"route","args":{"passes":100,"timeout_s":900,"candidates":16,"fanout_planes":true,"image":false}},
+ {"tool":"zones","args":{"gnd_pour_outer":true}},
+ {"tool":"copper","args":{"action":"stitch","net":"GND","pitch":2.5}},
+ {"tool":"drc"},
+ {"tool":"design_review"},
+ {"tool":"render_view","args":{"kind":"2d"}}]

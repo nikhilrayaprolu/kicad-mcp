@@ -1,0 +1,9 @@
+[{"tool":"ir_edit","args":{"ops":[
+   {"op":"add_part","symbol":"Device:Polyfuse_Small","footprint":"Fuse:Fuse_1206_3216Metric","ref":"F1","block":"io","value":"0.5A PTC","mpn":"SMD1206P050TF","conn":{"1":"VSYS","2":"VSYS_HDR"},"note":"protects VSYS from shorts on the expansion header"},
+   {"op":"connect","ref":"J7","conn":{"2":"VSYS_HDR","4":"VSYS_HDR"}},
+   {"op":"netclass","name":"PWR","track":0.25,"clearance":0.1,"via_d":0.5,"via_drill":0.25,"nets":["VDD_0V9","VCC_DDR","VCC_1V8","VCC_1V8_PLL","VCC_1V8_CODEC","VCC_1V8_MIPI","VCC_3V3","ETH_AVDD3V3","VCC_RTC","GND","VSYS_HDR"],"current_a":0.5}]}},
+ {"tool":"schematic_build"},
+ {"tool":"place_part","args":{"ref":"F1","near":"J7.2","max_radius_mm":15}},
+ {"tool":"route","args":{"mode":"complete","passes":100,"timeout_s":600}},
+ {"tool":"drc"},
+ {"tool":"design_review"}]

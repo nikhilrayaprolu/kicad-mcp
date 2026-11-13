@@ -1,0 +1,2 @@
+[{"tool":"place","args":{"effort":3.0,"seeds":72,"unlock_all":true,"image":false}},
+ {"tool":"route","args":{"passes":100,"timeout_s":900,"candidates":12,"fanout_planes":true}}]

@@ -1,0 +1,5 @@
+[{"tool":"ir_edit","args":{"ops":[
+   {"op":"clear_constraints","kind":"region","block":"power"},
+   {"op":"constraint","kind":"region","block":"power","rect":[1,1,25,32]}]}},
+ {"tool":"place","args":{"effort":3.0,"seeds":64,"unlock_all":true}},
+ {"tool":"route","args":{"passes":80,"timeout_s":1200,"variants":12}}]

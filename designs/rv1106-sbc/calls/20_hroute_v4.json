@@ -1,0 +1,6 @@
+[{"tool":"route","args":{"engine":"hroute","candidates":8,"profiles":["human","fewvias"],"timeout_s":3600,"finish_with_freerouting":true,"passes":100,"image":false}},
+ {"tool":"zones","args":{"gnd_pour_outer":true}},
+ {"tool":"copper","args":{"action":"restitch","net":"GND","pitch":2.5}},
+ {"tool":"drc"},
+ {"tool":"design_review"},
+ {"tool":"render_view","args":{"kind":"2d"}}]

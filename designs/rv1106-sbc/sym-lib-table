@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "llmpcb")(type "KiCad")(uri "${KIPRJMOD}/../../llmpcb/library/symbols/llmpcb.kicad_sym")(options "")(descr "llm-pcb generated"))
+)

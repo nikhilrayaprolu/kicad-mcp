@@ -1,0 +1,437 @@
+# Rockchip RV1106G2 / RV1106G3 knowledge file (QFN128 + exposed pad, in-package DDR3L)
+# All `src:` paths are relative to knowledge/sources/. Page numbers are PDF page numbers
+# (for the datasheet they equal the printed page numbers).
+#   DS   = Rockchip_RV1106_Datasheet_V2.2-20260602.pdf   (Rockchip, Rev 2.2, 2026-06-02; from LuckfoxTECH/Luckfox-Pico-docs)
+#   DS17 = RV1106_Datasheet_V1.7.pdf                      (Rev 1.7, files.luckfox.com; older, pins 105/110/117-128 renamed since)
+#   SCH  = Luckfox-Pico-Pro-Max.pdf                       (Luckfox Pico Pro/Max schematic, 1 page; symbol text says "RV1106G2";
+#                                                          Pro = RV1106G2 (1Gb DDR3L), Max = RV1106G3 (2Gb DDR3L), same QFN128 pinout)
+#   UW   = Luckfox-Pico-Ultra-W.pdf                       (Luckfox Pico Ultra/Ultra-W schematic; RV1106G2/G3, eMMC; used as cross-check)
+# Schematic coordinates "@x,y" are PDF points on page 1 (842x595 pt sheet) to help find the spot when re-reading.
+# Rules: never invent pin numbers. Everything in `pins:` is machine-extracted from DS Table 2-1 (scripts/gen_pins_yaml.py).
+
+part:
+  family: RV1106
+  preferred_variant: RV1106G3
+  variants:
+    - {name: RV1106G2, memory: "SIP 1Gb DDR3L, 16-bit", package: QFN128, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p16", src2: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p7"}
+    - {name: RV1106G3, memory: "SIP 2Gb DDR3L, 16-bit", package: QFN128, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p16", src2: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p7"}
+    - {name: RV1106,   memory: "external DDR2/DDR3/DDR3L/DDR4", package: BGA313, note: "different package; NOT covered by this file", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p16"}
+  same_pinout_G2_G3: true   # DS Table 2-1 is titled "Pin Number Order Information for RK1106G2 & G3"; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21
+  cpu: "single Cortex-A7 (+ RISC-V MCU), 1.0 TOPS NPU"   # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p16 (order info), Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p7
+  ddr_note: >-
+    DDR3L die is inside the package. No DDR data/address pins are exposed on QFN128; the only DDR-related
+    pins are DDR_VDDQ_1..3 (49,50,56), DDR_PLL_AVDD1V8 (53) and DRAM_ZQ (52). Hence no pin is typed ddr_internal.
+  src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"
+
+package:
+  name: QFN128 (exposed pad)          # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p15, Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p16
+  pin_count: 128                      # + exposed pad = 129 pads; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p18 (bottom view 1..128), Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22
+  body_size_mm: [12.3, 12.3]          # D x E BSC; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19 (Fig.2-7)
+  pitch_mm: 0.35                      # e BSC; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  height_mm: {min: 0.80, nom: 0.85, max: 0.90}     # A; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  standoff_mm: {min: 0.0, nom: 0.02, max: 0.05}    # A1; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  lead_width_b_mm: {min: 0.08, nom: 0.13, max: 0.18}   # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  lead_length_L_mm: {min: 0.30, nom: 0.40, max: 0.50}  # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  lead_tip_to_ep_edge_K_mm: 2.25      # REF; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  leadframe_thickness_A3_mm: 0.152    # REF; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  exposed_pad_mm: {x: {min: 6.9, nom: 7.0, max: 7.1}, y: {min: 6.9, nom: 7.0, max: 7.1}}   # D2/E2; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  exposed_pad_connects_to: VSS (ground)   # DS lists "VSS  E-PAD"; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22. SCH draws it as U1D pin 129 "ePAD" -> GND (Luckfox-Pico-Pro-Max.pdf#p1 @264,500)
+  exposed_pad_number_in_reference_symbol: 129   # Luckfox symbol numbering, not a datasheet number; src: Luckfox-Pico-Pro-Max.pdf#p1
+  tolerances_mm: {aaa_package_edge: 0.1, ccc_mold_flatness: 0.1, eee_coplanarity: 0.08, bbb_lead_offset: 0.07, fff_ep_offset: 0.1}  # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p19
+  pin_numbering: >-
+    Standard QFN counter-clockwise (top view): pin 1 at the pin-1 corner dot (top-left in top view), pins 1-32 down the
+    left side, 33-64 along the bottom, 65-96 up the right side, 97-128 along the top (bottom view on Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p18 shows
+    1 / 32 / 33 / 64 / 65 / 96 / 97 / 128 at the corners, mirrored).
+  src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p17-19"
+  msl: 3                               # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21
+  lead_finish: Sn                      # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21
+  thermal: {theta_ja_C_per_W: 27.3, theta_jb_C_per_W: 12.5, theta_jc_C_per_W: 8.4, board: "JEDEC 2S2P 4-layer", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p31"}
+  tj_max_C: 125                        # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26
+  ambient_operating_C: [-20, 85]       # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p27
+  footprint_note: >-
+    Datasheet gives no recommended land pattern; derive an IPC-7351 footprint from the dimensions above.
+    0.35 mm pitch with 0.13 mm leads -> needs fine-pitch fab capability (pad ~0.18-0.2 mm wide).
+  unverified_footprint: true
+
+# ---------------------------------------------------------------------------------------------------------------
+power_rails:
+  # Nominal/limits from DS Table 3-2 (p26-27); abs max from Table 3-1 (p26). Reference implementation = SCH (Luckfox Pico Pro/Max).
+  VDD_CPU:
+    pins: [115]                      # CPU_DVDD
+    nominal_V: 0.90
+    range_V: [0.85, 1.05]           # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26
+    abs_max_V: 1.15                  # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26
+    reference: >-
+      Net VDD_ARM. Fed from VDD_0V9 through R32 0R (SCH@318,24). The Pro/Max sheet prints "DNP" in R32's fields,
+      but there is no other source for VDD_ARM on the sheet; the Ultra-W sheet does the same with R10 0R (no DNP).
+      So in practice CPU_DVDD is tied to the 0.9 V logic rail. pin 74 (CPU_AVS/GPIO1_A2) is net AVS_ARM, but in the
+      reference it goes nowhere else (no AVS regulator).
+    decoupling_reference: ["C15 10uF", "C16 1uF", "C17 100nF"]   # "For ARM", "Close to Power Pin"; src: Luckfox-Pico-Pro-Max.pdf#p1 @229-261,558-572
+    src: "Luckfox-Pico-Pro-Max.pdf#p1"
+    unverified: true                 # because of the DNP text on R32
+  VDD_LOGIC:
+    pins: [10, 51, 54, 55, 82, 103, 116, 67, 71]   # DVDD_1..7, PMU_DVDD0V9 (67), OSC_PLL_DVDD (71)
+    nominal_V: 0.90
+    range_V: [0.81, 0.95]           # DVDD_i and PMU_DVDD0V9; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26
+    abs_max_V: 0.99
+    note: >-
+      DS Table 3-2 does not list OSC_PLL_DVDD separately (Table 3-1 groups it with the 0.9 V supplies).
+      SCH ties DVDD_1..7 + PLL_DVDD0V9 (pin 71) to VDD_0V9, and PMU_DVDD0V9 (pin 67) to VDD_0V9 with C36 100nF.
+    reference_regulator: >-
+      U4 sync buck, VCC5V0_SYS -> VDD_0V9; L2 1.0uH 2016 4.7A 32mOhm; FB divider R33 47K 1% / R37 100K 1%
+      (=> 0.6 V reference -> ~0.88 V); C49 20pF feed-forward; Cin C51 4.7uF; Cout C52 22uF + C53 100nF + C1 4.7uF;
+      EN pulled to VIN by R35 10K (C57 NC). Sheet title "VCC5V0_SYS--->VDD_0V9  Setp 1".
+      Package is a 6-pin device with pins 1 FB, 2 GND, 3 Vin, 4 SW, 5 EN, 6 Vout; NO part number is printed on the sheet.
+    decoupling_reference: ["C22 10uF", "C23 10uF", "C24 1uF", "C25 1uF", "C26 100nF", "C27 100nF", "C28 100nF", "C36 100nF (pin 67)"]  # "For LOGIC/NPU/VEPU"
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1 @222-335,6-64 and @310-382,556-572"
+    regulator_part_number: unknown
+    unverified: true                 # FB reference 0.6 V inferred from the divider ratio vs. labelled rail voltage
+  VCC_DDR:
+    pins: [49, 50, 56]               # DDR_VDDQ_1..3 (DS abs-max table mentions DDR_VDDQ_4, which only exists on the BGA part)
+    nominal_V: 1.35                  # in-package memory is DDR3L
+    range_V: [1.283, 1.45]           # DDR3L VDDQ; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26
+    abs_max_V: 1.94
+    reference_regulator: >-
+      U7 buck (same 6-pin footprint as U4), VCC5V0_SYS -> VCC_DDR; L4 1.0uH 2016 4.7A; FB R13 127K 1% / R17 100K 1% (~1.36 V);
+      C2 20pF FF; Cout C75 10uF + C76 100nF. EN net VCC_DDR_1V8_EN = R14 200K from VCC5V0_SYS + C77 100nF to GND (RC soft delay).
+    decoupling_reference: ["C18 10uF", "C19 10uF", "C20 1uF", "C21 100nF"]   # "For DDR"
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1 @440-556,6-64 and @263-304,558-572"
+    regulator_part_number: unknown
+  VCC_1V8 (analog/IO 1.8 V):
+    pins: [70, 96, 53, 24, 31, 1]
+    members:
+      - {pin: 70, name: "OSC_AVDD1V8/PLL_AVDD1V8", range_V: [1.62, 1.98], reference: "VCC_1V8 via FB3 UPZ1005D121-1R3TF ferrite, C31 100nF + C32 100nF; shared with pin 96", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1 @342-377,147-161"}
+      - {pin: 96, name: "OTP_AVDD1V8/ETH_AVDD1V8/TSADC_AVDD1V8", range_V: [1.62, 1.98], reference: "same net as pin 70 (after FB3)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1"}
+      - {pin: 53, name: "DDR_PLL_AVDD1V8", nominal_V: 1.8, reference: "VCC_1V8 direct; C11 1uF + C12 100nF 'For AVDD18_DDR'", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p27; Luckfox-Pico-Pro-Max.pdf#p1 @385-405,556-570"}
+      - {pin: 24, name: "SARADC_USB_AVDD1V8", range_V: [1.62, 1.98], reference: "net AVDD1V8_USB = VCC_1V8 via R8 0R, C10 100nF. Also supplies the SARADC IO domain (VCCIO2). Sheet note: 'USB must always power supply'", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1 @296-350,524-538"}
+      - {pin: 31, name: "CODEC_AVDD1V8", range_V: [1.62, 1.98], reference: "net VCC1V8_CODEC = VCC_1V8 via FB2 UPZ1005D121-1R3TF (120R@100MHz); C13 10uF + C14 100nF", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p27; Luckfox-Pico-Pro-Max.pdf#p1 @409-457,556-570"}
+      - {pin: 1, name: "MIPI_AVDD1V8/GPIO7_VCC1V8", range_V: [1.62, 1.98], reference: "net MIPI_CSI_AVDD_1V8 = VCC_1V8 via R31 1R, C45 100nF. 1.8 V only; also the VCCIO7 IO domain (MIPI/DVP pins 2-9,117-128)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26-27; Luckfox-Pico-Pro-Max.pdf#p1 @388-427,422-432"}
+    reference_regulator: >-
+      U5 buck (same 6-pin footprint), VCC5V0_SYS -> VCC_1V8; L1 1.0uH 2016 4.7A; FB R34 200K 1% / R38 100K 1% (1.8 V);
+      C50 20pF FF; Cout C55 10uF + C56 100nF. EN = net VCC_DDR_1V8_EN (shared with U7; its own R36 NC/200K, C58 NC/100nF).
+      Optional FB4 (NC/0R) can tie VCC_1V8 to VCC_DDR (C46 4.7uF, C47 100nF, C48 1uF) - left unfitted.
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @335-440,6-64 and @556-622,6-64"
+    regulator_part_number: unknown
+  VCC_3V3:
+    pins: [61, 81, 19, 28, 101, 13, 43, 88, 108]
+    members:
+      - {pin: 61, name: PMU_VCC3V3, range_V: [3.0, 3.465], note: "3.3 V only; PMUIO domain (GPIO0, pins 58-65)", reference: "VCC_3V3, C37 100nF", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1"}
+      - {pin: 81, name: GPIO1_VCC3V3, range_V: [3.0, 3.465], note: "3.3 V only; VCCIO1 domain (pins 72-80)", reference: "VCC_3V3, C39 100nF", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1"}
+      - {pin: 19, name: RTC_AVDD3V3, range_V: [1.6, 3.6], reference: "VCC3V3_RTC via R11 100R, C35 1uF; VCC3V3_RTC = diode-OR (B5819WS D2 from RTC battery header H2, D3 from VCC_3V3; R45 NC/1.1K)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1 @344-357,172-184 and @445-535,500-545"}
+      - {pin: 28, name: USB_AVDD3V3, range_V: [3.0, 3.6], reference: "VCC_3V3 direct, C9 100nF", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1"}
+      - {pin: 101, name: ETH_AVDD3V3, range_V: [2.97, 3.63], reference: "net FEPHY_AVDD3V3 = VCC_3V3 via FB1 (UPZ1005D121-1R3TF / BLM15PD121SN1 printed), C8 100nF", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1 @230-254,526-538"}
+      - {pin: 13, name: GPIO4_VCC, range_V_3v3: [3.0, 3.465], range_V_1v8: [1.62, 1.98], note: "VCCIO4 = SDMMC0 domain (pins 11,12,14-18)", reference: "VCC_3V3, C41 100nF", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1"}
+      - {pin: 43, name: GPIO3_VCC, note: "VCCIO3 = EMMC/FSPI domain (pins 38-42,44-48)", reference: "net VCCIO_FLASH = VCC_3V3, C40 100nF (+C42 10uF/C43 100nF at flash)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1"}
+      - {pin: 88, name: GPIO6_VCC, note: "VCCIO6 domain (pins 83-87,89-95)", reference: "VCC_3V3", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1"}
+      - {pin: 108, name: GPIO5_VCC, note: "VCCIO5 domain (pins 104-107,109-114)", reference: "VCC_3V3", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p26; Luckfox-Pico-Pro-Max.pdf#p1"}
+    reference_regulator: >-
+      U6 buck with bootstrap (pins 1 Vin, 2 SW, 3 GND, 4 BST, 5 EN, 6 FB), VCC5V0_SYS -> VCC_3V3; L3 2.2uH 2520;
+      R39 10R + C59 1uF bootstrap; FB R40 40.2K 1% / R44 13K 1% with "FB1:0.8V" (=> 3.27 V); C62 10pF FF;
+      Cin C60 10uF + C61 100nF; Cout C63 10uF + C64 100nF. EN: R43 200K from net PWR_EN (header pin "3V3_En" via 0R),
+      C65 100nF to GND, R41 "1K/NC" from VIN. NO part number printed.
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @460-622,62-118"
+    regulator_part_number: unknown
+  VCC5V0_SYS (board input):
+    reference: >-
+      USB-C VBUS (Type_C1) -> D1 MBR230LSFT1G Schottky -> VSYS = VCC5V0_SYS; C5 10uF + C6 100nF. CC1/CC2 each 5.1K (R3, R6)
+      to GND (sink/UFP). C4 2.2uF on VBUS.
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @365-450,440-545"
+  ground:
+    pins: [57, 37, "EP"]
+    note: >-
+      EP = VSS. TVSS (57) tied directly to GND in SCH. CODEC_AVSS (37) -> GND through R4 0R, note
+      "Place R1001 close to Pin37" (SCH@314,503).
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22; Luckfox-Pico-Pro-Max.pdf#p1"
+  usb_always_powered: {note: "SCH note next to USB_AVDD pins: 'USB must always power supply' -> supply pins 24 and 28 even if USB is unused", src: "Luckfox-Pico-Pro-Max.pdf#p1 @292,524"}
+  sequencing:
+    datasheet: "DS Rev 2.2 contains no power-up sequence requirement (none found in text)."
+    reference_order: >-
+      Luckfox SCH labels the VDD_0V9 buck "Setp 1" (EN pulled up with 10K, no cap -> starts first); VCC_DDR and VCC_1V8 share
+      enable net VCC_DDR_1V8_EN with 200K/100nF RC delay (Ultra-W labels this block "VCC_DDR--->VCC_1V8 Setp 2");
+      VCC_3V3 EN via 200K/100nF from PWR_EN. Practical order: 0.9 V -> 1.35 V/1.8 V -> 3.3 V.
+    reset: "nPOR (pin 66) pulled up to VCC_3V3 by R12 1K with C38 10nF to GND (RC power-on reset); reset key Key1 via R22 100R."
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @222-556,6-64; Luckfox-Pico-Ultra-W.pdf#p1 @585-745,205-305; Luckfox-Pico-Pro-Max.pdf#p1 @445-535,180-230"
+    unverified: true    # Rockchip's own sequencing rule is in the (non-public here) hardware design guide
+
+# ---------------------------------------------------------------------------------------------------------------
+interfaces:
+  crystal_24MHz:
+    pins: {OSC_XIN: 68, OSC_XOUT: 69}              # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21
+    reference: >-
+      Y1 24 MHz passive crystal, 2016 4-pad (X1=pin1 to OSC_XIN, X2=pin3 to OSC_XOUT via R9 22R series, pads 2/4 GND);
+      R10 1M across XIN/XOUT; load caps C29 18pF and C30 18pF C0G to GND.
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @357-412,127-138"
+  crystal_32k_rtc:
+    pins: {RTC_XIN: 21, RTC_XOUT: 20}               # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21-22
+    reference: "Y2 32.768 kHz passive crystal 2012; C33 18pF, C34 18pF C0G. Optional (RTC)."
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @388-412,161-177"
+  reset:
+    pins: {nPOR: 66}                                # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21
+    reference: "Active-low. R12 1K pull-up to VCC_3V3, C38 10nF to GND; Key1 to GND via R22 100R; ED1 ESD (NC/ESD5451N)."
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @406,224 (R12/C38) and @530-622,400-440 (Key1)"
+  recovery_maskrom:
+    pins: {SARADC_IN0: 23}
+    reference: >-
+      Net RECOVERY on SARADC_IN0 (pin 23): R21 10K pull-up to VCC_1V8, C44 1nF to GND, Key2 ("RECOVERY Key") to GND via
+      R23 100R (ED2 ESD NC). Holding it low at power-up is the BOOT/recovery button.
+    behaviour: >-
+      Rockchip convention: SARADC_IN0 low at boot -> loader/maskrom (USB download via rkdeveloptool/upgrade_tool on USB OTG).
+      Not stated in the datasheet; DS only says BootROM boots from SPI flash, eMMC, SD/MMC and downloads over USB or UART (Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p7).
+      With blank/absent flash the BootROM also falls through to USB download.
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @445-535,365-440; Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p7"
+    unverified: true
+  fspi_spi_nand:
+    pins: {FSPI_CLK: 48, FSPI_CS0: 47, FSPI_D0: 41, FSPI_D1: 42, FSPI_D2: 44, FSPI_D3: 39}   # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22
+    io_domain: "VCCIO3 = pin 43 GPIO3_VCC (VCCIO_FLASH = 3.3 V in reference)"
+    reference: >-
+      U2 Winbond W25N02KVZEIR (2Gb SPI NAND, WSON-8 + EPAD): pin1 /CS=FSPI_CS0N, 2 DO(IO1)=FSPI_D1, 3 /WP(IO2)=FSPI_D2,
+      4 VSS, 5 DI(IO0)=FSPI_D0, 6 CLK=FSPI_CLK, 7 /HOLD(IO3)=FSPI_D3, 8 VCC=VCCIO_FLASH, 9 EPAD=GND.
+      FSPI_CLK has R15 22R series resistor at the SoC. R18 10K pull-up on FSPI_D2, R19 10K pull-up on FSPI_D3 (to VCCIO_FLASH).
+      VCCIO_FLASH decoupling C42 10uF + C43 100nF.
+    note: "Same pins are EMMC_* (eMMC boot, 8-bit uses pins 38-48); Ultra/Ultra-W use eMMC instead of SPI NAND."
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22; Luckfox-Pico-Pro-Max.pdf#p1 @445-535,270-372 and @560-610,155-205"
+  sdmmc0_microsd:
+    pins: {SDMMC0_CLK: 15, SDMMC0_CMD: 16, SDMMC0_D0: 14, SDMMC0_D1: 12, SDMMC0_D2: 18, SDMMC0_D3: 17, SDMMC0_DET: 11}   # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21
+    io_domain: "VCCIO4 = pin 13 GPIO4_VCC (3.3 V in reference)"
+    reference: >-
+      TF1 micro-SD socket powered from VCC3V3_SD. SDMMC_CLK has R16 22R series. SDMMC_DET via R54 100R to socket CD2.
+      Card power switch Q1 SI2301CDS-T1-E3 P-MOSFET from VCC_3V3, gate pulled up by R51 100K, driven by net SDMMC_PWREN
+      through R55 10K; SDMMC_PWREN = pin 59 (GPIO0_A1). R52 10K bleeder + C70 100nF, C71 10uF, C72 100nF on VCC3V3_SD; R50 bypass footprint.
+    conflict: "Pins 12/14 are also UART2_TX_M0/UART2_RX_M0, so the debug console uses UART2_M1 instead."
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21; Luckfox-Pico-Pro-Max.pdf#p1 @445-622,440-505 and @540-622,195-240"
+  usb2_otg:
+    pins: {USB_DP: 27, USB_DM: 26, USB_VBUSDET: 25}   # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22
+    supplies: {USB_AVDD3V3: 28, SARADC_USB_AVDD1V8: 24}
+    id_pin: "None on QFN128 (no USB_ID in DS Table 2-1); host/device role is set in software."
+    external_resistors: "None on the QFN part: there is no USB reference-resistor pin."
+    reference: >-
+      USB-C receptacle (device): DP1/DP2 -> USB_P, DN1/DN2 -> USB_N straight to pins 27/26 (90-ohm diff).
+      VBUS detect: USB_DET_IN = VBUS divided by R2 10K (top) / R5 18K (bottom) (~3.2 V at 5 V) + C7 100nF -> pin 25.
+      CC1/CC2: R3 / R6 5.1K to GND.
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22; Luckfox-Pico-Pro-Max.pdf#p1 @296-330,510-530 and @365-450,440-545"
+  ethernet_fephy:
+    pins: {ETH_PHY_TXP: 100, ETH_PHY_TXN: 99, ETH_PHY_RXP: 98, ETH_PHY_RXN: 97, ETH_EXTR: 102}   # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22
+    supplies: {ETH_AVDD3V3: 101, "OTP_AVDD1V8/ETH_AVDD1V8/TSADC_AVDD1V8": 96}
+    bias_resistor: "ETH_EXTR (pin 102, net FEPHY_REXT) -> R7 6.04K 1% to GND"   # src: Luckfox-Pico-Pro-Max.pdf#p1 @246-257,524-525
+    led_pins: "None dedicated on QFN128 (no ETH LED pin in DS Table 2-1); reference design has no link LEDs."
+    reference: >-
+      10/100 integrated PHY. TX/RX pairs via R46-R49 0R to J2 RJ45 with integrated magnetics (part number not printed):
+      TD+ / TD- / RD+ / RD- on J2 pins 1/2/3/6; transformer centre taps CT (J2 pins 4 and 5) each to GND via 10nF
+      (C66, C67 "103/10V"); Bob-Smith 75R network to J2 pin 8 and C68 (0R/1nF/100V) / 1nF 2kV to chassis.
+      ETH_AVDD3V3 = VCC_3V3 via ferrite FB1 + C8 100nF.
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22; Luckfox-Pico-Pro-Max.pdf#p1 @222-300,505-545 and @530-622,500-592"
+  mipi_csi_rx:
+    pins:   # MIPI_CSI_RX names from DS Table 2-1 (p22); all are 1.8 V VCCIO7 domain
+      D0: {P: 128, N: 127}
+      D1: {P: 124, N: 123}
+      CK0: {P: 126, N: 125}
+      D2: {P: 122, N: 121}
+      D3: {P: 118, N: 117}
+      CK1: {P: 120, N: 119}
+    capability: "Two MIPI D-PHY v1.2, 2 lanes each, 1.5 Gbps/lane; can combine to one 4-lane (Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p12). 4-lane = D0..D3 with CK0 (assumed; unverified)."
+    sensor_side_pins: {MCLK: "pin 2 MIPI_CLK0_OUT (GPIO3_C4) via R30 22R -> MIPI/LVDS_MCLK0", reset: "pin 3 GPIO3_C5 -> MIPI/LVDS_RST", i2c_scl: "pin 5 I2C4_SCL_M2 (GPIO3_C7)", i2c_sda: "pin 7 I2C4_SDA_M2 (GPIO3_D0)", i2c_pullups: "R28/R29 4.7K to VCC_1V8"}
+    reference: >-
+      H1 20-pin FPC: 2 MCLK, 4/5 D0_P/N, 7/8 CLK_P/N, 10/11 D1_P/N, 13 SCL, 14 SDA, 16 RST, 19/20 VCC_3V3, rest GND.
+      Uses 2 lanes (D0, D1) + CK0. D2/D3 pairs routed to labels only.
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p12, Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22; Luckfox-Pico-Pro-Max.pdf#p1 @335-450,350-440 and @530-622,270-365"
+    unverified_4lane_pairing: true
+  uart2_debug_console:
+    pins: {UART2_TX_M1: 79, UART2_RX_M1: 80}         # GPIO1_B2 / GPIO1_B3; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21
+    io_domain: "VCCIO1 (3.3 V only)"
+    reference: "Pins 79/80 -> nets UART2_TX/UART2_RX -> header GP00/GP01 (U3 40-pin). Luckfox Linux console is UART2_M1, 115200 8N1."
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21; Luckfox-Pico-Pro-Max.pdf#p1 @222-395,62-118 and @325-385,190-262"
+    console_baud_unverified: true
+  saradc:
+    pins: {SARADC_IN0: 23, SARADC_IN1: 22}           # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22
+    channels: 2                                      # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p15
+    vref_V: 1.8                                      # input range 0..1.8 V; src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p30
+    resolution_bits: 10                              # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p30
+    supply: "SARADC_USB_AVDD1V8 pin 24 (1.8 V) - also the IO supply of these two pins (VCCIO2, 1.8 V only)"
+    reference: "IN0 = RECOVERY key (see recovery_maskrom). IN1: R57 10K pull-up to VCC_1V8 + C73 1nF, also net CDS+ and header GP27 (IN0 on GP26)."
+    note: "GPI4_C0/GPI4_C1 are input-only GPIOs (GPI)."
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p15, Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22, Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p30; Luckfox-Pico-Pro-Max.pdf#p1 @390-465,62-118"
+  ddr_zq:
+    pins: {DRAM_ZQ: 52}
+    external_resistor: "R1 240R 1% to GND"          # src: Luckfox-Pico-Pro-Max.pdf#p1 @246-257,495-496 (also UW R24 240R 1%)
+    src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22; Luckfox-Pico-Pro-Max.pdf#p1"
+  status_led:
+    reference: "LED1 red via R56 100R from pin 4 GPIO3_C6 (1.8 V VCCIO7 domain). Pin 62 GPIO0_A3 is net LED_GREEN."
+    src: "Luckfox-Pico-Pro-Max.pdf#p1 @530-622,365-400 and @359,201"
+  other_reference_nets:
+    - {pin: 59, net: SDMMC_PWREN, src: "Luckfox-Pico-Pro-Max.pdf#p1 @359,197"}
+    - {pin: 73, net: SPK_CTRL, src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pin: 74, net: AVS_ARM, src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pin: 75, net: IRC_AIN, src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pin: 76, net: IRC_BIN, src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pin: 77, net: LED_PWM_IR, src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pin: 78, net: LED_PWM_WHITE, src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  required_external_resistors_summary:
+    - {pin: 102, name: ETH_EXTR, value: "6.04K 1% to GND", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pin: 52, name: DRAM_ZQ, value: "240R 1% to GND", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pin: 66, name: nPOR, value: "1K pull-up to 3V3 + 10nF to GND", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pin: 23, name: SARADC_IN0, value: "10K pull-up to 1V8 + 1nF (recovery key)", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pins: [68, 69], name: OSC, value: "1M across XIN/XOUT, 22R series on XOUT, 2x18pF", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  datasheet_name_quirks:
+    - {pin: 110, note: "DS prints 'SDMMC_D0/I2S0_LRCK/...'; by analogy with pins 109/111-114 this is SDMMC1_D0_M0 (SCH shows SDIO_D0_M0).", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22; Luckfox-Pico-Pro-Max.pdf#p1", unverified: true}
+    - {pin: 105, note: "DS prints GPIO2_B0 with no pull suffix; SCH shows GPIO2_B0_d.", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22; Luckfox-Pico-Pro-Max.pdf#p1"}
+    - {pins: "117-128 and 22-23", note: "GPI3_* / GPI4_* = input-only GPIO (DS rev 1.9 renamed pins 117-128 from GPIO3_* to GPI3_*)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p2, Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+
+# ---------------------------------------------------------------------------------------------------------------
+reference_bom:   # Luckfox Pico Pro/Max (Luckfox-Pico-Pro-Max.pdf#p1). Regulator ICs U4/U5/U6/U7 carry NO part number on the published sheet.
+  - {ref: U1, part: "RV1106G2 (Pro) / RV1106G3 (Max)", role: SoC, src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: U2, part: W25N02KVZEIR, role: "2Gb SPI NAND boot flash (WSON-8 8x6)", src: "Luckfox-Pico-Pro-Max.pdf#p1 @486,290"}
+  - {ref: U4, part: unknown, role: "buck 5V -> VDD_0V9 (logic/NPU/CPU), 1.0uH", src: "Luckfox-Pico-Pro-Max.pdf#p1", unverified: true}
+  - {ref: U5, part: unknown, role: "buck 5V -> VCC_1V8, 1.0uH", src: "Luckfox-Pico-Pro-Max.pdf#p1", unverified: true}
+  - {ref: U7, part: unknown, role: "buck 5V -> VCC_DDR 1.35V, 1.0uH", src: "Luckfox-Pico-Pro-Max.pdf#p1", unverified: true}
+  - {ref: U6, part: unknown, role: "buck 5V -> VCC_3V3 with BST cap, 2.2uH, FB 0.8V", src: "Luckfox-Pico-Pro-Max.pdf#p1", unverified: true}
+  - {ref: U3, part: "40-pin header (Pico/RP2040-style GP00..GP28, VBUS, VSYS, 3V3_En, 3V3_Out, Vref, RUN=NPOR)", role: "IO header", src: "Luckfox-Pico-Pro-Max.pdf#p1 @222-395,62-118"}
+  - {ref: D1, part: MBR230LSFT1G, role: "VBUS -> VSYS Schottky", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: "D2, D3", part: B5819WS, role: "RTC supply diode-OR", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: Q1, part: SI2301CDS-T1-E3, role: "microSD power switch (P-MOSFET)", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: "FB1, FB2, FB3", part: "UPZ1005D121-1R3TF (FB1 also printed BLM15PD121SN1)", role: "ferrites on ETH_AVDD3V3, CODEC 1V8, OSC/PLL 1V8", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: Y1, part: "24 MHz passive crystal 2016, 18pF loads", role: "SoC clock", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: Y2, part: "32.768 kHz passive crystal 2012", role: "RTC clock", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: Type_C1, part: "USB Type-C receptacle (part number not printed)", role: "5V power + USB2 device", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: J2, part: "RJ45 with integrated magnetics (part number not printed)", role: "10/100 Ethernet", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: TF1, part: "micro-SD socket (part number not printed)", role: "SDMMC0", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: H1, part: "20-pin FPC (pitch and part number not printed)", role: "MIPI CSI camera", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: LED1, part: "Red 0402", role: "status LED on GPIO3_C6", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: "Key1, Key2", part: "tact switches", role: "Reset (nPOR), Recovery (SARADC_IN0)", src: "Luckfox-Pico-Pro-Max.pdf#p1"}
+  - {ref: UW-U1, part: unknown, role: "Ultra-W uses one 3-channel DCDC (VIN1-3/LX1-3/FB1-3/EN1-3, FB 0.6V) for VCC_3V3, VDD_0V9 (max 1.6A), VCC_DDR (max 0.4A), plus a separate 1.8V source", src: "Luckfox-Pico-Ultra-W.pdf#p1 @585-745,205-305", unverified: true}
+
+gaps:
+  - "Regulator part numbers for U4/U5/U6/U7 are not printed on the published Luckfox schematic."
+  - "No Rockchip RV1106 Hardware Design Guide was found publicly; power sequencing and layout rules come only from the Luckfox reference."
+  - "No recommended land pattern in the datasheet."
+  - "R32 (VDD_ARM tie) carries 'DNP' text in SCH; treated as fitted (see power_rails.VDD_CPU)."
+
+pins:  # src: Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21-22 (Table 2-1, RV1106G2 & G3); generated by scripts/gen_pins_yaml.py
+  1: {name: "MIPI_AVDD1V8/GPIO7_VCC1V8", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  2: {name: "VI_CIF_CLKO_M0/MIPI_CLK0_OUT/GPIO3_C4_d", type: io, gpio: "GPIO3_C4", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  3: {name: "VI_CIF_VSYNC_M0/GPIO3_C5_d", type: io, gpio: "GPIO3_C5", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  4: {name: "VI_CIF_D10/PWM7_IR_M2/MIPI_CLK1_OUT/GPIO3_C6_d", type: io, gpio: "GPIO3_C6", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  5: {name: "VI_CIF_D11/UART5_TX_M2/I2C4_SCL_M2/GPIO3_C7_d", type: io, gpio: "GPIO3_C7", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  6: {name: "VI_CIF_D13/UART5_RTS_M2/I2C3_SCL_M2/GPIO3_D1_d", type: io, gpio: "GPIO3_D1", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  7: {name: "VI_CIF_D12/UART5_RX_M2/I2C4_SDA_M2/GPIO3_D0_d", type: io, gpio: "GPIO3_D0", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  8: {name: "VI_CIF_D14/UART5_CTS_M2/I2C3_SDA_M2/GPIO3_D2_d", type: io, gpio: "GPIO3_D2", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  9: {name: "VI_CIF_D15/PWM1_M2/GPIO3_D3_d", type: io, gpio: "GPIO3_D3", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  10: {name: "DVDD_1", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  11: {name: "SDMMC0_DET/GPIO3_A1_u", type: io, gpio: "GPIO3_A1", default_pull: "up", io_domain: "VCCIO4 (pin13 GPIO4_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  12: {name: "SDMMC0_D1/UART2_TX_M0/PWM9_M0/GPIO3_A2_u", type: io, gpio: "GPIO3_A2", default_pull: "up", io_domain: "VCCIO4 (pin13 GPIO4_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  13: {name: "GPIO4_VCC", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  14: {name: "SDMMC0_D0/UART2_RX_M0/PWM8_M0/GPIO3_A3_u", type: io, gpio: "GPIO3_A3", default_pull: "up", io_domain: "VCCIO4 (pin13 GPIO4_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  15: {name: "SDMMC0_CLK/UART5_RTS_M0/I2C0_SCL_M2/JTAG_LPMCU_TCK_M1/PWM10_M0/GPIO3_A4_d", type: io, gpio: "GPIO3_A4", default_pull: "down", io_domain: "VCCIO4 (pin13 GPIO4_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  16: {name: "SDMMC0_CMD/UART5_CTS_M0/I2C0_SDA_M2/JTAG_LPMCU_TMS_M1/PWM11_IR_M0/GPIO3_A5_u", type: io, gpio: "GPIO3_A5", default_pull: "up", io_domain: "VCCIO4 (pin13 GPIO4_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  17: {name: "SDMMC0_D3/UART5_TX_M0/JTAG_CPU_TMS_M0/JTAG_HPMCU_TMS_M1/GPIO3_A6_u", type: io, gpio: "GPIO3_A6", default_pull: "up", io_domain: "VCCIO4 (pin13 GPIO4_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  18: {name: "SDMMC0_D2/UART5_RX_M0/JTAG_CPU_TCK_M0/JTAG_HPMCU_TCK_M1/GPIO3_A7_u", type: io, gpio: "GPIO3_A7", default_pull: "up", io_domain: "VCCIO4 (pin13 GPIO4_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  19: {name: "RTC_AVDD3V3", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  20: {name: "RTC_XOUT", type: clock, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  21: {name: "RTC_XIN", type: clock, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  22: {name: "SARADC_IN1/PWM1_M1/GPI4_C1_z", type: analog, gpio: "GPI4_C1", default_pull: "highZ", io_domain: "VCCIO2 (pin24 SARADC_USB_AVDD1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  23: {name: "SARADC_IN0/GPI4_C0_z", type: analog, gpio: "GPI4_C0", default_pull: "highZ", io_domain: "VCCIO2 (pin24 SARADC_USB_AVDD1V8, 1.8V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  24: {name: "SARADC_USB_AVDD1V8", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  25: {name: "USB_VBUSDET", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  26: {name: "USB_DM", type: analog, diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  27: {name: "USB_DP", type: analog, diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  28: {name: "USB_AVDD3V3", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  29: {name: "CODEC_LINEOUT", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  30: {name: "CODEC_VCM", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  31: {name: "CODEC_AVDD1V8", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  32: {name: "CODEC_MICBIAS", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  33: {name: "CODEC_MIC0N", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  34: {name: "CODEC_MIC0P", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  35: {name: "CODEC_MIC1N", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  36: {name: "CODEC_MIC1P", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  37: {name: "CODEC_AVSS", type: ground, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  38: {name: "EMMC_D5/SPI1_CLK_M0/UART1_RX_M2/I2C2_SCL_M1/GPIO4_A7_u", type: io, gpio: "GPIO4_A7", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  39: {name: "EMMC_D3/FSPI_D3/GPIO4_A6_u", type: io, gpio: "GPIO4_A6", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  40: {name: "EMMC_D4/SPI1_CS0_M0/UART1_TX_M2/I2C2_SDA_M1/GPIO4_A5_u", type: io, gpio: "GPIO4_A5", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  41: {name: "EMMC_D0/FSPI_D0/GPIO4_A4_u", type: io, gpio: "GPIO4_A4", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  42: {name: "EMMC_D1/FSPI_D1/GPIO4_A3_u", type: io, gpio: "GPIO4_A3", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  43: {name: "GPIO3_VCC", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  44: {name: "EMMC_D2/FSPI_D2/GPIO4_A2_u", type: io, gpio: "GPIO4_A2", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  45: {name: "EMMC_D6/SPI1_MOSI_M0/UART0_TX_M2/I2C0_SCL_M1/GPIO4_A1_u", type: io, gpio: "GPIO4_A1", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  46: {name: "EMMC_D7/SPI1_MISO_M0/UART0_RX_M2/I2C0_SDA_M1/GPIO4_A0_u", type: io, gpio: "GPIO4_A0", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  47: {name: "EMMC_CMD/FSPI_CS0/GPIO4_B0_u", type: io, gpio: "GPIO4_B0", default_pull: "up", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  48: {name: "EMMC_CLK/FSPI_CLK/GPIO4_B1_d", type: io, gpio: "GPIO4_B1", default_pull: "down", io_domain: "VCCIO3 (pin43 GPIO3_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  49: {name: "DDR_VDDQ_1", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  50: {name: "DDR_VDDQ_2", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  51: {name: "DVDD_2", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  52: {name: "DRAM_ZQ", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  53: {name: "DDR_PLL_AVDD1V8", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  54: {name: "DVDD_3", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  55: {name: "DVDD_4", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  56: {name: "DDR_VDDQ_3", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  57: {name: "TVSS", type: ground, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  58: {name: "UART0_RX_M0/CLK_32K/CLK_REFOUT/RTC_CLKO/GPIO0_A0_z", type: io, gpio: "GPIO0_A0", default_pull: "highZ", io_domain: "PMUIO (pin61 PMU_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  59: {name: "UART0_TX_M0/PWM2_M0/GPIO0_A1_d", type: io, gpio: "GPIO0_A1", default_pull: "down", io_domain: "PMUIO (pin61 PMU_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  60: {name: "PWM3_IR_M0/GPIO0_A2_d", type: io, gpio: "GPIO0_A2", default_pull: "down", io_domain: "PMUIO (pin61 PMU_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  61: {name: "PMU_VCC3V3", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  62: {name: "PMIC_PWR_CTRL_M1/GPIO0_A3_u", type: io, gpio: "GPIO0_A3", default_pull: "up", io_domain: "PMUIO (pin61 PMU_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  63: {name: "PMIC_PWR_CTRL_M0/PWM1_M0/GPIO0_A4_d", type: io, gpio: "GPIO0_A4", default_pull: "down", io_domain: "PMUIO (pin61 PMU_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  64: {name: "I2C1_SCL_M0/UART1_RTS_M0/PWM5_M0/GPIO0_A5_d", type: io, gpio: "GPIO0_A5", default_pull: "down", io_domain: "PMUIO (pin61 PMU_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  65: {name: "I2C1_SDA_M0/UART1_CTS_M0/PWM6_M0/GPIO0_A6_d", type: io, gpio: "GPIO0_A6", default_pull: "down", io_domain: "PMUIO (pin61 PMU_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  66: {name: "nPOR", type: io, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  67: {name: "PMU_DVDD0V9", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  68: {name: "OSC_XIN", type: clock, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  69: {name: "OSC_XOUT", type: clock, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  70: {name: "OSC_AVDD1V8/PLL_AVDD1V8", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  71: {name: "OSC_PLL_DVDD", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  72: {name: "UART3_TX_M0/I2C2_SCL_M0/PWM7_IR_M0/GPIO1_A0_d", type: io, gpio: "GPIO1_A0", default_pull: "down", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  73: {name: "UART3_RX_M0/I2C2_SDA_M0/PWM4_M0/GPIO1_A1_d", type: io, gpio: "GPIO1_A1", default_pull: "down", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  74: {name: "PWM0_M0/CPU_AVS/VI_CIF_D0_M1/GPIO1_A2_d", type: io, gpio: "GPIO1_A2", default_pull: "down", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  75: {name: "UART1_TX_M0/I2C0_SCL_M0/GPIO1_A3_d", type: io, gpio: "GPIO1_A3", default_pull: "down", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  76: {name: "UART1_RX_M0/I2C0_SDA_M0/GPIO1_A4_d", type: io, gpio: "GPIO1_A4", default_pull: "down", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  77: {name: "UART4_RX_M0/PWM3_IR_M1/GPIO1_B0_d", type: io, gpio: "GPIO1_B0", default_pull: "down", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  78: {name: "UART4_TX_M0/PWM7_IR_M1/SPI1_CS1_M0/VI_CIF_D1_M1/GPIO1_B1_d", type: io, gpio: "GPIO1_B1", default_pull: "down", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  79: {name: "JTAG_CPU_TCK_M1/UART2_TX_M1/JTAG_HPMCU_TCK_M0/JTAG_LPMCU_TCK_M0/GPIO1_B2_d", type: io, gpio: "GPIO1_B2", default_pull: "down", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  80: {name: "JTAG_CPU_TMS_M1/UART2_RX_M1/JTAG_HPMCU_TMS_M0/JTAG_LPMCU_TMS_M0/GPIO1_B3_u", type: io, gpio: "GPIO1_B3", default_pull: "up", io_domain: "VCCIO1 (pin81 GPIO1_VCC3V3, 3.3V only)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  81: {name: "GPIO1_VCC3V3", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  82: {name: "DVDD_5", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  83: {name: "VO_LCDC_D1/VI_CIF_D8_M1/PWM10_M1/UART4_RTS_M1/GPIO1_C6_d", type: io, gpio: "GPIO1_C6", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  84: {name: "VO_LCDC_D0/VI_CIF_D9_M1/PWM11_IR_M1/UART4_CTS_M1/GPIO1_C7_d", type: io, gpio: "GPIO1_C7", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p21"}
+  85: {name: "VO_LCDC_CLK/VI_CIF_CLKO_M1/I2C3_SCL_M1/UART5_TX_M1/PWM11_IR_M2/AUD_DSM_N/GPIO1_D3_d", type: io, gpio: "GPIO1_D3", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  86: {name: "VO_LCDC_VSYNC/VI_CIF_VSYNC_M1/I2C3_SDA_M1/UART5_RX_M1/SPI0_CS1_M0/PWM0_M1/AUD_DSM_P/GPIO1_D2_d", type: io, gpio: "GPIO1_D2", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  87: {name: "VO_LCDC_HSYNC/VI_CIF_HREF_M1/PWM10_M2/UART5_CTS_M1/UART3_RX_M1/GPIO1_D1_d", type: io, gpio: "GPIO1_D1", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  88: {name: "GPIO6_VCC", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  89: {name: "VO_LCDC_DEN/VI_CIF_CLKI_M1/PWM3_IR_M2/UART5_RTS_M1/UART3_TX_M1/GPIO1_D0_d", type: io, gpio: "GPIO1_D0", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  90: {name: "VO_LCDC_D2/VI_CIF_D7_M1/PWM9_M1/UART4_TX_M1/SDMMC1_D2_M1/GPIO1_C5_d", type: io, gpio: "GPIO1_C5", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  91: {name: "VO_LCDC_D3/VI_CIF_D6_M1/PWM8_M1/UART4_RX_M1/SDMMC1_D3_M1/GPIO1_C4_d", type: io, gpio: "GPIO1_C4", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  92: {name: "VO_LCDC_D4/VI_CIF_D5_M1/PWM6_M2/I2C4_SDA_M1/SDMMC1_CMD_M1/SPI0_MISO_M0/GPIO1_C3_d", type: io, gpio: "GPIO1_C3", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  93: {name: "VO_LCDC_D5/VI_CIF_D4_M1/PWM5_M2/I2C4_SCL_M1/SDMMC1_CLK_M1/SPI0_MOSI_M0/GPIO1_C2_d", type: io, gpio: "GPIO1_C2", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  94: {name: "VO_LCDC_D6/VI_CIF_D3_M1/PWM4_M2/SPI0_CLK_M0/SDMMC1_D0_M1/GPIO1_C1_d", type: io, gpio: "GPIO1_C1", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  95: {name: "VO_LCDC_D7/VI_CIF_D2_M1/PWM2_M2/SPI0_CS0_M0/SDMMC1_D1_M1/GPIO1_C0_d", type: io, gpio: "GPIO1_C0", default_pull: "down", io_domain: "VCCIO6 (pin88 GPIO6_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  96: {name: "OTP_AVDD1V8/ETH_AVDD1V8/TSADC_AVDD1V8", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  97: {name: "ETH_PHY_RXN", type: analog, diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  98: {name: "ETH_PHY_RXP", type: analog, diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  99: {name: "ETH_PHY_TXN", type: analog, diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  100: {name: "ETH_PHY_TXP", type: analog, diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  101: {name: "ETH_AVDD3V3", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  102: {name: "ETH_EXTR", type: analog, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  103: {name: "DVDD_6", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  104: {name: "UART0_TX_M1/I2C1_SDA_M1/VO_LCDC_D17/PWM6_M1/GPIO2_B1_d", type: io, gpio: "GPIO2_B1", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  105: {name: "UART0_RX_M1/I2C1_SCL_M1/VO_LCDC_D16/PWM5_M1/GPIO2_B0", type: io, gpio: "GPIO2_B0", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  106: {name: "UART0_CTS_M1/I2S0_SDO1_SDI3/VO_LCDC_D15/PWM4_M1/I2C3_SDA_M0/PRELIGHT_TRIG_OUT/GPIO2_A7_d", type: io, gpio: "GPIO2_A7", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  107: {name: "UART0_RTS_M1/I2S0_SDO2_SDI2/VO_LCDC_D14/PWM2_M1/I2C3_SCL_M0/FLASH_TRIG_OUT/GPIO2_A6_d", type: io, gpio: "GPIO2_A6", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  108: {name: "GPIO5_VCC", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  109: {name: "SDMMC1_D1_M0/I2S0_SCLK/VO_LCDC_D8/UART1_CTS_M1/I2C4_SDA_M0/GPIO2_A0_d", type: io, gpio: "GPIO2_A0", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  110: {name: "SDMMC_D0/I2S0_LRCK/VO_LCDC_D9/UART1_RTS_M1/I2C4_SCL_M0/GPIO2_A1_d", type: io, gpio: "GPIO2_A1", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  111: {name: "SDMMC1_CLK_M0/I2S0_MCLK/VO_LCDC_D10/GPIO2_A2_d", type: io, gpio: "GPIO2_A2", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  112: {name: "SDMMC1_CMD_M0/I2S0_SDO3_SDI1/VO_LCDC_D11/GPIO2_A3_d", type: io, gpio: "GPIO2_A3", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  113: {name: "SDMMC1_D3_M0/I2S0_SDO0/VO_LCDC_D12/UART1_TX_M1/GPIO2_A4_d", type: io, gpio: "GPIO2_A4", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  114: {name: "SDMMC1_D2_M0/I2S0_SDI0/VO_LCDC_D13/UART1_RX_M1/GPIO2_A5_d", type: io, gpio: "GPIO2_A5", default_pull: "down", io_domain: "VCCIO5 (pin108 GPIO5_VCC, 1.8V/3.3V)", src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  115: {name: "CPU_DVDD", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  116: {name: "DVDD_7", type: power_in, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  117: {name: "VI_CIF_D0_M0/MIPI_CSI_RX_D3N/LVDS_RX_D3N/GPI3_B0_d", type: io, gpio: "GPI3_B0", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  118: {name: "VI_CIF_D1_M0/MIPI_CSI_RX_D3P/LVDS_RX_D3P/GPI3_B1_d", type: io, gpio: "GPI3_B1", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  119: {name: "VI_CIF_D2_M0/MIPI_CSI_RX_CK1N/LVDS_RX_CK1N/GPI3_B2_d", type: io, gpio: "GPI3_B2", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  120: {name: "VI_CIF_D3_M0/MIPI_CSI_RX_CK1P/LVDS_RX_CK1P/GPI3_B3_d", type: io, gpio: "GPI3_B3", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  121: {name: "VI_CIF_D4_M0/MIPI_CSI_RX_D2N/LVDS_RX_D2N/GPI3_B4_d", type: io, gpio: "GPI3_B4", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  122: {name: "VI_CIF_D5_M0/MIPI_CSI_RX_D2P/LVDS_RX_D2P/GPI3_B5_d", type: io, gpio: "GPI3_B5", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  123: {name: "VI_CIF_D6_M0/MIPI_CSI_RX_D1N/LVDS_RX_D1N/GPI3_B6_d", type: io, gpio: "GPI3_B6", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  124: {name: "VI_CIF_D7_M0/MIPI_CSI_RX_D1P/LVDS_RX_D1P/GPI3_B7_d", type: io, gpio: "GPI3_B7", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  125: {name: "VI_CIF_D8_M0/MIPI_CSI_RX_CK0N/LVDS_RX_CK0N/GPI3_C0_d", type: io, gpio: "GPI3_C0", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  126: {name: "VI_CIF_D9_M0/MIPI_CSI_RX_CK0P/LVDS_RX_CK0P/GPI3_C1_d", type: io, gpio: "GPI3_C1", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  127: {name: "VI_CIF_CLKI_M0/MIPI_CSI_RX_D0N/LVDS_RX_D0N/GPI3_C2_d", type: io, gpio: "GPI3_C2", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  128: {name: "VI_CIF_HREF_M0/MIPI_CSI_RX_D0P/LVDS_RX_D0P/GPI3_C3_d", type: io, gpio: "GPI3_C3", default_pull: "down", io_domain: "VCCIO7 (pin1 MIPI_AVDD1V8/GPIO7_VCC1V8, 1.8V only)", diff_pair: true, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}
+  "EP": {name: "VSS", type: ground, src: "Rockchip_RV1106_Datasheet_V2.2-20260602.pdf#p22"}

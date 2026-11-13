@@ -1,0 +1,13 @@
+[{"tool":"ir_edit","args":{"ops":[
+   {"op":"constraint","kind":"side","ref":"C*","block":"soc","side":"any","note":"0402/0603 decoupling may go under the SoC on the bottom"},
+   {"op":"constraint","kind":"side","ref":"R*","block":"soc","side":"any"},
+   {"op":"constraint","kind":"side","ref":"FB*","block":"soc","side":"any"},
+   {"op":"constraint","kind":"side","ref":"Y1","side":"any"},
+   {"op":"note","text":"v2: double-sided assembly (SoC decoupling, ZQ/EXTR, crystal network allowed on bottom); routed with llm-pcb hroute + Freerouting completion"}]}},
+ {"tool":"place","args":{"effort":1.0,"seeds":64,"unlock_all":true,"image":false}},
+ {"tool":"route","args":{"engine":"hroute","candidates":8,"profiles":["human","fewvias"],"timeout_s":3000,"finish_with_freerouting":true,"passes":100,"image":false}},
+ {"tool":"zones","args":{"gnd_pour_outer":true}},
+ {"tool":"copper","args":{"action":"restitch","net":"GND","pitch":2.5}},
+ {"tool":"drc"},
+ {"tool":"design_review"},
+ {"tool":"render_view","args":{"kind":"2d"}}]

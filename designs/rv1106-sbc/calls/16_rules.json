@@ -1,0 +1,10 @@
+[{"tool":"ir_edit","args":{"ops":[
+   {"op":"netclass","name":"ETH","track":0.2,"clearance":0.1,"via_d":0.45,"via_drill":0.25,"nets":["ETH_TX*","ETH_RX*"],"diff_width":0.2,"diff_gap":0.15},
+   {"op":"netclass","name":"CSI","track":0.15,"clearance":0.1,"via_d":0.45,"via_drill":0.25,"nets":["CSI_*"],"diff_width":0.15,"diff_gap":0.15},
+   {"op":"note","text":"ETH/CSI clearance 0.1: with 0.35 mm pin pitch a pair class needs track+2*clearance<=0.35 to escape; router necks down at the pins."}]}},
+ {"tool":"route","args":{"passes":100,"timeout_s":900,"candidates":16,"fanout_planes":true,"image":false}},
+ {"tool":"zones","args":{"gnd_pour_outer":true}},
+ {"tool":"copper","args":{"action":"stitch","net":"GND","pitch":2.5}},
+ {"tool":"drc"},
+ {"tool":"design_review"},
+ {"tool":"render_view","args":{"kind":"2d"}}]

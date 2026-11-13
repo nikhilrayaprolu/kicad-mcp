@@ -1,0 +1,5 @@
+[{"tool":"copper","args":{"action":"ripup","nets":["DDR_ZQ","VDD_0V9","ETH_TXP","ETH_TXN","SD_D3","SD_D2","SD_D1","SD_D0","SD_CMD","SD_CLK","SD_DET"]}},
+ {"tool":"copper","args":{"action":"plane_fanout","nets":["GND","VSYS"]}},
+ {"tool":"route","args":{"mode":"complete","passes":150,"timeout_s":900,"image":false}},
+ {"tool":"copper","args":{"action":"restitch","net":"GND","pitch":2.5}},
+ {"tool":"drc"}]

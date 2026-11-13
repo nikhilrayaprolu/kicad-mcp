@@ -1,0 +1,94 @@
+{
+    "$schema": "https://schemas.kicad.org/erc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-13T01:03:36",
+    "ignored_checks": [
+        {
+            "description": "Global label only appears once in the schematic",
+            "key": "single_global_label"
+        },
+        {
+            "description": "Four connection points are joined together",
+            "key": "four_way_junction"
+        },
+        {
+            "description": "SPICE model issue",
+            "key": "simulation_model_issue"
+        },
+        {
+            "description": "Library symbol issue",
+            "key": "lib_symbol_issues"
+        },
+        {
+            "description": "Symbol doesn't match copy in library",
+            "key": "lib_symbol_mismatch"
+        },
+        {
+            "description": "Footprint link issue",
+            "key": "footprint_link_issues"
+        },
+        {
+            "description": "Assigned footprint doesn't match footprint filters",
+            "key": "footprint_filter"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.8",
+    "sheets": [
+        {
+            "path": "/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138",
+            "violations": []
+        },
+        {
+            "path": "/camera/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/cfc3de9f-3439-5f8f-a920-cea34d74d82f",
+            "violations": []
+        },
+        {
+            "path": "/eth/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/093b6b0b-2bca-523c-a838-fce11033d8ee",
+            "violations": []
+        },
+        {
+            "path": "/flash/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/95053538-d5e6-579d-b8bb-0f01e0a7fc8f",
+            "violations": []
+        },
+        {
+            "path": "/io/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/95ce960d-8f16-5836-8234-133dfc325b96",
+            "violations": []
+        },
+        {
+            "path": "/power/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/3c385f7b-2de3-533a-aa38-70f06d19281f",
+            "violations": []
+        },
+        {
+            "path": "/sd/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/a93771f8-c11c-50c0-b34b-3687c6c34dbf",
+            "violations": []
+        },
+        {
+            "path": "/soc/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/4d01ea2e-8782-5894-829e-5c2601e2789a",
+            "violations": []
+        },
+        {
+            "path": "/ui/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/2a356546-afde-54a3-b762-c92c489e05fb",
+            "violations": []
+        },
+        {
+            "path": "/usb/",
+            "uuid_path": "/4437ca3d-76b9-5959-a120-c77d748e3138/6954d3ae-b527-5827-83bd-3f84897b6782",
+            "violations": []
+        }
+    ],
+    "source": "rv1106_sbc.kicad_sch"
+}

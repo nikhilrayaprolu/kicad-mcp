@@ -1,0 +1,2246 @@
+{
+    "$schema": "https://schemas.kicad.org/drc.v1.json",
+    "coordinate_units": "mm",
+    "date": "2026-11-13T01:05:41",
+    "ignored_checks": [
+        {
+            "description": "Footprint has no courtyard defined",
+            "key": "missing_courtyard"
+        },
+        {
+            "description": "Track endpoint not centered on via",
+            "key": "track_not_centered_on_via"
+        },
+        {
+            "description": "Tuning profile track geometries",
+            "key": "tuning_profile_track_geometries"
+        },
+        {
+            "description": "Footprint doesn't match symbol's footprint filters",
+            "key": "footprint_filters_mismatch"
+        },
+        {
+            "description": "Non-Mirrored text on back layer",
+            "key": "nonmirrored_text_on_back_layer"
+        },
+        {
+            "description": "Footprint component type doesn't match footprint pads",
+            "key": "footprint_type_mismatch"
+        },
+        {
+            "description": "Footprint not found in libraries",
+            "key": "lib_footprint_issues"
+        },
+        {
+            "description": "Footprint doesn't match copy in library",
+            "key": "lib_footprint_mismatch"
+        }
+    ],
+    "included_severities": [
+        "error",
+        "warning",
+        "exclusion"
+    ],
+    "kicad_version": "10.0.8",
+    "schematic_parity": [],
+    "source": "rv1106_sbc.kicad_pcb",
+    "unconnected_items": [],
+    "violations": [
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of U3",
+                    "pos": {
+                        "x": 16.9,
+                        "y": 29.95
+                    },
+                    "uuid": "8dc2a78f-8b3c-42e7-866e-7bcc84cb9178"
+                },
+                {
+                    "description": "Segment of C11 on F.Silkscreen",
+                    "pos": {
+                        "x": 17.607836,
+                        "y": 30.51
+                    },
+                    "uuid": "95492c25-10e7-407c-be16-7ed558846790"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of U3",
+                    "pos": {
+                        "x": 16.9,
+                        "y": 29.95
+                    },
+                    "uuid": "8dc2a78f-8b3c-42e7-866e-7bcc84cb9178"
+                },
+                {
+                    "description": "Segment of C11 on F.Silkscreen",
+                    "pos": {
+                        "x": 17.607836,
+                        "y": 29.79
+                    },
+                    "uuid": "f15d4a9f-79fa-4daa-9ef4-cfd3bdaacf03"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of L2 on F.Silkscreen",
+                    "pos": {
+                        "x": 19.84,
+                        "y": 25.34
+                    },
+                    "uuid": "abb06122-bea8-477b-a38a-3f0f8d01f124"
+                },
+                {
+                    "description": "Reference field of C9",
+                    "pos": {
+                        "x": 21.2,
+                        "y": 25.63
+                    },
+                    "uuid": "c9e2c1a0-3d89-4214-8f2d-7adaae0d9b6d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of C9",
+                    "pos": {
+                        "x": 21.2,
+                        "y": 25.63
+                    },
+                    "uuid": "c9e2c1a0-3d89-4214-8f2d-7adaae0d9b6d"
+                },
+                {
+                    "description": "Reference field of L2",
+                    "pos": {
+                        "x": 21.2,
+                        "y": 24.65
+                    },
+                    "uuid": "e813a6aa-029f-41ad-bf56-513a235ffbba"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of J3",
+                    "pos": {
+                        "x": 13.925,
+                        "y": 31.195
+                    },
+                    "uuid": "56ed3658-0efc-49a3-9c7b-35b775a1bda6"
+                },
+                {
+                    "description": "Segment of R32 on F.Silkscreen",
+                    "pos": {
+                        "x": 13.68,
+                        "y": 30.396359
+                    },
+                    "uuid": "66d66920-6ff5-4289-808d-99c2701f7561"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of R11 on F.Silkscreen",
+                    "pos": {
+                        "x": 8.73,
+                        "y": 30.703641
+                    },
+                    "uuid": "0ce5ff39-c5ef-4f9b-be60-a8d76da735d3"
+                },
+                {
+                    "description": "Reference field of U5",
+                    "pos": {
+                        "x": 9.05,
+                        "y": 29.9
+                    },
+                    "uuid": "f227ecef-d562-4768-b1e7-a12f38d1bc97"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of U4",
+                    "pos": {
+                        "x": 22.05,
+                        "y": 7.0
+                    },
+                    "uuid": "0ada75f3-f062-4b55-bdd3-b799275e2975"
+                },
+                {
+                    "description": "Segment of C16 on F.Silkscreen",
+                    "pos": {
+                        "x": 22.807836000000002,
+                        "y": 7.46
+                    },
+                    "uuid": "6a1a0c8f-4bd1-4809-9551-8191e69c7a26"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of D1 on F.Silkscreen",
+                    "pos": {
+                        "x": 6.39,
+                        "y": 4.85
+                    },
+                    "uuid": "bbe63534-f363-47b1-b0c3-1229903f6dfb"
+                },
+                {
+                    "description": "Reference field of C14",
+                    "pos": {
+                        "x": 10.72,
+                        "y": 3.95
+                    },
+                    "uuid": "d017e447-016e-4012-a251-2289a28947ab"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of U1",
+                    "pos": {
+                        "x": 9.55,
+                        "y": 13.05
+                    },
+                    "uuid": "8a434e14-3ea4-4dd5-b2a3-c0006215a530"
+                },
+                {
+                    "description": "Reference field of J1",
+                    "pos": {
+                        "x": 10.195,
+                        "y": 13.0
+                    },
+                    "uuid": "a144ce76-cc23-44fb-8108-bf18e64a4c3d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of J1",
+                    "pos": {
+                        "x": 10.195,
+                        "y": 13.0
+                    },
+                    "uuid": "a144ce76-cc23-44fb-8108-bf18e64a4c3d"
+                },
+                {
+                    "description": "Segment of U1 on F.Silkscreen",
+                    "pos": {
+                        "x": 10.39,
+                        "y": 13.96
+                    },
+                    "uuid": "eba0fa4d-684c-478f-a43d-9fcdf5e0a851"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C31 on F.Silkscreen",
+                    "pos": {
+                        "x": 29.507836,
+                        "y": 16.26
+                    },
+                    "uuid": "0aee42af-5687-4471-8312-bcccb6398d03"
+                },
+                {
+                    "description": "Reference field of U10",
+                    "pos": {
+                        "x": 30.75,
+                        "y": 15.8
+                    },
+                    "uuid": "f7b81288-2d38-41fd-8a6b-e434ed95439f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Segment of C31 on F.Silkscreen",
+                    "pos": {
+                        "x": 29.507836,
+                        "y": 15.54
+                    },
+                    "uuid": "f6235eb5-da1e-4787-85ec-eb5c2d5936b5"
+                },
+                {
+                    "description": "Reference field of U10",
+                    "pos": {
+                        "x": 30.75,
+                        "y": 15.8
+                    },
+                    "uuid": "f7b81288-2d38-41fd-8a6b-e434ed95439f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of J4",
+                    "pos": {
+                        "x": 41.84,
+                        "y": 22.56
+                    },
+                    "uuid": "52ee1736-ce5d-46c6-a5b2-1e50bd721285"
+                },
+                {
+                    "description": "Segment of C64 on F.Silkscreen",
+                    "pos": {
+                        "x": 41.76,
+                        "y": 22.807836000000002
+                    },
+                    "uuid": "74e64b3f-34ce-4be2-894a-ee720765f721"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clearance",
+            "items": [
+                {
+                    "description": "Reference field of SW2",
+                    "pos": {
+                        "x": 55.7,
+                        "y": 36.95
+                    },
+                    "uuid": "0fc88032-8838-49cb-b728-e0b2251840d2"
+                },
+                {
+                    "description": "Segment of C57 on F.Silkscreen",
+                    "pos": {
+                        "x": 53.557836,
+                        "y": 34.96
+                    },
+                    "uuid": "81686287-b23e-45a4-899f-f7868cebe3f3"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_overlap"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of C18",
+                    "pos": {
+                        "x": 15.18,
+                        "y": 23.35
+                    },
+                    "uuid": "d5147f51-858f-408e-913b-9a18fea7d801"
+                },
+                {
+                    "description": "Pad 1 [VSYS] of C8 on F.Cu",
+                    "pos": {
+                        "x": 15.775,
+                        "y": 24.7
+                    },
+                    "uuid": "62961242-2c3c-5230-b231-47d84c1eef3e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U3",
+                    "pos": {
+                        "x": 16.9,
+                        "y": 29.95
+                    },
+                    "uuid": "8dc2a78f-8b3c-42e7-866e-7bcc84cb9178"
+                },
+                {
+                    "description": "Pad 2 [VCC_DDR_FB] of C11 on F.Cu",
+                    "pos": {
+                        "x": 17.02,
+                        "y": 30.15
+                    },
+                    "uuid": "53a3eddb-6ff3-5d0c-beb1-3ed05450560c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of L1",
+                    "pos": {
+                        "x": 18.6,
+                        "y": 18.7
+                    },
+                    "uuid": "0d73521d-29b4-4909-90dc-1f7143318a8d"
+                },
+                {
+                    "description": "Pad 2 [GND] of C6 on F.Cu",
+                    "pos": {
+                        "x": 18.8,
+                        "y": 19.17
+                    },
+                    "uuid": "121319bb-aabc-5e1f-acef-a04170d36128"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of L4",
+                    "pos": {
+                        "x": 8.4,
+                        "y": 23.55
+                    },
+                    "uuid": "9a5fa969-1785-4dd2-9aab-b1718559e399"
+                },
+                {
+                    "description": "Pad 2 [GND] of C17 on F.Cu",
+                    "pos": {
+                        "x": 7.9,
+                        "y": 23.125
+                    },
+                    "uuid": "a6677d1d-641e-52fb-a8dd-942becad4f1a"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of L4",
+                    "pos": {
+                        "x": 8.4,
+                        "y": 23.55
+                    },
+                    "uuid": "9a5fa969-1785-4dd2-9aab-b1718559e399"
+                },
+                {
+                    "description": "Pad 1 [VSYS] of C17 on F.Cu",
+                    "pos": {
+                        "x": 7.9,
+                        "y": 24.675
+                    },
+                    "uuid": "35114ca8-44c4-5f82-8a58-5172fb1dd5ce"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of C9",
+                    "pos": {
+                        "x": 21.2,
+                        "y": 25.63
+                    },
+                    "uuid": "c9e2c1a0-3d89-4214-8f2d-7adaae0d9b6d"
+                },
+                {
+                    "description": "Pad 1 [VCC_DDR_SW] of L2 on F.Cu",
+                    "pos": {
+                        "x": 20.3,
+                        "y": 26.85
+                    },
+                    "uuid": "8938d2c9-783c-56f6-a496-ac23ef9236de"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of C9",
+                    "pos": {
+                        "x": 21.2,
+                        "y": 25.63
+                    },
+                    "uuid": "c9e2c1a0-3d89-4214-8f2d-7adaae0d9b6d"
+                },
+                {
+                    "description": "Pad 2 [VCC_DDR] of L2 on F.Cu",
+                    "pos": {
+                        "x": 22.1,
+                        "y": 26.85
+                    },
+                    "uuid": "ffc4ab76-a0d6-582e-94de-4fbd73d67a88"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U3",
+                    "pos": {
+                        "x": 16.9,
+                        "y": 29.95
+                    },
+                    "uuid": "8dc2a78f-8b3c-42e7-866e-7bcc84cb9178"
+                },
+                {
+                    "description": "Pad 1 [VCC_DDR] of C11 on F.Cu",
+                    "pos": {
+                        "x": 17.98,
+                        "y": 30.15
+                    },
+                    "uuid": "c9e3ad23-b86d-5416-9628-ee5fc25093be"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of L2",
+                    "pos": {
+                        "x": 21.2,
+                        "y": 24.65
+                    },
+                    "uuid": "e813a6aa-029f-41ad-bf56-513a235ffbba"
+                },
+                {
+                    "description": "Pad 2 [GND] of C9 on F.Cu",
+                    "pos": {
+                        "x": 20.25,
+                        "y": 23.95
+                    },
+                    "uuid": "d2cf78ca-87ad-58ec-8b73-75e8cf587694"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of L2",
+                    "pos": {
+                        "x": 21.2,
+                        "y": 24.65
+                    },
+                    "uuid": "e813a6aa-029f-41ad-bf56-513a235ffbba"
+                },
+                {
+                    "description": "Pad 1 [VCC_DDR] of C9 on F.Cu",
+                    "pos": {
+                        "x": 22.15,
+                        "y": 23.95
+                    },
+                    "uuid": "bd9e78e8-61a9-5d3f-a113-5e600bb86819"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U5",
+                    "pos": {
+                        "x": 9.05,
+                        "y": 29.9
+                    },
+                    "uuid": "f227ecef-d562-4768-b1e7-a12f38d1bc97"
+                },
+                {
+                    "description": "Pad 2 [GND] of C62 on F.Cu",
+                    "pos": {
+                        "x": 10.125,
+                        "y": 30.7
+                    },
+                    "uuid": "9c111205-1b3a-5840-8dec-84b37ed7ef69"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U5",
+                    "pos": {
+                        "x": 9.05,
+                        "y": 29.9
+                    },
+                    "uuid": "f227ecef-d562-4768-b1e7-a12f38d1bc97"
+                },
+                {
+                    "description": "Pad 2 [VCC_3V3_FB] of R11 on F.Cu",
+                    "pos": {
+                        "x": 8.35,
+                        "y": 30.04
+                    },
+                    "uuid": "b75e1463-4f63-5e2e-8ad4-92900570e3bc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U4",
+                    "pos": {
+                        "x": 22.05,
+                        "y": 7.0
+                    },
+                    "uuid": "0ada75f3-f062-4b55-bdd3-b799275e2975"
+                },
+                {
+                    "description": "Pad 2 [VCC_1V8_FB] of C16 on F.Cu",
+                    "pos": {
+                        "x": 22.22,
+                        "y": 7.1
+                    },
+                    "uuid": "872df276-8602-5fac-8307-c5141e627940"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1",
+                    "pos": {
+                        "x": 9.55,
+                        "y": 13.05
+                    },
+                    "uuid": "8a434e14-3ea4-4dd5-b2a3-c0006215a530"
+                },
+                {
+                    "description": "Pad B6 [USB_DP] of J1 on F.Cu",
+                    "pos": {
+                        "x": 8.595,
+                        "y": 13.75
+                    },
+                    "uuid": "7a9a97b6-5958-52e5-9d3f-77399aa0783d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1",
+                    "pos": {
+                        "x": 9.55,
+                        "y": 13.05
+                    },
+                    "uuid": "8a434e14-3ea4-4dd5-b2a3-c0006215a530"
+                },
+                {
+                    "description": "Pad A7 [USB_DM] of J1 on F.Cu",
+                    "pos": {
+                        "x": 8.595,
+                        "y": 13.25
+                    },
+                    "uuid": "5d68a80a-6438-517e-a969-9a7c663114e0"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U1",
+                    "pos": {
+                        "x": 9.55,
+                        "y": 13.05
+                    },
+                    "uuid": "8a434e14-3ea4-4dd5-b2a3-c0006215a530"
+                },
+                {
+                    "description": "Pad A6 [USB_DP] of J1 on F.Cu",
+                    "pos": {
+                        "x": 8.595,
+                        "y": 12.75
+                    },
+                    "uuid": "d18e8b13-8375-5c62-a620-7eff453439bc"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of L3",
+                    "pos": {
+                        "x": 15.7,
+                        "y": 6.15
+                    },
+                    "uuid": "17f74aac-8c25-4d27-9a71-2f35aa1c92c5"
+                },
+                {
+                    "description": "Pad 2 [GND] of C15 on F.Cu",
+                    "pos": {
+                        "x": 15.187,
+                        "y": 6.3241
+                    },
+                    "uuid": "6be17a89-acfd-57b5-ba15-895ff73a70c6"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of L3",
+                    "pos": {
+                        "x": 15.7,
+                        "y": 6.15
+                    },
+                    "uuid": "17f74aac-8c25-4d27-9a71-2f35aa1c92c5"
+                },
+                {
+                    "description": "Pad 2 [GND] of C13 on F.Cu",
+                    "pos": {
+                        "x": 16.8,
+                        "y": 6.575
+                    },
+                    "uuid": "93d2d63d-74f6-5f47-a8a8-4b8a56e924b1"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U10 on F.Silkscreen",
+                    "pos": {
+                        "x": 36.9,
+                        "y": 17.25
+                    },
+                    "uuid": "869d858c-4e47-4007-aaf2-25be539665d1"
+                },
+                {
+                    "description": "Pad 97 [ETH_RXN] of U10 on F.Cu",
+                    "pos": {
+                        "x": 36.175,
+                        "y": 17.4
+                    },
+                    "uuid": "89fae92a-57db-55c2-9e90-622b10afcde8"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U10 on F.Silkscreen",
+                    "pos": {
+                        "x": 36.9,
+                        "y": 17.25
+                    },
+                    "uuid": "464720ce-61aa-4de0-b1da-1af572e1d815"
+                },
+                {
+                    "description": "Pad 96 [VCC_1V8_PLL] of U10 on F.Cu",
+                    "pos": {
+                        "x": 36.75,
+                        "y": 17.975
+                    },
+                    "uuid": "ecf5f833-3bd9-5e0c-8611-290f75445516"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U10 on F.Silkscreen",
+                    "pos": {
+                        "x": 36.9,
+                        "y": 29.55
+                    },
+                    "uuid": "a32506d8-4374-4013-91a4-bff52fc64d01"
+                },
+                {
+                    "description": "Pad 64 [unconnected-(U10-I2C1_SCL_M0/GPIO0_A5-Pad64)] of U10 on F.Cu",
+                    "pos": {
+                        "x": 36.175,
+                        "y": 29.4
+                    },
+                    "uuid": "ca5661c0-aff0-535c-aa24-021d21aa8f25"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U10 on F.Silkscreen",
+                    "pos": {
+                        "x": 36.9,
+                        "y": 29.55
+                    },
+                    "uuid": "3d5e3a1d-49cb-40d9-bb64-48efb025089a"
+                },
+                {
+                    "description": "Pad 65 [unconnected-(U10-I2C1_SDA_M0/GPIO0_A6-Pad65)] of U10 on F.Cu",
+                    "pos": {
+                        "x": 36.75,
+                        "y": 28.825
+                    },
+                    "uuid": "18f599f0-a0a1-5a44-878e-7180e3596122"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of J4",
+                    "pos": {
+                        "x": 41.84,
+                        "y": 22.56
+                    },
+                    "uuid": "52ee1736-ce5d-46c6-a5b2-1e50bd721285"
+                },
+                {
+                    "description": "Pad 1 [ETH_TCT] of C64 on F.Cu",
+                    "pos": {
+                        "x": 41.4,
+                        "y": 23.18
+                    },
+                    "uuid": "f6d30051-99fc-5b08-815e-7b039e7344b3"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of J4",
+                    "pos": {
+                        "x": 41.84,
+                        "y": 22.56
+                    },
+                    "uuid": "52ee1736-ce5d-46c6-a5b2-1e50bd721285"
+                },
+                {
+                    "description": "Pad 2 [GND] of C64 on F.Cu",
+                    "pos": {
+                        "x": 41.4,
+                        "y": 22.22
+                    },
+                    "uuid": "0753f939-5067-560c-85cf-57c9beeb9e3d"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of SW2",
+                    "pos": {
+                        "x": 55.7,
+                        "y": 36.95
+                    },
+                    "uuid": "0fc88032-8838-49cb-b728-e0b2251840d2"
+                },
+                {
+                    "description": "Pad 2 [GND] of C57 on F.Cu",
+                    "pos": {
+                        "x": 52.97,
+                        "y": 34.6
+                    },
+                    "uuid": "1425dc56-a2ed-5108-a097-27181b8f3538"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of SW2",
+                    "pos": {
+                        "x": 55.7,
+                        "y": 36.95
+                    },
+                    "uuid": "0fc88032-8838-49cb-b728-e0b2251840d2"
+                },
+                {
+                    "description": "Pad 1 [NPOR_BTN] of SW1 on F.Cu",
+                    "pos": {
+                        "x": 54.95,
+                        "y": 36.425
+                    },
+                    "uuid": "24ac971e-8022-5bc3-a17a-628a8aefc2af"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of U10",
+                    "pos": {
+                        "x": 30.75,
+                        "y": 15.8
+                    },
+                    "uuid": "f7b81288-2d38-41fd-8a6b-e434ed95439f"
+                },
+                {
+                    "description": "Pad 1 [VDD_0V9] of C31 on F.Cu",
+                    "pos": {
+                        "x": 29.88,
+                        "y": 15.9
+                    },
+                    "uuid": "38e9269d-04a0-5754-8235-bb7746bd2fd5"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U10 on F.Silkscreen",
+                    "pos": {
+                        "x": 24.6,
+                        "y": 17.25
+                    },
+                    "uuid": "36b497bb-ed71-49dc-b8e4-bcefabfa0bd0"
+                },
+                {
+                    "description": "Pad 128 [CSI_D0_P] of U10 on F.Cu",
+                    "pos": {
+                        "x": 25.325,
+                        "y": 17.4
+                    },
+                    "uuid": "c58e787d-7c09-5d08-9707-534ea2dfced7"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U10 on F.Silkscreen",
+                    "pos": {
+                        "x": 24.6,
+                        "y": 17.25
+                    },
+                    "uuid": "3ec7a861-93ad-46b4-a9eb-0ab630817d5b"
+                },
+                {
+                    "description": "Pad 1 [VCC_1V8_MIPI] of U10 on F.Cu",
+                    "pos": {
+                        "x": 24.75,
+                        "y": 17.975
+                    },
+                    "uuid": "cbab588a-b7b2-5d4a-8f7d-8b5a3a457217"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U10 on F.Silkscreen",
+                    "pos": {
+                        "x": 24.6,
+                        "y": 29.55
+                    },
+                    "uuid": "d7350eef-87a5-47e4-a1af-533c8d84d90d"
+                },
+                {
+                    "description": "Pad 33 [unconnected-(U10-CODEC_MIC0N-Pad33)] of U10 on F.Cu",
+                    "pos": {
+                        "x": 25.325,
+                        "y": 29.4
+                    },
+                    "uuid": "94e61e34-58dd-517d-b241-7cb27425bd84"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Segment of U10 on F.Silkscreen",
+                    "pos": {
+                        "x": 24.6,
+                        "y": 29.55
+                    },
+                    "uuid": "2ee63820-d47d-45cd-b77b-c54741fcec50"
+                },
+                {
+                    "description": "Pad 32 [unconnected-(U10-CODEC_MICBIAS-Pad32)] of U10 on F.Cu",
+                    "pos": {
+                        "x": 24.75,
+                        "y": 28.825
+                    },
+                    "uuid": "15a18c20-d54b-553e-acc8-ddcae414cfb1"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of J1",
+                    "pos": {
+                        "x": 10.195,
+                        "y": 13.0
+                    },
+                    "uuid": "a144ce76-cc23-44fb-8108-bf18e64a4c3d"
+                },
+                {
+                    "description": "Pad 1 [USB_DP] of U1 on F.Cu",
+                    "pos": {
+                        "x": 11.0,
+                        "y": 14.1875
+                    },
+                    "uuid": "3a80c2a7-70d5-5eb5-8f8a-886f5234e676"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of J1",
+                    "pos": {
+                        "x": 10.195,
+                        "y": 13.0
+                    },
+                    "uuid": "a144ce76-cc23-44fb-8108-bf18e64a4c3d"
+                },
+                {
+                    "description": "Pad 6 [USB_DP] of U1 on F.Cu",
+                    "pos": {
+                        "x": 11.0,
+                        "y": 11.9125
+                    },
+                    "uuid": "80365521-d061-538c-a190-148641c7d5bd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of J3",
+                    "pos": {
+                        "x": 13.925,
+                        "y": 31.195
+                    },
+                    "uuid": "56ed3658-0efc-49a3-9c7b-35b775a1bda6"
+                },
+                {
+                    "description": "Pad 2 [SD_CLK] of R32 on F.Cu",
+                    "pos": {
+                        "x": 13.3,
+                        "y": 31.06
+                    },
+                    "uuid": "4dd16b05-c936-5f17-9792-3973ce06b7dd"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of J7",
+                    "pos": {
+                        "x": 27.62,
+                        "y": 46.56
+                    },
+                    "uuid": "be6fe19e-0658-4bfa-addc-34344a4e9c43"
+                },
+                {
+                    "description": "Pad 2 [VSYS_HDR] of F1 on F.Cu",
+                    "pos": {
+                        "x": 26.95,
+                        "y": 45.3
+                    },
+                    "uuid": "11d97211-dd4e-5850-b105-0e40eddbc84e"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "Reference field of L1",
+                    "pos": {
+                        "x": 18.6,
+                        "y": 18.7
+                    },
+                    "uuid": "0d73521d-29b4-4909-90dc-1f7143318a8d"
+                },
+                {
+                    "description": "Pad 1 [VSYS] of C4 on F.Cu",
+                    "pos": {
+                        "x": 19.325,
+                        "y": 17.6
+                    },
+                    "uuid": "b2afe542-b63a-5cd5-9792-1e2f9a32c708"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB text 'LP-1106 RV1106 SBC rev A' on B.Silkscreen",
+                    "pos": {
+                        "x": 32.5,
+                        "y": 48.6
+                    },
+                    "uuid": "a3f8f6de-d739-57d5-b511-9665f43c5a78"
+                },
+                {
+                    "description": "PTH pad 9 [GND] of J7",
+                    "pos": {
+                        "x": 40.16,
+                        "y": 47.83
+                    },
+                    "uuid": "12803c49-98f1-5a02-9801-9975c9fbd28b"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB text 'LP-1106 RV1106 SBC rev A' on B.Silkscreen",
+                    "pos": {
+                        "x": 32.5,
+                        "y": 48.6
+                    },
+                    "uuid": "a3f8f6de-d739-57d5-b511-9665f43c5a78"
+                },
+                {
+                    "description": "PTH pad 7 [GP_UART4_RX] of J7",
+                    "pos": {
+                        "x": 37.62,
+                        "y": 47.83
+                    },
+                    "uuid": "8f2d5f20-89f5-5835-963a-efef4a3b9c96"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB text 'LP-1106 RV1106 SBC rev A' on B.Silkscreen",
+                    "pos": {
+                        "x": 32.5,
+                        "y": 48.6
+                    },
+                    "uuid": "a3f8f6de-d739-57d5-b511-9665f43c5a78"
+                },
+                {
+                    "description": "PTH pad 5 [GP_I2C2_SCL] of J7",
+                    "pos": {
+                        "x": 35.08,
+                        "y": 47.83
+                    },
+                    "uuid": "859eb7bb-a055-568a-8208-651c2277cb35"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB text 'LP-1106 RV1106 SBC rev A' on B.Silkscreen",
+                    "pos": {
+                        "x": 32.5,
+                        "y": 48.6
+                    },
+                    "uuid": "a3f8f6de-d739-57d5-b511-9665f43c5a78"
+                },
+                {
+                    "description": "PTH pad 3 [GP_I2C2_SDA] of J7",
+                    "pos": {
+                        "x": 32.54,
+                        "y": 47.83
+                    },
+                    "uuid": "d2ff6c88-a9b6-5942-9312-39fc1eaa980f"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by solder mask",
+            "items": [
+                {
+                    "description": "PCB text 'LP-1106 RV1106 SBC rev A' on B.Silkscreen",
+                    "pos": {
+                        "x": 32.5,
+                        "y": 48.6
+                    },
+                    "uuid": "a3f8f6de-d739-57d5-b511-9665f43c5a78"
+                },
+                {
+                    "description": "PTH pad 1 [VCC_3V3] of J7",
+                    "pos": {
+                        "x": 30.0,
+                        "y": 47.83
+                    },
+                    "uuid": "40b86fc1-f231-576c-bf6a-1782fa24eea2"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_over_copper"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 2.0,
+                        "y": 0.0
+                    },
+                    "uuid": "58a9ca06-677c-5cdc-b8ab-396559bd843d"
+                },
+                {
+                    "description": "Reference field of H1",
+                    "pos": {
+                        "x": 3.0,
+                        "y": -0.15
+                    },
+                    "uuid": "c2ca1c5c-a241-4856-b771-01ea5ae60c0c"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Silkscreen clipped by board edge",
+            "items": [
+                {
+                    "description": "Segment on Edge.Cuts",
+                    "pos": {
+                        "x": 2.0,
+                        "y": 0.0
+                    },
+                    "uuid": "58a9ca06-677c-5cdc-b8ab-396559bd843d"
+                },
+                {
+                    "description": "Reference field of H2",
+                    "pos": {
+                        "x": 62.0,
+                        "y": -0.15
+                    },
+                    "uuid": "f190a630-f9d8-4b3f-9599-b868470451ce"
+                }
+            ],
+            "severity": "warning",
+            "type": "silk_edge_clearance"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on B.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "263a4468-3636-57db-85e3-02f3a0ba9150"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on B.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "263a4468-3636-57db-85e3-02f3a0ba9150"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on B.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "263a4468-3636-57db-85e3-02f3a0ba9150"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on B.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "263a4468-3636-57db-85e3-02f3a0ba9150"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on B.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "263a4468-3636-57db-85e3-02f3a0ba9150"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on B.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "263a4468-3636-57db-85e3-02f3a0ba9150"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on B.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "263a4468-3636-57db-85e3-02f3a0ba9150"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on B.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "263a4468-3636-57db-85e3-02f3a0ba9150"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [VSYS] on In2.Cu, priority 2",
+                    "pos": {
+                        "x": 1.0,
+                        "y": 1.0
+                    },
+                    "uuid": "577b26f6-2b7c-5df4-a97f-d61dd4b9d423"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        },
+        {
+            "description": "Isolated copper fill",
+            "items": [
+                {
+                    "description": "Zone [GND] on F.Cu, priority 0",
+                    "pos": {
+                        "x": 0.0,
+                        "y": 0.0
+                    },
+                    "uuid": "5b3417ba-3fe2-573c-b5ba-a474ccfa31fe"
+                }
+            ],
+            "severity": "warning",
+            "type": "isolated_copper"
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+# environments / toolchain (recreated by scripts/install.sh)
+.pixi/
+tools/kicad-root/
+tools/debs/
+tools/kicad-config/
+tools/freerouting/*.jar
+router_cpp/hroute
+router_cpp/hroute_*
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/_tmp/
+# third-party datasheets / schematics (see knowledge/SOURCES.md)
+knowledge/sources/
+# per-run engine scratch (large, reproducible)
+designs/*/out/route/
+designs/*/out/hroute/
+designs/*/out/hybrid/
+designs/*/out/repair/
+designs/*/out/placements/
+designs/*/out/pairtest/
+designs/*/out/mcp_img_*.png
+designs/*/*-bak*
+designs/*/fp-info-cache
+designs/quickstart/

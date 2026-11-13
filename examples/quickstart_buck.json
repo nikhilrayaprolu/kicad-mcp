@@ -1,0 +1,21 @@
+[
+ {"tool": "project_open", "args": {"path": "designs/quickstart", "create": true, "name": "quickstart",
+   "description": "5 V -> 3.3 V / 2 A buck module with a 4-pin header", "requirements": ["VIN 5 V", "3.3 V 1 A", "2-layer-capable but built on 4"]}},
+ {"tool": "block_add", "args": {"block": "buck_tlv62569", "params": {"block": "power", "vin": "VIN", "vout_net": "3V3", "vout": 3.3}}},
+ {"tool": "block_add", "args": {"block": "led", "params": {"block": "power", "net": "3V3", "color": "green", "r": "2.2k"}}},
+ {"tool": "ir_edit", "args": {"ops": [
+   {"op": "add_part", "part": "HDR_1x4", "block": "io", "conn": {"1": "VIN", "2": "GND", "3": "3V3", "4": "GND"}},
+   {"op": "netclass", "name": "PWR", "track": 0.4, "clearance": 0.2, "nets": ["VIN", "3V3", "*_SW"], "current_a": 1.0},
+   {"op": "constraint", "kind": "edge", "ref": "J1", "side": "left", "rot": 0},
+   {"op": "constraint", "kind": "plane", "net": "GND", "layer": "In1.Cu"}]}},
+ {"tool": "schematic_build"},
+ {"tool": "board_setup", "args": {"width": 30, "height": 20, "layers": 4, "corner_r": 1.0}},
+ {"tool": "place", "args": {"seeds": 16, "effort": 0.5, "image": false}},
+ {"tool": "route", "args": {"engine": "hybrid", "candidates": 4, "profiles": ["human"], "critical_nets": ["*_SW", "VIN"], "timeout_s": 300, "image": false}},
+ {"tool": "zones", "args": {"gnd_pour_outer": true}},
+ {"tool": "copper", "args": {"action": "restitch", "net": "GND", "pitch": 2.5}},
+ {"tool": "drc"},
+ {"tool": "design_review"},
+ {"tool": "export_fab"},
+ {"tool": "render_view", "args": {"kind": "3d", "side": "top"}}
+]

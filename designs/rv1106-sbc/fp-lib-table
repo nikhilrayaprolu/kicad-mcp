@@ -1,0 +1,4 @@
+(fp_lib_table
+  (version 7)
+  (lib (name "llmpcb")(type "KiCad")(uri "${KIPRJMOD}/../../llmpcb/library/footprints/llmpcb.pretty")(options "")(descr "llm-pcb generated"))
+)

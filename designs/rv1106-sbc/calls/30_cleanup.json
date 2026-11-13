@@ -1,0 +1,8 @@
+[{"tool":"ir_edit","args":{"ops":[
+   {"op":"board","silk_refs":"large"},
+   {"op":"netclass","name":"PWR_HI","track":0.4,"clearance":0.2,"via_d":0.6,"via_drill":0.3,"nets":["VBUS","VSYS","*_SW"],"current_a":1.0},
+   {"op":"note","text":"PWR_HI current_a=1.0: estimated board load ~3 W at 5 V (~0.6 A) incl. buck losses; 1 A rating with margin. Buck SW nodes carry inductor ripple ~0.5 A pk-pk on top of load."}]}},
+ {"tool":"schematic_build"},
+ {"tool":"copper","args":{"action":"dangling_vias"}},
+ {"tool":"drc"},
+ {"tool":"design_review"}]

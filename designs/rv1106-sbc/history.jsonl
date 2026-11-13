@@ -1,0 +1,49 @@
+{"event": "block_add", "block": "usb_c_sink", "params": {"block": "power", "vbus": "VBUS", "dp": "USB_DP", "dm": "USB_DM", "esd": true}}
+{"event": "ir_edit", "n": 4}
+{"event": "block_add", "block": "buck_tlv62569", "params": {"block": "power", "vin": "VSYS", "vout_net": "VDD_0V9", "vout": 0.9, "iout": 1.2}}
+{"event": "block_add", "block": "buck_tlv62569", "params": {"block": "power", "vin": "VSYS", "vout_net": "VCC_DDR", "vout": 1.35, "en": "DDR_1V8_EN", "soft_start_rc": true, "iout": 0.4}}
+{"event": "block_add", "block": "buck_tlv62569", "params": {"block": "power", "vin": "VSYS", "vout_net": "VCC_1V8", "vout": 1.8, "en": "DDR_1V8_EN", "iout": 0.5}}
+{"event": "block_add", "block": "buck_tlv62569", "params": {"block": "power", "vin": "VSYS", "vout_net": "VCC_3V3", "vout": 3.3, "en": "EN_3V3", "iout": 0.8}}
+{"event": "block_add", "block": "resistor", "params": {"block": "power", "a": "VSYS", "b": "EN_3V3", "value": "200k"}}
+{"event": "block_add", "block": "capacitor", "params": {"block": "power", "a": "EN_3V3", "b": "GND", "value": "1u", "pkg": "C0402"}}
+{"event": "block_add", "block": "led", "params": {"block": "power", "net": "VCC_3V3", "color": "green", "r": "2.2k"}}
+{"event": "ir_edit", "n": 2}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "VDD_0V9", "values": ["10u", "10u", "1u", "1u", "100n", "100n", "100n", "100n", "100n", "100n"]}}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "VCC_DDR", "values": ["10u", "10u", "1u", "100n"]}}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "VCC_1V8", "values": ["1u", "100n", "100n"]}}
+{"event": "block_add", "block": "ferrite", "params": {"block": "soc", "a": "VCC_1V8", "b": "VCC_1V8_PLL", "near": "U10.70"}}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "VCC_1V8_PLL", "values": ["100n", "100n"]}}
+{"event": "block_add", "block": "ferrite", "params": {"block": "soc", "a": "VCC_1V8", "b": "VCC_1V8_CODEC", "near": "U10.31"}}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "VCC_1V8_CODEC", "values": ["10u", "100n"]}}
+{"event": "block_add", "block": "resistor", "params": {"block": "soc", "a": "VCC_1V8", "b": "VCC_1V8_MIPI", "value": "1R", "near": "U10.1", "max_mm": 4}}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "VCC_1V8_MIPI", "values": ["100n"]}}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "VCC_3V3", "values": ["10u", "100n", "100n", "100n", "100n", "100n", "100n", "100n"]}}
+{"event": "block_add", "block": "ferrite", "params": {"block": "soc", "a": "VCC_3V3", "b": "ETH_AVDD3V3", "near": "U10.101"}}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "ETH_AVDD3V3", "values": ["100n"]}}
+{"event": "block_add", "block": "resistor", "params": {"block": "soc", "a": "VCC_3V3", "b": "VCC_RTC", "value": "100R", "near": "U10.19", "max_mm": 5}}
+{"event": "block_add", "block": "decoupling", "params": {"block": "soc", "ic": "U10", "net": "VCC_RTC", "values": ["1u"]}}
+{"event": "block_add", "block": "resistor", "params": {"block": "soc", "a": "DDR_ZQ", "b": "GND", "value": "240R 1%", "near": "U10.DRAM_ZQ", "max_mm": 3}}
+{"event": "block_add", "block": "resistor", "params": {"block": "soc", "a": "ETH_REXT", "b": "GND", "value": "6.04k 1%", "near": "U10.ETH_EXTR", "max_mm": 3}}
+{"event": "block_add", "block": "crystal", "params": {"block": "soc", "ic": "U10", "xin": "OSC_XIN", "xout": "OSC_XOUT", "freq": "24MHz", "cl_pf": 12, "cstray_pf": 3, "series_r": "22R", "feedback_r": "1M"}}
+{"event": "block_add", "block": "resistor", "params": {"block": "soc", "a": "VCC_3V3", "b": "NPOR", "value": "1k", "near": "U10.NPOR", "max_mm": 6}}
+{"event": "block_add", "block": "capacitor", "params": {"block": "soc", "a": "NPOR", "b": "GND", "value": "10n", "near": "U10.NPOR", "max_mm": 4}}
+{"event": "block_add", "block": "button", "params": {"block": "ui", "net": "NPOR", "series_r": "100R"}}
+{"event": "block_add", "block": "button", "params": {"block": "ui", "net": "RECOVERY", "pull": "VCC_1V8", "pull_r": "10k", "series_r": "100R", "cap": "1n"}}
+{"event": "block_add", "block": "resistor", "params": {"block": "soc", "a": "VCC_1V8", "b": "ADC_IN1", "value": "10k"}}
+{"event": "block_add", "block": "capacitor", "params": {"block": "soc", "a": "ADC_IN1", "b": "GND", "value": "1n"}}
+{"event": "block_add", "block": "resistor", "params": {"block": "usb", "a": "VBUS", "b": "USB_VBUSDET", "value": "10k"}}
+{"event": "block_add", "block": "resistor", "params": {"block": "usb", "a": "USB_VBUSDET", "b": "GND", "value": "18k"}}
+{"event": "block_add", "block": "capacitor", "params": {"block": "usb", "a": "USB_VBUSDET", "b": "GND", "value": "100n"}}
+{"event": "block_add", "block": "led", "params": {"block": "ui", "net": "LED_STATUS", "color": "blue", "r": "1k"}}
+{"event": "ir_edit", "n": 23}
+{"event": "ir_edit", "n": 30}
+{"event": "ir_edit", "n": 17}
+{"event": "ir_edit", "n": 2}
+{"event": "ir_edit", "n": 4}
+{"event": "ir_edit", "n": 2}
+{"event": "ir_edit", "n": 3}
+{"event": "ir_edit", "n": 1}
+{"event": "ir_edit", "n": 3}
+{"event": "ir_edit", "n": 3}
+{"event": "ir_edit", "n": 5}
+{"event": "ir_edit", "n": 3}

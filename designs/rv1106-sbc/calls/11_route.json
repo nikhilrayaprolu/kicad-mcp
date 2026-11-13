@@ -1,0 +1,5 @@
+[{"tool":"ir_edit","args":{"ops":[
+   {"op":"netclass","name":"USB","track":0.15,"clearance":0.1,"via_d":0.45,"via_drill":0.25,"nets":["USB_DP","USB_DM"],"diff_width":0.15,"diff_gap":0.15},
+   {"op":"netclass","name":"PWR","track":0.25,"clearance":0.1,"via_d":0.5,"via_drill":0.25,"nets":["VDD_0V9","VCC_DDR","VCC_1V8","VCC_1V8_PLL","VCC_1V8_CODEC","VCC_1V8_MIPI","VCC_3V3","ETH_AVDD3V3","VCC_RTC","GND"],"current_a":0.5},
+   {"op":"constraint","kind":"plane","net":"VSYS","layer":"In2.Cu","rect":[1,1,24,31],"note":"regional VSYS pour under the power section (split plane)"}]}},
+ {"tool":"route","args":{"passes":100,"timeout_s":900,"candidates":12,"fanout_planes":true}}]

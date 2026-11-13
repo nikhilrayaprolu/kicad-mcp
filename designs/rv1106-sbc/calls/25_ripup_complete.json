@@ -1,0 +1,4 @@
+[{"tool":"copper","args":{"action":"ripup","nets":["GP_UART1_TX","DDR_ZQ","ETH_TXP","ETH_TXN","SD_D3","USB_DM","USB_DP","VSYS_HDR"]}},
+ {"tool":"route","args":{"mode":"complete","passes":100,"timeout_s":900,"image":false}},
+ {"tool":"copper","args":{"action":"restitch","net":"GND","pitch":2.5}},
+ {"tool":"drc"}]

@@ -1,0 +1,5 @@
+[{"tool":"connect_pads","args":{"a":"U10.52","b":"R17.1","layer":"F.Cu"}},
+ {"tool":"connect_pads","args":{"a":"J7.2","b":"J7.4","layer":"B.Cu"}},
+ {"tool":"route","args":{"mode":"complete","engine":"hroute","critical_nets":["ETH_TXP","SD_D3"],"timeout_s":900,"image":false}},
+ {"tool":"copper","args":{"action":"restitch","net":"GND","pitch":2.5}},
+ {"tool":"drc"}]
