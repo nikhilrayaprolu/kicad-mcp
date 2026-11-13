@@ -2,7 +2,7 @@
 	(version "E")
 	(design
 		(source "/home/nikhil.r/llm-pcb/designs/rv1106-sbc/rv1106_sbc.kicad_sch")
-		(date "2026-11-13T02:59:13")
+		(date "2026-11-13T03:54:13")
 		(tool "Eeschema 10.0.8-10.0.8~ubuntu24.04.1")
 		(sheet
 			(number "1")
@@ -8088,6 +8088,60 @@
 			)
 		)
 		(comp
+			(ref "TP7")
+			(value "VBUS")
+			(footprint "TestPoint:TestPoint_Pad_D1.0mm")
+			(fields
+				(field
+					(name "Footprint") "TestPoint:TestPoint_Pad_D1.0mm")
+				(field
+					(name "Datasheet")
+				)
+				(field
+					(name "Description")
+				)
+			)
+			(libsource
+				(lib "Connector")
+				(part "TestPoint")
+				(description "test point")
+			)
+			(property
+				(name "Sheetname")
+				(value "test")
+			)
+			(property
+				(name "Sheetfile")
+				(value "test.kicad_sch")
+			)
+			(property
+				(name "exclude_from_bom")
+			)
+			(property
+				(name "ki_keywords")
+				(value "test point tp")
+			)
+			(property
+				(name "ki_fp_filters")
+				(value "Pin* Test*")
+			)
+			(sheetpath
+				(names "/test/")
+				(tstamps "/50fa8733-e3a5-5e06-85b6-1f11dc1316e8/")
+			)
+			(tstamps "e1863696-29e3-5a91-8222-fe6e03264b6a")
+			(units
+				(unit
+					(name "A")
+					(pins
+						(pin
+							(num "1")
+						)
+					)
+				)
+			)
+		)
+		(comp
 			(ref "C57")
 			(value "1n")
 			(footprint "Capacitor_SMD:C_0402_1005Metric")
@@ -12324,6 +12378,12 @@
 			(node
 				(ref "R26")
 				(pin "1")
+				(pintype "passive")
+			)
+			(node
+				(ref "TP7")
+				(pin "1")
+				(pinfunction "1_1")
 				(pintype "passive")
 			)
 			(node

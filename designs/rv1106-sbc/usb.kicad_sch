@@ -683,7 +683,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "1b4acdeb-4407-5c0d-b20c-9fc419aaf1b2")
-		(property "Reference" "#PWRUSB208"
+		(property "Reference" "#PWRUSB209"
 			(at 33.02 67.31 0)
 			(effects
 				(font
@@ -724,7 +724,7 @@
 		(instances
 			(project "rv1106_sbc"
 				(path "/4437ca3d-76b9-5959-a120-c77d748e3138/6954d3ae-b527-5827-83bd-3f84897b6782"
-					(reference "#PWRUSB208")
+					(reference "#PWRUSB209")
 					(unit 1)
 				)
 			)
@@ -810,7 +810,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "51e4ec22-4096-5bda-b92e-4a369117f1f0")
-		(property "Reference" "#PWRUSB209"
+		(property "Reference" "#PWRUSB210"
 			(at 50.8 44.45 0)
 			(effects
 				(font
@@ -851,7 +851,7 @@
 		(instances
 			(project "rv1106_sbc"
 				(path "/4437ca3d-76b9-5959-a120-c77d748e3138/6954d3ae-b527-5827-83bd-3f84897b6782"
-					(reference "#PWRUSB209")
+					(reference "#PWRUSB210")
 					(unit 1)
 				)
 			)
@@ -1001,7 +1001,7 @@
 		(on_board yes)
 		(dnp no)
 		(uuid "df1d29cc-6c50-5879-b9ae-2ee4bb3469b2")
-		(property "Reference" "#PWRUSB210"
+		(property "Reference" "#PWRUSB211"
 			(at 68.58 67.31 0)
 			(effects
 				(font
@@ -1042,7 +1042,7 @@
 		(instances
 			(project "rv1106_sbc"
 				(path "/4437ca3d-76b9-5959-a120-c77d748e3138/6954d3ae-b527-5827-83bd-3f84897b6782"
-					(reference "#PWRUSB210")
+					(reference "#PWRUSB211")
 					(unit 1)
 				)
 			)

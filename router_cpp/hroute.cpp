@@ -50,6 +50,7 @@ static vector<int> occ_base;      // pads/keepouts (-1 free, -2 blocked, >=0 net
 static vector<int> occ_route;     // routed copper (-1 free, >=0 net)
 static vector<Net> nets;
 static vector<Pin> pins;
+static bool NO_VIA = false;     // pair breakouts: stay on the pad layer (both legs keep the same layer changes)
 static double VIA_COST = 30, TURN45 = 1.5, TURN90 = 5, WRONGDIR = 0.35, PROX = 0.15, PAIR_VIA_COST = 120;
 static double EDGE_CLR = 0.3;
 static map<int, vector<int>> painted;   // net -> cells painted in occ_route
@@ -243,7 +244,7 @@ static vector<int> astar(int n, int own2, double hw, double clr, double vr, cons
             int t = s, steps = 0;
             while (PAR[t] != -1 && steps < 12) { int pt = PAR[t]; if (pt / 9 / NXY != t / 9 / NXY) { recent_via = true; break; } t = pt; steps++; }
         }
-        if (!recent_via && (d0 != 8 || PAR[s] == -1)) {
+        if (!NO_VIA && !recent_via && (d0 != 8 || PAR[s] == -1)) {
             bool vok;
             int keepdir = 8;
             if (pair_mode) {   // two vias side by side, perpendicular to an orthogonal run
@@ -454,18 +455,30 @@ static bool pair_anchor(int a, int b, const Pin& pa, const Pin& pb, double hw2, 
     // escape point outward from the pad-pair midpoint where the coupled corridor is legal AND each offset
     // track position is clear of the partner's pads (P on P's side, N on N's side)
     double mx = (pa.cx + pb.cx) / 2, my = (pa.cy + pb.cy) / 2;
-    double dx = mx - ox, dy = my - oy, L = hypot(dx, dy); if (L < 1e-6) { dx = 1; dy = 0; L = 1; }
-    dx /= L; dy /= L;
-    double px = -dy, py = dx;                       // perpendicular
-    double sP = ((pa.cx - mx) * px + (pa.cy - my) * py) >= 0 ? 1.0 : -1.0;
+    double rx = mx - ox, ry = my - oy, L = hypot(rx, ry); if (L < 1e-6) { rx = 1; ry = 0; L = 1; }
+    rx /= L; ry /= L;
+    // candidate escape directions: the pad's own long axis pointing outward (how a human leaves a QFN row),
+    // the radial direction from the part centre, and +-30/45 degree variants of both
+    vector<pair<double, double>> dirs;
+    double ax_x = (pa.x2 - pa.x1) >= (pa.y2 - pa.y1) ? 1.0 : 0.0, ax_y = 1.0 - ax_x;
+    if (ax_x * rx + ax_y * ry < 0) { ax_x = -ax_x; ax_y = -ax_y; }
+    for (auto base : {make_pair(ax_x, ax_y), make_pair(rx, ry)})
+        for (double deg : {0.0, 30.0, -30.0, 45.0, -45.0}) {
+            double r = deg * M_PI / 180, c = cos(r), sn = sin(r);
+            dirs.push_back({base.first * c - base.second * sn, base.first * sn + base.second * c});
+        }
     double w = nets[a].hw * 2, off = (w + nets[a].pair_gap) / 2.0;
-    for (double t = 0.2; t <= 5.0; t += 0.1) {
-        double ax = mx + dx * t, ay = my + dy * t;
-        int i = gi(ax), j = gj(ay);
-        if (!legal(-5, -3, hw2, clr, l, i, j)) continue;     // corridor clear of ALL pads (breakouts reach the pads)
-        int pi_ = gi(ax + px * off * sP), pj = gj(ay + py * off * sP), ni = gi(ax - px * off * sP), nj = gj(ay - py * off * sP);
-        if (!legal_pairv(a, b, nets[a].hw, clr, l, pi_, pj) || !legal_pairv(b, a, nets[b].hw, clr, l, ni, nj)) continue;
-        ri = i; rj = j; return true;
+    for (double t = 0.2; t <= 5.0; t += 0.1) {          // nearest legal anchor over all directions
+        for (auto& dv : dirs) {
+            double dx = dv.first, dy = dv.second, px = -dy, py = dx;
+            double sP = ((pa.cx - mx) * px + (pa.cy - my) * py) >= 0 ? 1.0 : -1.0;
+            double ax = mx + dx * t, ay = my + dy * t;
+            int i = gi(ax), j = gj(ay);
+            if (!legal(-5, -3, hw2, clr, l, i, j)) continue;     // corridor clear of ALL pads (breakouts reach the pads)
+            int pi_ = gi(ax + px * off * sP), pj = gj(ay + py * off * sP), ni = gi(ax - px * off * sP), nj = gj(ay - py * off * sP);
+            if (!legal_pairv(a, b, nets[a].hw, clr, l, pi_, pj) || !legal_pairv(b, a, nets[b].hw, clr, l, ni, nj)) continue;
+            ri = i; rj = j; return true;
+        }
     }
     return false;
 }
@@ -506,6 +519,18 @@ static bool route_pair(int p, int nn, double ocx_p, double ocy_p, double ocx_e, 
         return ((pp->cx - c[0].first) * (-dy) + (pp->cy - c[0].second) * dx) > 0 ? 1.0 : -1.0;
     };
     double sgn = side_of(runs[0], a0);
+    {   // choose P's side by total breakout length at BOTH ends: a wrong choice forces a crossover (2 vias on one leg)
+        auto d2 = [](pair<double, double> q, const Pin* pp) { return hypot(q.first - pp->cx, q.second - pp->cy); };
+        double best = 1e18, bs = sgn;
+        for (double sg : {1.0, -1.0}) {
+            auto c0 = simplify(runs.front()), c1 = simplify(runs.back());
+            auto p0 = offset_poly(c0, sg * off), n0 = offset_poly(c0, -sg * off);
+            auto p1 = offset_poly(c1, sg * off), n1 = offset_poly(c1, -sg * off);
+            double cost = d2(p0.front(), a0) + d2(n0.front(), b0) + d2(p1.back(), a1) + d2(n1.back(), b1);
+            if (cost < best - 1e-9) { best = cost; bs = sg; }
+        }
+        sgn = bs;
+    }
     vector<vector<pair<double, double>>> pr, nr;
     for (auto& c : runs) { auto cs = simplify(c); pr.push_back(offset_poly(cs, sgn * off)); nr.push_back(offset_poly(cs, -sgn * off)); }
     // emit the coupled sections (both nets), then route the 4 breakouts with the normal maze engine
@@ -555,9 +580,11 @@ static bool route_pair(int p, int nn, double ocx_p, double ocy_p, double ocx_e, 
         set_neck(bo.net);
         vector<int> src = pin_cells(*bo.pad), tgt{endcell(bo.q, bo.l)}; vector<char> dummy;
         int ti = gi(bo.q.first), tj = gj(bo.q.second); int R = (int)ceil(4.0 / P);
+        NO_VIA = true;
         vector<int> path = astar(bo.net, -3, nets[bo.net].hw, nets[bo.net].clr, nets[bo.net].via_r, src, dummy, tgt,
                                  bo.q.first, bo.q.second, max(0, ti - R), max(0, tj - R), min(NX - 1, ti + R), min(NY - 1, tj + R),
                                  false, nullptr, false, 0);
+        NO_VIA = false;
         if (path.empty()) { fprintf(stderr, "  pair: breakout %s failed\n", nets[bo.net].name.c_str()); ripup(p); ripup(nn); set_neck(-1); return false; }
         emit_path(bo.net, nets[bo.net].hw, nets[bo.net].via_r, nets[bo.net].via_drill, path);
     }

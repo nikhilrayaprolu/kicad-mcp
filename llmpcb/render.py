@@ -44,7 +44,16 @@ def render_2d(prj: Project, out: Path | None = None, px_per_mm: float = 14, laye
     except TypeError:
         font = small = ImageFont.load_default()
     bcol = _block_colors({c.block for c in d.components.values()})
-    # zones (outline only)
+    # copper pours: KiCad's saved fills (faint, per layer), then zone outlines
+    try:
+        from . import fills as _fills
+        for _net, lay, pts in _fills.read_fills(prj):
+            if layers and lay not in layers:
+                continue
+            col = LAYER_COL.get(lay, (200, 200, 200, 80))
+            dr.polygon([T(*p) for p in pts], fill=col[:3] + (110 if layers and len(layers) == 1 else 38,))
+    except Exception:  # noqa: BLE001
+        pass
     for z in L.zones:
         col = LAYER_COL.get(z.layer, (200, 200, 200, 80))
         pts = z.poly or brd.inset_rect(d, 0.0)

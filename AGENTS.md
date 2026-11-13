@@ -6,7 +6,7 @@ This file is for **the AI agent** (Claude, GPT, Gemini or any other MCP client) 
 
 - **You decide intent.** That covers requirements, parts, pin functions, reference circuits, netclasses, floorplan, which parts may go on the bottom, which parts must be close to which pins, and which nets are critical.
 - **Engines decide geometry.** Never compute track coordinates yourself. Never place 100 parts with `move`. `move`, `place_part` and `connect_pads` are for last-mile intent only.
-- **KiCad is the judge.** A board is finished only when `drc` reports **0 errors, 0 unconnected, 0 parity** and `schematic_build` reports **ERC 0 errors and netlist parity ok**. Do not claim success on anything less, and report remaining warnings honestly.
+- **KiCad is the judge.** A board is finished only when `drc` reports **0 errors, 0 unconnected, 0 parity**, `schematic_build` reports **ERC 0 errors and netlist parity ok**, and **`expert_review` grades it `expert`** (§8). Do not claim success on anything less, and report remaining warnings honestly.
 - **Every tool returns compact diagnostics.** Read them and act on them. They are your senses. `render_view` is your eyes: look at the board after `place` and after `route`.
 
 ## 1. Before any tool call: requirements and facts
@@ -128,18 +128,94 @@ drc ; design_review
 - Multi-pin pairs, such as USB with ESD branches or A/B rows, are reported as such and are not tuned.
 - `design_review` also checks decap and crystal distances, current versus width, escape feasibility, unconnected power pins and single-pin nets. Fix errors and judge warnings, then explain to the user whatever you accept.
 
-## 8. Release
+## 8. Copper pours, pairs and the expert quality gate
+
+**Pours on every layer.** An expert 4-layer board has copper everywhere there is no signal:
+- GND on F.Cu and B.Cu: `zones(gnd_pour_outer=true)`
+- a solid GND plane on In1.Cu
+- power pours on In2.Cu: the main rail across the whole layer, with higher-priority islands for other rails under their loads, e.g.
 
 ```
-schematic_build      # ERC 0 / parity ok (also refreshes the netlist used for NC-pad names)
-drc                  # 0 errors / 0 unconnected / 0 parity
-export_fab           # Gerbers, drill, CPL, JLC BOM, IPC-D-356, PDFs, zip
-render_view(kind="3d", side="top") ; render_view(kind="3d", side="bottom")
+zones(add=[{"net":"VCC_3V3","layer":"In2.Cu","priority":1},
+           {"net":"VDD_0V9","layer":"In2.Cu","poly":[...],"priority":3,"connect":"solid"}])
 ```
 
-Set `{"op":"board","silk_refs":"large"}` on dense boards. It moves small-passive designators to the fab layer. The silkscreen legaliser runs on every board write. It places designators clear of pads, outlines, text, holes and the edge, and nudges `silk_texts` labels. Aim for **0 DRC warnings**: silk and pour-island warnings are what make a board look amateur.
+Tie the pours together:
+- `copper(restitch)`: an edge via fence plus a 5 mm interior grid.
+- `copper(stitch_islands)`: every floating GND island gets a via to the plane. Islands that cannot take a via are removed, never left floating.
 
-Expert finish checklist: fiducials (`board.fiducials`), labelled test points on key rails, connector and pin-1 labels (`silk_texts` anchored to parts), an edge via fence (`copper restitch`), `no_pour` rule areas under magnetics and antennas, 45° corners (`copper smooth`), and identical layouts for repeated cells.
+Every board write saves KiCad's zone fills into the `.kicad_pcb`. KiCad, renders and GitHub therefore always show the pours.
+
+**Differential pairs change layer together.** `design_review` warns on `diffpair_vias` when the legs have different via counts, and `expert_review` fails on it. Fix it one pair at a time:
+
+```
+copper(action="unstitch", net="GND")                       # free stitching vias out of the way
+copper(action="ripup", nets=["ETH_TXP","ETH_TXN"])
+route(mode="complete", engine="hroute", critical_nets=["ETH_TXP","ETH_TXN"])   # all profiles in parallel
+...repeat per pair... ; tune_lengths(reset=true) ; copper(restitch) ; copper(stitch_islands)
+```
+
+The router prefers a coupled pair, with side-by-side vias and no-via breakouts. If a keepout blocks the coupled corridor, it falls back to legs with equal via counts. The reply shows `pairs: {P/N: {vias: "1/1", coupled: ...}}`.
+
+**Finish order:** `copper(smooth)` → `tune_lengths(reset=true)` → `copper(restitch)` → `copper(stitch_islands)` → `copper(dangling_vias)` → `schematic_build` → `drc`.
+
+### Gate 3: `expert_review`, which you must pass before calling a board done
+
+`expert_review` re-runs DRC with zone refill and schematic parity, then runs the design review, then grades the board. These checks must all pass for grade **expert**:
+
+| Check | Standard |
+|---|---|
+| `erc_clean`, `drc_clean` | ERC 0; DRC 0 errors / 0 unconnected / 0 parity |
+| `drc_zero_warnings` | **0 warnings**: no silk on pads or overlapping, no floating copper |
+| `design_review_no_errors` | no review errors |
+| `diffpair_via_symmetry`, `diffpair_skew_in_tolerance` | equal layer changes, skew ≤ `tol_mm` |
+| `pours_all_layers` | fill coverage ≥ 35 % on outer layers, ≥ 60 % on inner layers |
+| `ground_stitching` | ≥ 1 GND via per 40 mm² |
+| `no_acute_corners`, `mostly_45_degree_routing` | no fold-backs; ≤ 15 % right-angle corners |
+| `fiducials` | 3 fiducials when there are fine-pitch parts |
+| `test_points_on_rails` | a TP on every main rail (power class, ≥ 8 pins) and on GND |
+| `connector_labels`, `board_title_rev` | every J* labelled on silk; title and revision |
+
+Each failed check names the tool that fixes it. The reply also returns 2-D and 3-D top/bottom renders. **Look at them** against `visual_checklist`:
+- connectors face the edge
+- silkscreen is readable
+- copper is visible on every layer
+- pairs run together
+- repeated cells are identical
+- decoupling hugs its pins
+
+Iterate until the grade is `expert`. If a check truly cannot pass (for example a skew blocked by a keepout), say why in your report. Do not hide it.
+
+## 8b. Release and publish
+
+```
+schematic_build ; drc ; expert_review           # grade == expert
+export_fab                                       # Gerbers, drill, CPL, JLC BOM, IPC-D-356, PDFs, zip
+publish(push=true)                               # images + README gallery -> git commit (+ push)
+```
+
+`publish` does the following:
+- Renders these images into `designs/<name>/images/`:
+  - 3-D top and bottom
+  - the 2-D layout
+  - every copper layer separately
+  - every schematic sheet
+- Writes `designs/<name>/README.md`: a gallery with the review grade, DRC numbers and pour coverage.
+- Commits only that board's files: images, README, IR, KiCad files and the gerber zip.
+- Pushes with `push=true`. Push unless the user said not to.
+
+`publish` refuses while the grade is `needs_work`. `allow_needs_work=true` overrides that, and the README then lists the open items. Re-run `publish` after every change you report, so the images on GitHub always match the design.
+
+Set `{"op":"board","silk_refs":"large"}` on dense boards. It moves small-passive designators to the fab layer. The silkscreen legaliser runs on every board write. It places designators clear of pads, outlines, text, holes and the edge, and nudges `silk_texts` labels.
+
+Expert finish checklist:
+- fiducials (`board.fiducials`)
+- labelled test points on key rails
+- connector and pin-1 labels (`silk_texts` anchored to parts)
+- an edge via fence (`copper restitch`)
+- `no_pour` rule areas under magnetics and antennas
+- 45° corners (`copper smooth`)
+- identical layouts for repeated cells
 
 ## 9. Pitfalls already paid for (do not repeat)
 
@@ -151,6 +227,9 @@ Expert finish checklist: fiducials (`board.fiducials`), labelled test points on 
 | Crystal far from XIN | single-sided crowding | allow `side:any` for the crystal network |
 | "Items not allowed" near the origin | footprint zones are stored in absolute coordinates | fixed in the board writer |
 | Track width below the fab minimum after Freerouting | auto neck-down | `copper min_width`, then `drc` |
+| Saved board shows no copper pours | zone fills were only written into DRC's copy | every board write now refills and saves the fills |
+| Smoothing shortened the length tuning | chamfering meander corners removes length | smoothing skips tuned pairs; use `tune_lengths(reset=true)` |
+| One pair leg has a via, the other none | single-ended fallback or a breakout crossover | per-pair `ripup` + `route(mode="complete", engine="hroute")` |
 | Parity warnings for NC pins | schematic names NC nets `unconnected-(…)` | run `schematic_build` before `drc`; the board writer reuses those names |
 | A conflict between your own constraints | e.g. a region that excludes a part's `near` target | read `outside` and `near_violations` after `place` |
 

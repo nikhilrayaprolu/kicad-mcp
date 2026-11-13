@@ -284,3 +284,41 @@ Remaining items, judged:
 - **Unequal via counts in ETH TX/RX and CSI D0** (0/1, 0/2): a human would route both legs through the same layer changes. That needs a pair re-route, and is left for the next router iteration.
 - **Buck input caps 1.9 mm and inductors 2.2 mm from their pins** (targets 1.5/2.0), and **USB-C CC resistors / ESD 6–7 mm** from J1: these are identical in all four cells and within datasheet layout examples, but outside our tight targets.
 - **PWR class escape at the 0.35 mm-pitch SoC** relies on neck-down at the pins, which is by design. The QFN land pattern is still unverified against a vendor drawing.
+
+
+## v3.1: symmetric differential pairs, copper pours, self-review and publishing
+
+**Diff-pair via symmetry.** Three pairs had one leg changing layer while the other did not (ETH TX 0/1, ETH RX 0/1, CSI D0 0/2). Each pair was ripped up and re-routed through `route(mode="complete", engine="hroute")`. Three router fixes made that work:
+- The coupled-pair start/end anchors now try the pad's own escape axis and ±30°/45° variants, not only the radial direction. This let CSI D0 route fully coupled.
+- P/N sides are chosen by total breakout length at both ends, so the router no longer forces a crossover.
+- Pair breakouts may not use vias.
+
+`complete_nets` now runs every profile in parallel, plus layer-forced variants. A forced variant closes one outer layer except a window at the pads, so both legs change layer at the same spot. The winner is chosen by: fully routed > equal via counts > coupled > fewer vias.
+
+| Pair | Vias P/N | Skew |
+|---|---|---|
+| ETH TX | 0/0 | 0.99 mm |
+| ETH RX | 1/1 | 0.30 mm |
+| CSI D0 | 0/0, coupled | 0.30 mm |
+| CSI D1 | 2/2 | 0.16 mm |
+| CSI CK | 2/2 | 0.09 mm |
+
+**Copper pours.** The pours existed in the Gerbers but not in the saved `.kicad_pcb`: KiCad's zone fill was only written into DRC's working copy. Now every board write refills and saves the zones. `copper stitch_islands` ties floating GND islands to the plane with vias. Fill coverage is F.Cu 57 %, In1 83 % (GND plane), In2 63 % (3V3 / VDD_0V9 / VSYS pours) and B.Cu 74 %.
+
+![pours](images/pcb_pours_all_layers.png)
+
+**Bug found by the new gate:** Freerouting's "complete" mode re-emits protected copper in different segments, and the import treated those copies as new tracks. That duplicated 64 segments, and inflated ETH TX's length so the tuner added wrong meanders. The import now keeps only uncovered segments, and `copper dedupe` cleans existing boards.
+
+**Other fixes:**
+- TP7 added on VBUS. `place_part(side=...)` places it on the bottom; `connect_pads(a="TP7.1", b="VBUS")` taps a pad into existing net copper with a via.
+- ERC freshness is tracked by a netlist hash instead of file times.
+- Smoothing removes router jitter (fold-backs over stubs under 0.08 mm).
+
+**New MCP tools that hold future boards to this standard:**
+- `expert_review`: 15 graded checks, each naming its fix, plus renders for the agent's own visual review.
+- `publish(push=true)`: renders and a README gallery committed and pushed per board.
+
+**Final:**
+- ERC 0, netlist parity ok
+- DRC 0 errors / 0 warnings / 0 unconnected / 0 parity
+- `expert_review` grade **expert** (15/15)

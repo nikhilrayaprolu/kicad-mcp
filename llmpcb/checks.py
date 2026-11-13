@@ -123,8 +123,9 @@ def design_review(prj: Project) -> dict:
                     findings.append({"sev": "warn", "rule": "diffpair_skew",
                                      "msg": f"{c.p}/{c.n} length {lp:.1f}/{ln:.1f} mm skew {skew:.2f} mm"})
                 if vias_per_net[c.p] != vias_per_net[c.n]:
-                    findings.append({"sev": "info", "rule": "diffpair_vias",
-                                     "msg": f"{c.p}/{c.n} via count {vias_per_net[c.p]}/{vias_per_net[c.n]}"})
+                    findings.append({"sev": "warn", "rule": "diffpair_vias",
+                                     "msg": f"{c.p}/{c.n} via count {vias_per_net[c.p]}/{vias_per_net[c.n]}: both legs "
+                                            f"must take the same layer changes (re-route the pair coupled)"})
         if c.kind == "length_match" and c.nets:
             ls = {n: length.get(n, 0) for n in c.nets}
             if ls and max(ls.values()) - min(ls.values()) > (c.tol_mm or 2.0):

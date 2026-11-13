@@ -1,0 +1,6 @@
+[{"tool":"copper","args":{"action":"dangling_vias"}},
+ {"tool":"connect_pads","args":{"a":"TP7.1","b":"VBUS"}},
+ {"tool":"copper","args":{"action":"dangling_vias"}},
+ {"tool":"schematic_build"},
+ {"tool":"drc"},
+ {"tool":"expert_review","args":{"images":true}}]

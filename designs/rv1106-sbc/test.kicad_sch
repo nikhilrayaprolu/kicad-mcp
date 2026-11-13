@@ -1139,5 +1139,129 @@
 			)
 		)
 	)
+	(symbol
+		(lib_id "Connector:TestPoint")
+		(at 124.46 35.56 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom no)
+		(on_board yes)
+		(dnp no)
+		(uuid "e1863696-29e3-5a91-8222-fe6e03264b6a")
+		(property "Reference" "TP7"
+			(at 127 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "VBUS"
+			(at 127 38.1 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "TestPoint:TestPoint_Pad_D1.0mm"
+			(at 124.46 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 124.46 35.56 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "17ac89d0-0811-5517-a497-2817ee1d1c59")
+		)
+		(instances
+			(project "rv1106_sbc"
+				(path "/4437ca3d-76b9-5959-a120-c77d748e3138/50fa8733-e3a5-5e06-85b6-1f11dc1316e8"
+					(reference "TP7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(wire
+		(pts
+			(xy 124.46 35.56)
+			(xy 124.46 40.64)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "11bbfeac-d5e1-5cfb-b890-7683ff018123")
+	)
+	(symbol
+		(lib_id "power:VCC")
+		(at 124.46 40.64 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "09e02de0-56ef-5a9b-a606-b63a22347bc3")
+		(property "Reference" "#PWRTES203"
+			(at 124.46 36.83 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "VBUS"
+			(at 124.46 37.08 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 124.46 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 124.46 40.64 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "831ba4bb-71ba-51ad-bb8b-c1e6e70c55c8")
+		)
+		(instances
+			(project "rv1106_sbc"
+				(path "/4437ca3d-76b9-5959-a120-c77d748e3138/50fa8733-e3a5-5e06-85b6-1f11dc1316e8"
+					(reference "#PWRTES203")
+					(unit 1)
+				)
+			)
+		)
+	)
 	(embedded_fonts no)
 )

@@ -381,7 +381,7 @@ class _Obstacles:
             for gy in range(int(y1 // self.cell), int(y2 // self.cell) + 1):
                 self.grid[(gx, gy)].append(i)
 
-    def clear(self, x, y, r, net, clearance) -> bool:
+    def clear(self, x, y, r, net, clearance, same_net_ok: bool = False) -> bool:
         seen = set()
         for gx in range(int((x - r - 1) // self.cell), int((x + r + 1) // self.cell) + 1):
             for gy in range(int((y - r - 1) // self.cell), int((y + r + 1) // self.cell) + 1):
@@ -401,6 +401,8 @@ class _Obstacles:
                     else:
                         dist = math.hypot(x - g[0], y - g[1]) - hw
                     if n == net and k != "pad" and n:
+                        if same_net_ok:
+                            continue
                         need = r + 0.05
                     if dist < need:
                         return False
@@ -627,9 +629,8 @@ def complete(prj: Project, passes: int = 100, timeout_s: int = 600, workdir: Pat
     if not fr["ok"]:
         return {"ok": False, **{k: fr[k] for k in ("seconds", "timed_out", "fr_unrouted")}}
     t, v = read_ses(prj, ses)
-    key = lambda x: (x.net, x.layer, tuple(tuple(round(c, 3) for c in p) for p in x.pts))
-    have = {key(x) for x in L.tracks}
-    new_t = [x for x in t if key(x) not in have]
+    # Freerouting re-emits the protected copper (re-segmented): keep only segments not lying on existing copper
+    new_t = _uncovered(L.tracks, t)
     vk = {(x.net, round(x.x, 3), round(x.y, 3)) for x in L.vias}
     new_v = [x for x in v if (x.net, round(x.x, 3), round(x.y, 3)) not in vk]
     L.tracks += new_t
@@ -638,6 +639,48 @@ def complete(prj: Project, passes: int = 100, timeout_s: int = 600, workdir: Pat
     return {"ok": True, "new_tracks": len(new_t), "new_vias": len(new_v), "fr_unrouted": fr["fr_unrouted"],
             "fr_violations": fr["fr_violations"], "seconds": fr["seconds"]}
 
+
+
+def _on_seg(p, a, b, tol=0.01) -> bool:
+    vx, vy = b[0] - a[0], b[1] - a[1]
+    L2 = vx * vx + vy * vy
+    t = 0.0 if L2 == 0 else max(0.0, min(1.0, ((p[0] - a[0]) * vx + (p[1] - a[1]) * vy) / L2))
+    return math.hypot(p[0] - (a[0] + t * vx), p[1] - (a[1] + t * vy)) <= tol
+
+
+def _uncovered(existing: list, cand: list) -> list:
+    """Segments of `cand` tracks that are not already covered by same-net, same-layer `existing` copper."""
+    from .ir import Track
+    idx = defaultdict(list)
+    for x in existing:
+        for a, b in zip(x.pts, x.pts[1:]):
+            idx[(x.net, x.layer)].append((a, b))
+    out = []
+    for x in cand:
+        segs = idx.get((x.net, x.layer), [])
+        run = []
+        for a, b in zip(x.pts, x.pts[1:]):
+            mid = ((a[0] + b[0]) / 2, (a[1] + b[1]) / 2)
+            covered = any(all(_on_seg(q, s0, s1) for q in (a, mid, b)) for s0, s1 in segs)
+            if covered:
+                if len(run) >= 2:
+                    out.append(Track(net=x.net, layer=x.layer, width=x.width, pts=run, locked=x.locked))
+                run = []
+            else:
+                run = run + [b] if run else [a, b]
+        if len(run) >= 2:
+            out.append(Track(net=x.net, layer=x.layer, width=x.width, pts=run, locked=x.locked))
+    return out
+
+
+def dedupe_tracks(prj: Project) -> int:
+    """Remove track segments that duplicate other same-net copper on the same layer (keeps the first copy)."""
+    kept: list = []
+    before = sum(len(t.pts) - 1 for t in prj.layout.tracks)
+    for t in prj.layout.tracks:
+        kept += _uncovered(kept, [t])
+    prj.layout.tracks = kept
+    return before - sum(len(t.pts) - 1 for t in kept)
 
 
 def remove_free_vias(prj: Project, net: str = "GND") -> int:

@@ -244,7 +244,7 @@ def reset_tuning(prj: Project, nets: list[str]) -> dict:
             for i in range(0, len(P) - 3):
                 a, b, c, d = P[i], P[i + 1], P[i + 2], P[i + 3]
                 up, al, dn = _sub(a, b), _sub(b, c), _sub(c, d)
-                if abs(up[0] + dn[0]) > 1e-3 or abs(up[1] + dn[1]) > 1e-3 or math.hypot(*up) > 1.4:
+                if abs(up[0] + dn[0]) > 1e-3 or abs(up[1] + dn[1]) > 1e-3 or math.hypot(*up) > 2.2:
                     continue
                 if abs(up[0] * al[0] + up[1] * al[1]) > 1e-6 or math.hypot(*al) < 1e-6:
                     continue
@@ -295,6 +295,18 @@ def tune_all(prj: Project, default_tol: float = 0.5, only: list[str] | None = No
     return {"pairs": out}
 
 
+def _dejitter(t, pinned) -> None:
+    jj = [t.pts[0]]
+    for k in range(1, len(t.pts) - 1):
+        a, b, c = jj[-1], t.pts[k], t.pts[k + 1]
+        v1 = (b[0] - a[0], b[1] - a[1]); v2 = (c[0] - b[0], c[1] - b[1])
+        if (v1[0] * v2[0] + v1[1] * v2[1]) < 0 and min(math.hypot(*v1), math.hypot(*v2)) < 0.08 and not pinned(t, b):
+            continue
+        jj.append(b)
+    jj.append(t.pts[-1])
+    t.pts = jj
+
+
 def smooth_tracks(prj: Project, max_chamfer: float = 0.6) -> dict:
     """Expert finish: merge collinear points and chamfer 90-degree corners into 45-degree bevels.
     Corners where anything else joins (other tracks' points, vias, pads) are kept, so connectivity is untouched;
@@ -319,7 +331,9 @@ def smooth_tracks(prj: Project, max_chamfer: float = 0.6) -> dict:
     tuned = {x for c in prj.design.constraints if c.kind == "diffpair" for x in (c.p, c.n) if x}
     for t in L.tracks:
         if t.net in tuned:          # length-matched: meanders already carry their own 45-degree bevels
+            _dejitter(t, pinned)
             continue
+        _dejitter(t, pinned)       # 0) drop router jitter (fold-back over a < 0.08 mm stub)
         # 1) merge collinear interior points (only unpinned)
         pts = [t.pts[0]]
         for k in range(1, len(t.pts) - 1):

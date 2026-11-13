@@ -21,7 +21,15 @@ Follow `AGENTS.md` at the repo root. It is authoritative. Condensed flow:
 6. **Place:** `place(seeds=64)` → `render_view` → fix the *intent* from `near_violations`/`outside`, then re-place.
 7. **Route:** `route(engine="hybrid", candidates=16, profiles=["human","fewvias"], critical_nets=[clock, *_SW, power rails])`.
 8. **Close:** `zones(gnd_pour_outer)` → `copper(restitch)` → `drc`. Then work through `copper(min_width)` → `copper(repair, pitch=32)` → `route(mode="complete")` / `connect_pads` → `copper(dangling_vias)`, re-running `drc` after each.
-9. **Finish:** `tune_lengths` → `drc` → `design_review` → `schematic_build` → `export_fab` → `render_view(3d top/bottom)`.
-10. **Done only at:** ERC 0, DRC 0 errors / 0 unconnected / 0 parity. Report remaining warnings and unverifiable risks honestly.
+9. **Pours and pairs:**
+   - Pour every layer: GND on F/B and In1, power pours on In2. Then `copper(restitch)` → `copper(stitch_islands)`.
+   - Pairs must have equal via counts on both legs. If not, per pair: `copper(unstitch)` → `copper(ripup, nets=[P,N])` → `route(mode="complete", engine="hroute", critical_nets=[P,N])`.
+10. **Finish:** `copper(smooth)` → `tune_lengths(reset=true)` → `copper(dangling_vias)` → `schematic_build` → `drc`.
+11. **Quality gate:** `expert_review`.
+    - Fix each failed check with the tool it names.
+    - **Look** at the returned renders against the `visual_checklist`.
+    - Repeat until `grade == "expert"`: ERC 0, DRC 0 errors **and 0 warnings**, symmetric pairs, pours on every layer, fiducials, test points, labels.
+12. **Release:** `export_fab` → `publish(push=true)`. This commits the 3-D/2-D/per-layer/schematic images and a README gallery under `designs/<name>/` and pushes them to GitHub.
+13. Report honestly: grade, DRC/ERC numbers, every remaining finding with a judgement, and the risks you could not verify.
 
 Engines own geometry. Do not compute track coordinates or hand-place large numbers of parts.

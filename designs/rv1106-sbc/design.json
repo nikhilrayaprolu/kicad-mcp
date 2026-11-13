@@ -2788,6 +2788,23 @@
    "fields": {},
    "dnp": false,
    "note": ""
+  },
+  "TP7": {
+   "ref": "TP7",
+   "symbol": "Connector:TestPoint",
+   "footprint": "TestPoint:TestPoint_Pad_D1.0mm",
+   "value": "VBUS",
+   "part": "",
+   "mpn": "",
+   "lcsc": "",
+   "block": "test",
+   "pins": {
+    "1": "VBUS"
+   },
+   "nc": [],
+   "fields": {},
+   "dnp": false,
+   "note": ""
   }
  },
  "netclasses": {
@@ -5592,6 +5609,28 @@
    "net": null,
    "layer": null,
    "note": "no_pour: no tracks, vias or pours under the RJ45 body / magnetics (beyond its pin rows)"
+  },
+  {
+   "kind": "near",
+   "ref": "TP7",
+   "target": "J1",
+   "block": null,
+   "side": null,
+   "x": null,
+   "y": null,
+   "rot": null,
+   "offset": null,
+   "max_mm": 10.0,
+   "rect": null,
+   "layers": null,
+   "p": null,
+   "n": null,
+   "impedance": null,
+   "nets": null,
+   "tol_mm": null,
+   "net": null,
+   "layer": null,
+   "note": ""
   }
  ],
  "notes": [

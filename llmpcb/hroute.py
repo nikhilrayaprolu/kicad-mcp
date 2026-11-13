@@ -38,8 +38,32 @@ def ensure_built() -> Path:
     return BIN
 
 
+def _forbid_rects(W: float, H: float, windows: list, step: float = 0.25) -> list:
+    """Rectangles covering the board minus `windows` (row scan, merged runs)."""
+    rects = []
+    y = 0.0
+    while y < H:
+        y2 = min(H, y + step)
+        x, run = 0.0, None
+        while x < W:
+            x2 = min(W, x + step)
+            free = any(wx1 < x2 and wx2 > x and wy1 < y2 and wy2 > y for wx1, wy1, wx2, wy2 in windows)
+            if not free:
+                run = [run[0], x2] if run else [x, x2]
+            elif run:
+                rects.append((run[0], y, run[1], y2)); run = None
+            x = x2
+        if run:
+            rects.append((run[0], y, run[1], y2))
+        y = y2
+    return rects
+
+
 def write_problem(prj: Project, path: Path, profile: str = "human", pitch: float = 0.05,
-                  only_nets: list[str] | None = None, protect_all: bool = False) -> dict:
+                  only_nets: list[str] | None = None, protect_all: bool = False,
+                  forbid: dict | None = None) -> dict:
+    """forbid = {layer: [window rects]}: that layer is closed to the routed nets except inside the windows
+    (used to make both legs of a pair change layer at the same place)."""
     d, L = prj.design, prj.layout
     cul = brd.copper_layers(d.board.layers)
     full_planes = {c.layer: c.net for c in d.constraints if c.kind == "plane" and not c.rect and c.layer in cul}
@@ -145,7 +169,13 @@ def write_problem(prj: Project, path: Path, profile: str = "human", pitch: float
     for p in pads:
         if p.net:
             pin_order[p.net].append(p)
-    for pnet, nnet in (pair_nets.items() if not protect_all else []):
+    def _sel(n):
+        return only_nets is None or any(fnmatch.fnmatchcase(n, g) for g in only_nets)
+    has_cu = {t.net for t in L.tracks} | {v.net for v in L.vias}
+    for pnet, nnet in pair_nets.items():
+        # incremental mode: couple a pair only when both legs are being (re)routed and carry no copper yet
+        if protect_all and not (_sel(pnet) and _sel(nnet) and pnet not in has_cu and nnet not in has_cu):
+            continue
         pp = pin_order[pnet]
         if len(pp) != 2 or len(pin_order[nnet]) != 2:
             continue
@@ -153,6 +183,10 @@ def write_problem(prj: Project, path: Path, profile: str = "human", pitch: float
         gap = nc.diff_gap or nc.clearance
         c0, c1 = L.placement[pp[0].ref], L.placement[pp[1].ref]
         out.append(f"PAIR {nid[pnet]} {nid[nnet]} {gap} {c0.x} {c0.y} {c1.x} {c1.y}")
+    for lay, wins in (forbid or {}).items():
+        if lay in lidx:
+            for x1, y1, x2, y2 in _forbid_rects(d.board.width, d.board.height, wins):
+                out.append(f"RECT {lidx[lay]} {x1:.4f} {y1:.4f} {x2:.4f} {y2:.4f} -2")
     path.write_text("\n".join(out) + "\n")
     return {"nets": nets, "nid": nid, "layers": cul, "routed_nets": sum(1 for n in nets if n not in plane_nets and len(by_net[n]) >= 2)}
 
@@ -179,12 +213,12 @@ def read_result(path: Path, info: dict) -> tuple[list[Track], list[Via], list[st
 
 
 def run(prj: Project, profile: str = "human", workdir: Path | None = None, timeout_s: int = 1800,
-        only_nets: list[str] | None = None, protect_all: bool = False) -> dict:
+        only_nets: list[str] | None = None, protect_all: bool = False, forbid: dict | None = None) -> dict:
     ensure_built()
     work = workdir or (prj.root / "out" / "hroute" / profile)
     work.mkdir(parents=True, exist_ok=True)
     pin, pout = work / "problem.txt", work / "result.txt"
-    info = write_problem(prj, pin, profile, only_nets=only_nets, protect_all=protect_all)
+    info = write_problem(prj, pin, profile, only_nets=only_nets, protect_all=protect_all, forbid=forbid)
     t0 = time.time()
     logf = work / "hroute.log"
     if pout.exists():
@@ -345,12 +379,50 @@ def hybrid_portfolio(prj: Project, candidates: list[dict], profiles: list[str], 
 
 
 
-def complete_nets(prj: Project, nets: list[str], profile: str = "human", timeout_s: int = 900) -> dict:
-    """Incremental: route only `nets` with hroute around ALL existing copper (kept as fixed obstacles)."""
-    res = run(prj, profile, workdir=prj.root / "out" / "hroute" / "complete", timeout_s=timeout_s,
-              only_nets=nets, protect_all=True)
-    if not res.get("ok"):
-        return {"ok": False, "error": res.get("error")}
+def complete_nets(prj: Project, nets: list[str], profile: str | list[str] = "human", timeout_s: int = 900) -> dict:
+    """Incremental: route only `nets` with hroute around ALL existing copper (kept as fixed obstacles).
+    Several profiles run in parallel; the winner is: everything routed > diff pairs with equal via counts
+    on both legs > coupled pairs > fewest vias > shortest."""
+    from collections import Counter
+    from concurrent.futures import ThreadPoolExecutor
+    profs = [profile] if isinstance(profile, str) else list(profile)
+    if len(profs) == 1 and profs[0] == "human":
+        profs = list(PROFILES)          # default: try them all, they cost one core each
+    pairs = [(c.p, c.n) for c in prj.design.constraints if c.kind == "diffpair" and c.p and c.n
+             and any(fnmatch.fnmatchcase(c.p, g) for g in nets) and any(fnmatch.fnmatchcase(c.n, g) for g in nets)]
+
+    def one(arg):
+        pf, forbid, tag = arg
+        return f"{pf}{tag}", run(prj, pf, workdir=prj.root / "out" / "hroute" / f"complete_{pf}{tag}",
+                                timeout_s=timeout_s, only_nets=nets, protect_all=True, forbid=forbid)
+
+    # layer-forced variants for pairs: close one outer layer except a window at each SMD pad, so both legs
+    # via to the same layer right at the breakout (how a human crosses one pair under another)
+    variants = [(pf, None, "") for pf in profs]
+    if pairs:
+        pads = [q for q in brd.abs_pads(prj) if any(q.net in pn for pn in pairs)]
+        for lay in ("F.Cu", "B.Cu"):
+            for r in (1.3, 2.2, 3.2):
+                wins = [(q.x - r, q.y - r, q.x + r, q.y + r) for q in pads if lay in q.layers and not q.drill]
+                variants += [(pf, {lay: wins}, f"_no{lay[0]}{r}") for pf in ("human", "tight")]
+    with ThreadPoolExecutor(len(variants)) as ex:
+        results = [r for r in ex.map(one, variants) if r[1].get("ok")]
+    if not results:
+        return {"ok": False, "error": "no profile produced a result"}
+
+    def score(item):
+        pf, r = item
+        vc = Counter(v.net for v in r["vias"])
+        asym = sum(1 for p, n in pairs if vc[p] != vc[n])
+        coupled = len(r.get("pairs_coupled", [])) // 2
+        ln = sum(math.hypot(b[0] - a[0], b[1] - a[1]) for t in r["tracks"] for a, b in zip(t.pts, t.pts[1:]))
+        return (len(r["failed"]), asym, -coupled, len(r["vias"]), ln)
+
+    pf, res = min(results, key=score)
+    vc = Counter(v.net for v in res["vias"])
     prj.layout.tracks += res["tracks"]
     prj.layout.vias += res["vias"]
-    return {"ok": True, "tracks": len(res["tracks"]), "vias": len(res["vias"]), "failed": res["failed"]}
+    return {"ok": True, "profile": pf, "tracks": len(res["tracks"]), "vias": len(res["vias"]), "failed": res["failed"],
+            "pairs": {f"{p}/{n}": {"vias": f"{vc[p]}/{vc[n]}", "coupled": p in res.get("pairs_coupled", [])}
+                      for p, n in pairs},
+            "tried": {p: list(score((p, r))[:4]) for p, r in results}}

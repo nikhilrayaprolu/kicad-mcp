@@ -1,0 +1,4 @@
+[{"tool":"copper","args":{"action":"dedupe"}},
+ {"tool":"tune_lengths","args":{"reset":true}},
+ {"tool":"route","args":{"mode":"complete","engine":"hroute","critical_nets":["VBUS"],"image":false,"timeout_s":300}},
+ {"tool":"drc"}]

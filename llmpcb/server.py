@@ -32,9 +32,18 @@ Proven flow:
    diffpair constraints, plane constraints (GND on In1), edge/region/near/side constraints
  5 place(seeds=64) -> render_view -> fix floorplan conflicts from the 'outside'/'near_violations' report, re-place
  6 route(engine="hybrid", candidates=16, profiles=["human","fewvias"], critical_nets=[crystal, *_SW, power])
- 7 zones(gnd_pour_outer) -> copper(restitch) -> drc ; close leftovers with copper(repair) / route(mode="complete")
-   / connect_pads ; copper(min_width) for neck-down artefacts ; copper(dangling_vias)
- 8 tune_lengths -> drc -> design_review -> export_fab ; done only at DRC 0 errors / 0 unconnected / 0 parity.
+ 7 zones(gnd_pour_outer + In-layer power pours) -> copper(restitch) -> drc ; close leftovers with copper(repair) /
+   route(mode="complete") / connect_pads ; copper(min_width) ; copper(dangling_vias)
+ 8 diff pairs: every pair must take the SAME layer changes on both legs (design_review diffpair_vias). Fix with
+   copper(unstitch) + copper(ripup, nets=[P,N]) + route(mode="complete", engine="hroute", critical_nets=[P,N])
+   (all profiles in parallel, best symmetric/coupled result wins), one pair at a time.
+ 9 finish in this order: copper(smooth) -> tune_lengths(reset=true) -> copper(restitch) -> copper(stitch_islands)
+   -> copper(dangling_vias) -> schematic_build -> drc
+10 QUALITY GATE: expert_review -> fix every failed check with the tool it names, LOOK at the returned renders
+   against visual_checklist, repeat until grade == "expert" (0 DRC errors AND 0 warnings, symmetric pairs,
+   pours on every layer, stitching, 45-degree routing, fiducials, test points, labels).
+11 export_fab -> publish(push=true) to render 3-D/2-D/per-layer/schematic images + README gallery into
+   designs/<name>/ and commit+push them (skip push only if the user said not to).
 Pins: number, exact name, a '/'-segment of the name, or a glob ('DVDD*'). Nets are created by connecting pins."""
 
 mcp = MCPServer("kicad-mcp", instructions=INSTRUCTIONS)
@@ -288,6 +297,8 @@ def schematic_build() -> dict:
     info = schematic.build(prj)
     erc = schematic.run_erc(prj)
     parity = schematic.check_netlist(prj)
+    from . import quality as _q
+    (prj.root / "out" / "erc_state.json").write_text(json.dumps({"netlist_hash": _q.netlist_hash(prj)}))
     errs = [v for v in erc["violations"] if v["severity"] == "error"]
     warns = [v for v in erc["violations"] if v["severity"] != "error"]
     from collections import Counter
@@ -316,9 +327,15 @@ def board_setup(width: float, height: float, layers: int = 4, corner_r: float = 
     return {"board": d.board.model_dump(), "fab_rules": schematic.FAB_RULES.get(fab)}
 
 
-def _write_board(prj) -> dict:
+def _write_board(prj, fill: bool = True) -> dict:
+    """Regenerate the .kicad_pcb from the IR; zones are refilled by KiCad and saved, so the file (and anything
+    viewing it: KiCad, renders, GitHub) always shows the copper pours."""
     schematic.write_project_file(prj)
-    return board.build(prj)
+    res = board.build(prj)
+    if fill and prj.layout.zones:
+        from . import fills
+        fills.refill(prj)
+    return res
 
 
 @tool
@@ -353,9 +370,11 @@ def place(effort: float = 1.0, seed: int = 1, unlock_all: bool = False, image: b
 
 
 @tool
-def place_part(ref: str, near: str, max_radius_mm: float = 12.0, rot: float | None = None) -> dict:
+def place_part(ref: str, near: str, max_radius_mm: float = 12.0, rot: float | None = None, side: str = "") -> dict:
     """Place ONE (new) part at the nearest legal spot to `near` ("REF", "REF.pin" or "x,y") without touching
-    any other part or copper; checks courtyards, board edge, keepouts and existing tracks/vias on F.Cu."""
+    any other part or copper; checks courtyards (same side + through-hole parts), board edge, mounting holes and
+    existing copper on the layers its pads use. side = top|bottom (default: the part's `side` constraint, else
+    top). Connect it afterwards with route(mode="complete")."""
     import math as _m
     import numpy as _np
     prj = _prj()
@@ -369,18 +388,26 @@ def place_part(ref: str, near: str, max_radius_mm: float = 12.0, rot: float | No
         if not pads:
             raise ValueError(f"cannot resolve {near}")
         tx, ty = sum(p.x for p in pads) / len(pads), sum(p.y for p in pads) / len(pads)
+    import fnmatch as _fn
+    if not side:
+        side = next((c.side for c in d.constraints if c.kind == "side" and c.ref and _fn.fnmatchcase(ref, c.ref)
+                     and c.side in ("top", "bottom")), "top")
     rects = []
     for r2, pl in L.placement.items():
         if r2 == ref or r2 not in d.components:
             continue
-        bb = libs.bbox_rot(libs.get_footprint_side(d.components[r2].footprint, pl.side).courtyard, pl.rot)
+        fp2 = libs.get_footprint_side(d.components[r2].footprint, pl.side)
+        if pl.side != side and not any(p.kind == "thru_hole" for p in fp2.pads):
+            continue
+        bb = libs.bbox_rot(fp2.courtyard, pl.rot)
         rects.append((pl.x + bb[0], pl.y + bb[1], pl.x + bb[2], pl.y + bb[3]))
     for mh in d.board.mounting_holes:
         rr = (mh[2] if len(mh) > 2 else d.board.mh_drill) / 2 + 1.6
         rects.append((mh[0] - rr, mh[1] - rr, mh[0] + rr, mh[1] + rr))
     R = _np.array(rects)
-    obs = router._Obstacles(prj)
-    fp = libs.get_footprint(d.components[ref].footprint)
+    from . import tune as _tune
+    fp = libs.get_footprint_side(d.components[ref].footprint, side)
+    lay_obs: dict = {}
     W, H = d.board.width, d.board.height
     for rad in _np.arange(0.0, max_radius_mm, 0.1):
         n = max(8, int(2 * _m.pi * max(rad, 0.1) / 0.1))
@@ -396,28 +423,87 @@ def place_part(ref: str, near: str, max_radius_mm: float = 12.0, rot: float | No
                                (_np.minimum(R[:, 3], q[3]) - _np.maximum(R[:, 1], q[1]) > 0)).any():
                     continue
                 ok = True
-                for p in fp.pads:     # pads must clear existing copper of other nets
+                for p in fp.pads:     # pads must clear existing copper of other nets on their own layers
                     px, py = libs.pad_abs(p, x, y, rt)
                     hx, hy = libs.pad_extent(p, rt)
                     net = d.components[ref].pins.get(p.number, "")
-                    if not obs.clear(px, py, max(hx, hy), net, 0.15):
-                        ok = False
+                    cu = [l for l in p.layers if l.endswith(".Cu") and "*" not in l] or \
+                        board.copper_layers(d.board.layers)
+                    for l in cu:
+                        key = (l, net)
+                        if key not in lay_obs:
+                            lay_obs[key] = _tune.LayerObstacles(prj, l, net)
+                        if not lay_obs[key].ok(px, py, max(hx, hy), 0.15):
+                            ok = False
+                            break
+                    if not ok:
                         break
                 if ok:
-                    L.placement[ref] = Placement(x=x, y=y, rot=rt, locked=True)
+                    L.placement[ref] = Placement(x=x, y=y, rot=rt, locked=True, side=side)
                     prj.save()
                     _write_board(prj)
                     return {"ref": ref, "x": x, "y": y, "rot": rt, "dist_mm": round(float(rad), 2)}
     return {"error": f"no legal spot for {ref} within {max_radius_mm} mm of {near}"}
 
 
+def _tap(prj, pa, net: str, width: float = 0.0) -> dict:
+    """Pad -> via -> existing `net` copper on another layer (nearest first)."""
+    import math as _m
+    from . import tune as _tune
+    from .ir import Track, Via
+    if pa.net != net:
+        raise ValueError(f"pad is on {pa.net}, not {net}")
+    nc = prj.design.netclass_of(net)
+    w = width or nc.track
+    lay = next(l for l in pa.layers if l.endswith(".Cu"))
+    obs_all = router._Obstacles(prj)
+    pad_obs = _tune.LayerObstacles(prj, lay, net)
+    # candidate via spots: points along same-net tracks on OTHER layers, nearest to the pad first
+    cands = []
+    for t in prj.layout.tracks:
+        if t.net != net or t.layer == lay:
+            continue
+        for q1, q2 in zip(t.pts, t.pts[1:]):
+            L_ = _m.hypot(q2[0] - q1[0], q2[1] - q1[1])
+            for k in range(max(1, int(L_ / 0.1)) + 1):
+                f = k / max(1, int(L_ / 0.1))
+                x, y = q1[0] + (q2[0] - q1[0]) * f, q1[1] + (q2[1] - q1[1]) * f
+                cands.append((_m.hypot(x - pa.x, y - pa.y), x, y))
+    cands.sort()
+    for dist, x, y in cands[:2000]:
+        if dist > 15:
+            break
+        if not obs_all.clear(x, y, nc.via_d / 2, net, nc.clearance, same_net_ok=True):
+            continue
+        # path on the pad layer: straight, or one 45-degree dogleg either way
+        dx, dy = x - pa.x, y - pa.y
+        m = min(abs(dx), abs(dy))
+        sx_, sy_ = (1 if dx >= 0 else -1), (1 if dy >= 0 else -1)
+        paths = [[(pa.x, pa.y), (x, y)],
+                 [(pa.x, pa.y), (pa.x + sx_ * m, pa.y + sy_ * m), (x, y)],
+                 [(pa.x, pa.y), (x - sx_ * m, y - sy_ * m), (x, y)]]
+        for path in paths:
+            if pad_obs.path_ok(path, w / 2, nc.clearance):
+                prj.layout.vias.append(Via(net=net, x=round(x, 4), y=round(y, 4), d=nc.via_d, drill=nc.via_drill, locked=True))
+                prj.layout.tracks.append(Track(net=net, layer=lay, width=w, locked=True,
+                                               pts=[[round(p[0], 4), round(p[1], 4)] for p in path]))
+                prj.save()
+                _write_board(prj)
+                return {"tapped": f"{pa.ref}.{pa.number} -> via ({x:.2f},{y:.2f}) -> {net}", "len_mm": round(dist, 2)}
+    return {"error": f"no legal via/track to {net} copper within 15 mm"}
+
+
 @tool
 def connect_pads(a: str, b: str, layer: str = "B.Cu", width: float = 0.0) -> dict:
     """Draw a straight track between two pads of the SAME net ("REF.pin"), only if the straight path is clear of
-    other-net copper on that layer (checked with netclass clearance). For last-mile fixes the router missed."""
+    other-net copper on that layer (checked with netclass clearance). For last-mile fixes the router missed.
+    b = a NET name instead of a pad: tap pad `a` into the nearest existing copper of that net with one via
+    (clearance-checked on every layer) and a straight/45-degree track on the pad's layer."""
     from .ir import Track
     prj = _prj()
     pads = {f"{p.ref}.{p.number}": p for p in board.abs_pads(prj)}
+    if a in pads and b not in pads and b in prj.design.nets():
+        return _tap(prj, pads[a], b, width)
     pa, pb = pads.get(a), pads.get(b)
     if not pa or not pb:
         raise ValueError("unknown pad")
@@ -492,7 +578,7 @@ def route(passes: int = 100, timeout_s: int = 900, image: bool = True, candidate
     prj = _prj()
     if mode == "complete" and engine == "hroute":   # our router, only the listed nets, around all copper
         from . import hroute as _hr
-        res = _hr.complete_nets(prj, critical_nets or [], (profiles or ["human"])[0], timeout_s=timeout_s)
+        res = _hr.complete_nets(prj, critical_nets or [], profiles or "human", timeout_s=timeout_s)
         prj.save()
         _write_board(prj)
         drc_ = checks.run_drc(prj)
@@ -581,7 +667,8 @@ def copper(action: str, nets: list[str] | None = None, net: str = "GND", pitch: 
     """Deterministic copper helpers. action=plane_fanout: drop a via + stub next to every SMD pad of the given
     plane nets (run BEFORE route so the router only has signals left). action=stitch: grid of `net` vias in free
     space (after routing, ties pours/planes). action=clear: remove all tracks/vias (keep locked unless
-    clear_unlocked_routes=False is overridden). action=ripup: remove copper of `nets`; with rect=[x1,y1,x2,y2]
+    clear_unlocked_routes=False is overridden). action=stitch_islands: every floating pour island of `net` gets a
+    via to the plane (run after zones/restitch; unstitchable slivers are removed). action=ripup: remove copper of `nets`; with rect=[x1,y1,x2,y2]
     only tracks/vias touching that rectangle (local surgery on one bad link)."""
     prj = _prj()
     if action == "plane_fanout":
@@ -594,6 +681,13 @@ def copper(action: str, nets: list[str] | None = None, net: str = "GND", pitch: 
     elif action == "smooth":            # merge collinear points, chamfer 90-degree corners (clearance-checked)
         from . import tune as _tune
         res = _tune.smooth_tracks(prj)
+    elif action == "stitch_islands":    # tie floating pour islands of `net` to its plane with a via each
+        from . import fills
+        res = fills.stitch_islands(prj, net=net, write=lambda p: _write_board(p, fill=False))
+    elif action == "dedupe":            # drop duplicated track segments (same net, layer and geometry)
+        res = {"removed_segments": router.dedupe_tracks(prj)}
+    elif action == "unstitch":          # remove free stitching vias of `net` (before re-routing in a crowded area)
+        res = {"removed": router.remove_free_vias(prj, net)}
     elif action == "dangling_vias":     # remove one-layer vias, then trim the stubs they leave
         res = {"removed_vias": router.remove_dangling_vias(prj), "trimmed_points": router.prune_stubs(prj)}
     elif action == "repair":       # parallel rip-up/re-route variants scored by KiCad DRC
@@ -619,7 +713,7 @@ def copper(action: str, nets: list[str] | None = None, net: str = "GND", pitch: 
         prj.layout.tracks, prj.layout.vias = [], []
         res = {"cleared": True}
     else:
-        raise ValueError("action must be plane_fanout|stitch|restitch|smooth|repair|ripup|min_width|dangling_vias|clear")
+        raise ValueError("action must be plane_fanout|stitch|restitch|unstitch|dedupe|stitch_islands|smooth|repair|ripup|min_width|dangling_vias|clear")
     prj.save()
     _write_board(prj)
     return res
@@ -651,6 +745,35 @@ def design_review() -> dict:
     """Engineering review beyond DRC: near-constraint misses (decoupling/crystal), diff-pair skew, current vs width,
     unconnected power pins, single-pin nets."""
     return checks.design_review(_prj())
+
+
+@tool
+def expert_review(images: bool = True) -> list | dict:
+    """The quality gate: is this board at expert standard? Re-runs KiCad DRC (zones refilled, parity) and the
+    design review, then checks diff-pair via symmetry and skew, copper pours on every layer, ground stitching,
+    45-degree routing (no acute corners), fiducials, test points on rails, connector labels and title. Returns
+    grade (expert|needs_work), each failed check with the tool that fixes it, and 2-D + 3-D top/bottom
+    renders for your own visual review against `visual_checklist`. Iterate until grade == expert."""
+    from . import quality
+    prj = _prj()
+    _write_board(prj)
+    res = quality.expert_review(prj)
+    if not images:
+        return res
+    return [json.dumps(res), Image(path=str(render.render_2d(prj))),
+            Image(path=str(render.render_3d(prj, "top"))), Image(path=str(render.render_3d(prj, "bottom")))]
+
+
+@tool
+def publish(push: bool = False, message: str = "", allow_needs_work: bool = False) -> dict:
+    """Release step: renders the board (3-D top/bottom, 2-D layout, every copper layer, every schematic sheet)
+    into designs/<name>/images/, writes designs/<name>/README.md (gallery + review metrics) and git-commits them
+    with the design sources and gerber zip (only these paths). push=True also pushes to the remote. Refuses
+    while expert_review grade is needs_work unless allow_needs_work=True (the README then lists open items)."""
+    from . import quality
+    prj = _prj()
+    _write_board(prj)
+    return quality.publish(prj, push=push, message=message, allow_needs_work=allow_needs_work)
 
 
 @tool

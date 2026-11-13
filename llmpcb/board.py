@@ -48,6 +48,9 @@ class AbsPad:
     angle: float       # total angle
 
 
+KEEP_ISLANDS = False   # analysis fills (fills.stitch_islands) keep floating islands
+
+
 def abs_pads(prj: Project) -> list[AbsPad]:
     d, L = prj.design, prj.layout
     ncu = copper_layers(d.board.layers)
@@ -338,7 +341,7 @@ def build(prj: Project) -> dict:
                        S("uuid", _uid("zone", zi)), S("hatch", Sym("edge"), 0.5), S("priority", z.priority), cp,
                        S("min_thickness", z.min_width), S("filled_areas_thickness", Sym("no")),
                        S("fill", Sym("yes"), S("thermal_gap", z.thermal_gap), S("thermal_bridge_width", z.thermal_spoke),
-                         S("island_removal_mode", 0), S("island_area_min", 0.5)),
+                         S("island_removal_mode", 1 if KEEP_ISLANDS else 0), S("island_area_min", 0.5)),
                        S("polygon", S("pts", *[S("xy", round(p[0], 4), round(p[1], 4)) for p in pts]))))
     # rule areas: keepout constraints marked "no_pour" also forbid copper pours (e.g. under an RJ45 body)
     for ki, c in enumerate(d.constraints):

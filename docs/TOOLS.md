@@ -16,9 +16,18 @@ Proven flow:
    diffpair constraints, plane constraints (GND on In1), edge/region/near/side constraints
  5 place(seeds=64) -> render_view -> fix floorplan conflicts from the 'outside'/'near_violations' report, re-place
  6 route(engine="hybrid", candidates=16, profiles=["human","fewvias"], critical_nets=[crystal, *_SW, power])
- 7 zones(gnd_pour_outer) -> copper(restitch) -> drc ; close leftovers with copper(repair) / route(mode="complete")
-   / connect_pads ; copper(min_width) for neck-down artefacts ; copper(dangling_vias)
- 8 tune_lengths -> drc -> design_review -> export_fab ; done only at DRC 0 errors / 0 unconnected / 0 parity.
+ 7 zones(gnd_pour_outer + In-layer power pours) -> copper(restitch) -> drc ; close leftovers with copper(repair) /
+   route(mode="complete") / connect_pads ; copper(min_width) ; copper(dangling_vias)
+ 8 diff pairs: every pair must take the SAME layer changes on both legs (design_review diffpair_vias). Fix with
+   copper(unstitch) + copper(ripup, nets=[P,N]) + route(mode="complete", engine="hroute", critical_nets=[P,N])
+   (all profiles in parallel, best symmetric/coupled result wins), one pair at a time.
+ 9 finish in this order: copper(smooth) -> tune_lengths(reset=true) -> copper(restitch) -> copper(stitch_islands)
+   -> copper(dangling_vias) -> schematic_build -> drc
+10 QUALITY GATE: expert_review -> fix every failed check with the tool it names, LOOK at the returned renders
+   against visual_checklist, repeat until grade == "expert" (0 DRC errors AND 0 warnings, symmetric pairs,
+   pours on every layer, stitching, 45-degree routing, fiducials, test points, labels).
+11 export_fab -> publish(push=true) to render 3-D/2-D/per-layer/schematic images + README gallery into
+   designs/<name>/ and commit+push them (skip push only if the user said not to).
 Pins: number, exact name, a '/'-segment of the name, or a glob ('DVDD*'). Nets are created by connecting pins.
 ```
 
@@ -47,6 +56,8 @@ Pins: number, exact name, a '/'-segment of the name, or a glob ('DVDD*'). Nets a
 | [`tune_lengths`](#tune_lengths) | Length-match differential pairs: 45-degree-mitered serpentine meanders on the shorter leg, sized to the skew |
 | [`drc`](#drc) | Refill zones, run KiCad DRC (incl. schematic parity), return grouped violations with examples. |
 | [`design_review`](#design_review) | Engineering review beyond DRC: near-constraint misses (decoupling/crystal), diff-pair skew, current vs width, |
+| [`expert_review`](#expert_review) | The quality gate: is this board at expert standard? Re-runs KiCad DRC (zones refilled, parity) and the |
+| [`publish`](#publish) | Release step: renders the board (3-D top/bottom, 2-D layout, every copper layer, every schematic sheet) |
 | [`render_view`](#render_view) | Look at the design: kind=2d (fast placement/routing view), 3d (kicad-cli render), schematic (page N). |
 | [`export_fab`](#export_fab) | Gerbers (zones refilled), Excellon drill, CPL, BOM (JLC format), IPC-D-356, PDFs; zips gerbers. |
 | [`run_script`](#run_script) | Escape hatch: run Python with `prj`, `d` (design), `L` (layout) and llmpcb modules in scope. |
@@ -180,7 +191,9 @@ Run constraint-driven placement (regions, edge, fixed, near, keepouts) and write
 ### `place_part`
 
 Place ONE (new) part at the nearest legal spot to `near` ("REF", "REF.pin" or "x,y") without touching
-    any other part or copper; checks courtyards, board edge, keepouts and existing tracks/vias on F.Cu.
+    any other part or copper; checks courtyards (same side + through-hole parts), board edge, mounting holes and
+    existing copper on the layers its pads use. side = top|bottom (default: the part's `side` constraint, else
+    top). Connect it afterwards with route(mode="complete").
 
 | Parameter | Type | Default | Required |
 |---|---|---|---|
@@ -188,11 +201,14 @@ Place ONE (new) part at the nearest legal spot to `near` ("REF", "REF.pin" or "x
 | `near` | string |  | yes |
 | `max_radius_mm` | number | 12.0 |  |
 | `rot` | number / null | null |  |
+| `side` | string | "" |  |
 
 ### `connect_pads`
 
 Draw a straight track between two pads of the SAME net ("REF.pin"), only if the straight path is clear of
     other-net copper on that layer (checked with netclass clearance). For last-mile fixes the router missed.
+    b = a NET name instead of a pad: tap pad `a` into the nearest existing copper of that net with one via
+    (clearance-checked on every layer) and a straight/45-degree track on the pad's layer.
 
 | Parameter | Type | Default | Required |
 |---|---|---|---|
@@ -250,7 +266,8 @@ Copper pours. add: [{net, layer, poly?[[x,y]..], priority?, clearance?, connect?
 Deterministic copper helpers. action=plane_fanout: drop a via + stub next to every SMD pad of the given
     plane nets (run BEFORE route so the router only has signals left). action=stitch: grid of `net` vias in free
     space (after routing, ties pours/planes). action=clear: remove all tracks/vias (keep locked unless
-    clear_unlocked_routes=False is overridden). action=ripup: remove copper of `nets`; with rect=[x1,y1,x2,y2]
+    clear_unlocked_routes=False is overridden). action=stitch_islands: every floating pour island of `net` gets a
+    via to the plane (run after zones/restitch; unstitchable slivers are removed). action=ripup: remove copper of `nets`; with rect=[x1,y1,x2,y2]
     only tracks/vias touching that rectangle (local surgery on one bad link).
 
 | Parameter | Type | Default | Required |
@@ -287,6 +304,31 @@ Refill zones, run KiCad DRC (incl. schematic parity), return grouped violations 
 
 Engineering review beyond DRC: near-constraint misses (decoupling/crystal), diff-pair skew, current vs width,
     unconnected power pins, single-pin nets.
+
+### `expert_review`
+
+The quality gate: is this board at expert standard? Re-runs KiCad DRC (zones refilled, parity) and the
+    design review, then checks diff-pair via symmetry and skew, copper pours on every layer, ground stitching,
+    45-degree routing (no acute corners), fiducials, test points on rails, connector labels and title. Returns
+    grade (expert|needs_work), each failed check with the tool that fixes it, and 2-D + 3-D top/bottom
+    renders for your own visual review against `visual_checklist`. Iterate until grade == expert.
+
+| Parameter | Type | Default | Required |
+|---|---|---|---|
+| `images` | boolean | true |  |
+
+### `publish`
+
+Release step: renders the board (3-D top/bottom, 2-D layout, every copper layer, every schematic sheet)
+    into designs/<name>/images/, writes designs/<name>/README.md (gallery + review metrics) and git-commits them
+    with the design sources and gerber zip (only these paths). push=True also pushes to the remote. Refuses
+    while expert_review grade is needs_work unless allow_needs_work=True (the README then lists open items).
+
+| Parameter | Type | Default | Required |
+|---|---|---|---|
+| `push` | boolean | false |  |
+| `message` | string | "" |  |
+| `allow_needs_work` | boolean | false |  |
 
 ### `render_view`
 

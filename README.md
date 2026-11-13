@@ -15,7 +15,8 @@ It was built and evaluated by designing a **130-part Rockchip RV1106 Linux singl
 - 4-layer, 65 × 50 mm
 - USB-C, 10/100 Ethernet, SPI NAND, microSD, MIPI-CSI, 4 regulators
 - **KiCad ERC 0 errors; DRC 0 errors, 0 warnings, 0 unconnected, 0 schematic-parity issues**
-- differential pairs length-matched with 45°-mitred serpentines (0.15–0.4 mm; ETH RX 1.96 mm)
+- every differential pair has equal via counts on both legs and is within its length tolerance (0.09–0.99 mm), using 45°-mitred serpentines
+- `expert_review` quality gate: grade **expert**, 15/15 checks
 - expert finishing: fiducials, labelled test points, edge via fence, legalised silkscreen
 
 See [`docs/EVALUATION.md`](docs/EVALUATION.md).
@@ -23,7 +24,7 @@ See [`docs/EVALUATION.md`](docs/EVALUATION.md).
 | | |
 |---|---|
 | [`AGENTS.md`](AGENTS.md) | **Playbook for the AI agent**: the step-by-step flow, design rules and pitfalls that produce high-quality boards |
-| [`docs/TOOLS.md`](docs/TOOLS.md) | Reference for all 26 MCP tools (generated from the server) |
+| [`docs/TOOLS.md`](docs/TOOLS.md) | Reference for all 28 MCP tools (generated from the server) |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | How it works: IR, placer, routers (own C++ router + Freerouting), verification |
 | [`docs/EVALUATION.md`](docs/EVALUATION.md) | The RV1106 case study: metrics, iterations, bugs found, honest limitations |
 | [`designs/rv1106-sbc/`](designs/rv1106-sbc) | Complete worked example: IR, KiCad files, every MCP call batch, fab outputs, renders |
@@ -38,6 +39,10 @@ See [`docs/EVALUATION.md`](docs/EVALUATION.md).
 | Layout: red F.Cu, olive In2.Cu, blue B.Cu; hatched = bottom-side parts | Length tuning: serpentine meanders on the CSI camera pairs |
 |---|---|
 | ![layout](docs/images/pcb_layout_2d.png) | ![tuning](docs/images/pcb_length_tuning_closeup.png) |
+
+| Copper pours on all 4 layers: F.Cu GND, In1 GND plane, In2 3V3/0V9/VSYS, B.Cu GND |
+|---|
+| ![pours](docs/images/pcb_pours_all_layers.png) |
 
 Generated hierarchical schematic, one sheet per functional block (ERC 0 errors, netlist identical to the design IR):
 
@@ -132,7 +137,8 @@ What you will see from the agent:
 2. board setup, then **placement render**
 3. **routing portfolio** (hybrid), then **DRC**
 4. repair passes, then **length tuning**, then **design review**
-5. **fab export + 3D renders**
+5. **expert review**: the agent grades its own board, looks at the renders and fixes every failed check
+6. **fab export + `publish`**: 3-D/2-D/per-layer/schematic images and a README gallery committed and pushed under `designs/<name>/`
 
 You can intervene at any stage. For example: "move the USB connector to the bottom edge", "allow the crystal on the bottom side", "make VSYS 1 A", "route the camera pairs as coupled pairs".
 
@@ -140,6 +146,11 @@ Open the result in KiCad 10: `designs/<name>/<name>.kicad_pro`. The library tabl
 
 ### Quality checklist before ordering
 
+- [ ] `expert_review` grade **expert**. It is the automated version of this list. It also checks:
+  - copper pours on every layer
+  - diff pairs with equal layer changes
+  - 0 DRC warnings
+  - stitching, fiducials, test points and labels
 - [ ] `schematic_build`: ERC 0 errors, `netlist_parity.ok`
 - [ ] `drc`: 0 errors, 0 unconnected, 0 parity; remaining warnings explained (pour islands, silkscreen)
 - [ ] `design_review`: no errors; each `near`/`current`/`escape`/`diffpair` warning judged
@@ -157,7 +168,9 @@ Open the result in KiCad 10: `designs/<name>/<name>.kicad_pro`. The library tabl
 | Schematic | hierarchical sheets per block, labels at pin endpoints, PWR_FLAGs, ERC + netlist parity via `kicad-cli` |
 | Placement | double-sided, rigid cluster macros, simulated annealing + legalisation + refinement, 64-seed parallel portfolio |
 | Routing | **hroute** (own C++ router: 45°, negotiated congestion, neck-down, coupled diff pairs) + Freerouting; hybrid critical-first portfolio; DRC-scored parallel repair; serpentine length tuning |
-| Verification | `kicad-cli` ERC/DRC (zones refilled, schematic parity), design review (decoupling distance, crystal, diff-pair skew, IPC-2221 current, escape feasibility) |
+| Verification | `kicad-cli` ERC/DRC (zones refilled, schematic parity), design review (decoupling distance, crystal, diff-pair skew and via symmetry, IPC-2221 current, escape feasibility), **`expert_review` quality gate** (pours on all layers, stitching, 45° routing, silkscreen, fiducials, test points, labels) |
+| Copper | GND/power pours on every layer, saved filled; edge via fence + grid stitching; floating islands stitched to the plane (`stitch_islands`) |
+| Publishing | `publish`: renders + gallery README per board, git commit/push of only that board's files |
 | Output | Gerber X2, Excellon, CPL, JLC BOM, IPC-D-356, PDFs, 3D renders |
 
 Why it writes KiCad files directly instead of using `pcbnew`/IPC: KiCad 10's IPC API needs a running GUI, and the SWIG `pcbnew` module is deprecated. kicad-cli is used as the verifier, and the writers are checked against KiCad itself. See `docs/ARCHITECTURE.md`. An optional `ipc_sync` tool pushes to or pulls from a running KiCad GUI.

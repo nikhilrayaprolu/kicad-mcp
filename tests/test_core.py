@@ -170,3 +170,33 @@ def test_bottom_side_mirroring_matches_kicad():
             assert abs(mine[pin][0] - x) < 0.01 and abs(mine[pin][1] - y) < 0.01, (pin, mine[pin], (x, y))
             n += 1
     assert n == 5
+
+
+def test_pours_saved_islands_stitched_and_expert_review():
+    """Pours are filled into the saved board, floating GND islands get vias, review/publish produce a gallery."""
+    from llmpcb import fills, quality, silk, tune
+    from llmpcb.ir import Zone
+    prj = fresh("pours")
+    _small_design(prj)
+    schematic.build(prj)
+    schematic.run_erc(prj)
+    placer.place(prj, effort=0.5)
+    assert router.route(prj, passes=30, timeout_s=300)["ok"]
+    prj.layout.zones += [Zone(net="GND", layer="F.Cu"), Zone(net="GND", layer="B.Cu"),
+                         Zone(net="3V3", layer="In2.Cu")]
+    router.stitch_vias(prj, net="GND", pitch=5.0, edge_pitch=2.5)
+    r = fills.stitch_islands(prj, net="GND", write=board.build)
+    assert r["floating_islands"] >= r["stitched"] >= 0
+    tune.smooth_tracks(prj)
+    board.build(prj)
+    fills.refill(prj)
+    cov = quality._fill_coverage(prj)
+    assert set(cov) >= {"F.Cu", "B.Cu", "In1.Cu", "In2.Cu"} and min(cov.values()) > 0.2, cov
+    rv = quality.expert_review(prj)
+    assert rv["metrics"]["drc"]["errors"] == 0 and rv["metrics"]["drc"]["unconnected"] == 0
+    assert rv["grade"] in ("expert", "needs_work") and all("fix" in f for f in rv["failed"])
+    sp = silk.plan(prj)
+    assert sp["summary"]["refs_shown"] >= 1
+    res = quality.publish(prj, push=False, allow_needs_work=True, review=rv, commit=False)
+    assert (prj.root / "images" / "pcb_3d_top.png").exists() and (prj.root / "README.md").exists()
+    assert res["published"]
