@@ -1,9 +1,9 @@
 ---
 name: pcb-design
-description: Design a manufacturable PCB (schematic, double-sided placement, routing with differential pairs, DRC-clean fab outputs) with the pcb-mcp MCP server. Use whenever the user asks to design, place, route, review or fabricate a circuit board, or mentions KiCad, Gerbers, an SoC/MCU board, or a PCB layout.
+description: Design a manufacturable PCB (schematic, double-sided placement, routing with differential pairs, DRC-clean fab outputs) with the kicad-mcp MCP server. Use whenever the user asks to design, place, route, review or fabricate a circuit board, or mentions KiCad, Gerbers, an SoC/MCU board, or a PCB layout.
 ---
 
-# Designing a board with pcb-mcp
+# Designing a board with kicad-mcp
 
 Follow `AGENTS.md` at the repo root. It is authoritative. Condensed flow:
 

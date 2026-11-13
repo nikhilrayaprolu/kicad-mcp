@@ -5,7 +5,7 @@ _Generated from the running server by `clients/gen_tool_docs.py` — do not edit
 ## Server instructions
 
 ```
-Pcb-mcp (llm-pcb): LLM-orchestrated PCB design. YOU decide intent (parts, nets, reference blocks,
+kicad-mcp (llm-pcb): LLM-orchestrated PCB design. YOU decide intent (parts, nets, reference blocks,
 netclasses, floorplan, constraints); deterministic engines produce all geometry; KiCad 10 (kicad-cli) verifies.
 Never invent coordinates for tracks; never skip verification gates. Full playbook: AGENTS.md in the repo.
 Proven flow:

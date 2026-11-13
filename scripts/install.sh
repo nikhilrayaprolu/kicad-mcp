@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# One-command, no-sudo installer for Pcb-mcp (llm-pcb).
+# One-command, no-sudo installer for kicad-mcp (llm-pcb).
 #   1. pixi environment (Python 3.12, Java 25, mcp, numpy, shapely, ...)
 #   2. KiCad 10 (kicad-cli + stock symbol/footprint libraries) unpacked into tools/kicad-root
 #      from the official KiCad PPA, plus the shared libraries it needs (Ubuntu 24.04 / x86_64)
@@ -57,5 +57,5 @@ pixi run test
 cat <<MSG
 
 Installed.  Register the MCP server with Claude Code:
-  claude mcp add -s user pcb-mcp -- bash -c 'source $ROOT/tools/env.sh && exec $ROOT/.pixi/envs/default/bin/python -m llmpcb.server'
+  claude mcp add -s user kicad-mcp -- bash -c 'source $ROOT/tools/env.sh && exec $ROOT/.pixi/envs/default/bin/python -m llmpcb.server'
 MSG

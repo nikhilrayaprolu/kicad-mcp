@@ -1,4 +1,4 @@
-# Pcb-mcp
+# kicad-mcp
 
 **An MCP server that lets an AI agent design real, manufacturable PCBs.** The agent decides what a human electronics engineer decides: parts, connections, reference circuits, design rules, floorplan, and which parts must sit close to which pins. Deterministic engines turn that intent into a KiCad 10 project:
 
@@ -27,13 +27,42 @@ See [`docs/EVALUATION.md`](docs/EVALUATION.md).
 | [`docs/EVALUATION.md`](docs/EVALUATION.md) | The RV1106 case study: metrics, iterations, bugs found, honest limitations |
 | [`designs/rv1106-sbc/`](designs/rv1106-sbc) | Complete worked example: IR, KiCad files, every MCP call batch, fab outputs, renders |
 
+
+## Gallery: the RV1106 example, generated end to end through the MCP tools
+
+| PCB, top (3D) | PCB, bottom (3D): decoupling and crystal under the SoC |
+|---|---|
+| ![top](docs/images/pcb_3d_top.png) | ![bottom](docs/images/pcb_3d_bottom.png) |
+
+| Layout: red F.Cu, olive In2.Cu, blue B.Cu; hatched = bottom-side parts | Length tuning: serpentine meanders on the CSI camera pairs |
+|---|---|
+| ![layout](docs/images/pcb_layout_2d.png) | ![tuning](docs/images/pcb_length_tuning_closeup.png) |
+
+Generated hierarchical schematic, one sheet per functional block (ERC 0 errors, netlist identical to the design IR):
+
+| SoC sheet: RV1106G3 symbol generated from the datasheet pin table | Power sheet: 4 bucks with E96 feedback dividers, USB-C sink, ESD |
+|---|---|
+| ![soc](docs/images/schematic_soc.png) | ![power](docs/images/schematic_power.png) |
+
+| Ethernet sheet | Camera sheet | Root sheet |
+|---|---|---|
+| ![eth](docs/images/schematic_eth.png) | ![camera](docs/images/schematic_camera.png) | ![root](docs/images/schematic_root.png) |
+
+<details><summary>v1 for comparison: single-sided, Freerouting only</summary>
+
+| | |
+|---|---|
+| ![v1 top](docs/images/pcb_3d_top_v1_single_sided.png) | ![v1 layout](docs/images/pcb_layout_2d_v1_single_sided.png) |
+
+</details>
+
 ---
 
 ## 1. Install (Linux x86_64, no sudo needed)
 
 ```bash
-git clone git@github.com:nikhilrayaprolu/Pcb-mcp.git
-cd Pcb-mcp
+git clone git@github.com:nikhilrayaprolu/kicad-mcp.git
+cd kicad-mcp
 ./scripts/install.sh
 ```
 
@@ -56,8 +85,8 @@ Hardware: any modern CPU works. Placement and routing portfolios scale with core
 **Claude Code:**
 
 ```bash
-claude mcp add -s user pcb-mcp -- bash -c 'source /path/to/Pcb-mcp/tools/env.sh && exec /path/to/Pcb-mcp/.pixi/envs/default/bin/python -m llmpcb.server'
-claude mcp list        # pcb-mcp: … ✔ Connected
+claude mcp add -s user kicad-mcp -- bash -c 'source /path/to/kicad-mcp/tools/env.sh && exec /path/to/kicad-mcp/.pixi/envs/default/bin/python -m llmpcb.server'
+claude mcp list        # kicad-mcp: … ✔ Connected
 ```
 
 **Any other MCP client** (Claude Desktop, Cursor, custom agents): it is a stdio server.
@@ -65,9 +94,9 @@ claude mcp list        # pcb-mcp: … ✔ Connected
 ```json
 {
   "mcpServers": {
-    "pcb-mcp": {
+    "kicad-mcp": {
       "command": "bash",
-      "args": ["-c", "source /path/to/Pcb-mcp/tools/env.sh && exec /path/to/Pcb-mcp/.pixi/envs/default/bin/python -m llmpcb.server"]
+      "args": ["-c", "source /path/to/kicad-mcp/tools/env.sh && exec /path/to/kicad-mcp/.pixi/envs/default/bin/python -m llmpcb.server"]
     }
   }
 }
@@ -94,7 +123,7 @@ The quality of the board depends mostly on the quality of your request. A good r
 
 Example prompt:
 
-> Using the pcb-mcp server and AGENTS.md, design a 4-layer 50×40 mm ESP32-S3 board: USB-C 5 V in, 3.3 V/1 A buck, USB D+/D− to the S3 with ESD, 16 MB flash + 8 MB PSRAM (module), I2C header, 2 buttons, RGB LED, 4 M2 holes. Double-sided assembly allowed for passives. Target JLCPCB. Show me the placement render before routing, and stop only at DRC 0/0.
+> Using the kicad-mcp server and AGENTS.md, design a 4-layer 50×40 mm ESP32-S3 board: USB-C 5 V in, 3.3 V/1 A buck, USB D+/D− to the S3 with ESD, 16 MB flash + 8 MB PSRAM (module), I2C header, 2 buttons, RGB LED, 4 M2 holes. Double-sided assembly allowed for passives. Target JLCPCB. Show me the placement render before routing, and stop only at DRC 0/0.
 
 What you will see from the agent:
 

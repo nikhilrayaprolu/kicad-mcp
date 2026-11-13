@@ -1,6 +1,6 @@
-# Pcb-mcp
+# kicad-mcp
 
-This repository is an MCP server for AI-driven PCB design. When designing a board with the `pcb-mcp` tools, follow
+This repository is an MCP server for AI-driven PCB design. When designing a board with the `kicad-mcp` tools, follow
 @AGENTS.md exactly. It is the playbook: verification gates, netclass and escape rules, floorplan intent,
 the hybrid routing portfolio, systematic closing of the last connections, length tuning, and honest reporting.
 

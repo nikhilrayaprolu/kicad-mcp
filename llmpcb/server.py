@@ -21,7 +21,7 @@ from mcp.server.mcpserver import Image, MCPServer
 from . import blocks, board, checks, export, libs, parts, placer, render, router, schematic
 from .ir import BoardSpec, Constraint, NetClass, Placement, Project, Zone
 
-INSTRUCTIONS = """Pcb-mcp (llm-pcb): LLM-orchestrated PCB design. YOU decide intent (parts, nets, reference blocks,
+INSTRUCTIONS = """kicad-mcp (llm-pcb): LLM-orchestrated PCB design. YOU decide intent (parts, nets, reference blocks,
 netclasses, floorplan, constraints); deterministic engines produce all geometry; KiCad 10 (kicad-cli) verifies.
 Never invent coordinates for tracks; never skip verification gates. Full playbook: AGENTS.md in the repo.
 Proven flow:
@@ -37,7 +37,7 @@ Proven flow:
  8 tune_lengths -> drc -> design_review -> export_fab ; done only at DRC 0 errors / 0 unconnected / 0 parity.
 Pins: number, exact name, a '/'-segment of the name, or a glob ('DVDD*'). Nets are created by connecting pins."""
 
-mcp = MCPServer("llm-pcb", instructions=INSTRUCTIONS)
+mcp = MCPServer("kicad-mcp", instructions=INSTRUCTIONS)
 STATE: dict[str, Any] = {"prj": None}
 CALL_LOG = Path(os.environ.get("LLMPCB_CALL_LOG", "")) if os.environ.get("LLMPCB_CALL_LOG") else None
 

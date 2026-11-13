@@ -1,6 +1,6 @@
-# AGENTS.md: playbook for designing high-quality boards with Pcb-mcp
+# AGENTS.md: playbook for designing high-quality boards with kicad-mcp
 
-This file is for **the AI agent** (Claude, GPT, Gemini or any other MCP client) that drives the `pcb-mcp` server. Read it fully before your first tool call. It encodes what worked, and what failed, while designing a 130-part RV1106 Linux SBC with this server (`designs/rv1106-sbc/`, `docs/EVALUATION.md`).
+This file is for **the AI agent** (Claude, GPT, Gemini or any other MCP client) that drives the `kicad-mcp` server. Read it fully before your first tool call. It encodes what worked, and what failed, while designing a 130-part RV1106 Linux SBC with this server (`designs/rv1106-sbc/`, `docs/EVALUATION.md`).
 
 ## 0. The contract
 
