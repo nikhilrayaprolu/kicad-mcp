@@ -391,3 +391,6 @@
 {"t": 1794542054.13, "tool": "schematic_build", "s": 2.16, "args_bytes": 2, "result_bytes": 363}
 {"t": 1794542064.1, "tool": "drc", "s": 9.97, "args_bytes": 16, "result_bytes": 184}
 {"t": 1794542080.07, "tool": "expert_review", "s": 15.96, "args_bytes": 16, "result_bytes": 7}
+{"t": 1794542208.45, "tool": "project_open", "s": 0.02, "args_bytes": 123, "result_bytes": 1969}
+{"t": 1794542225.48, "tool": "export_fab", "s": 17.01, "args_bytes": 15, "result_bytes": 183}
+{"t": 1794542250.68, "tool": "publish", "s": 25.19, "args_bytes": 153, "result_bytes": 859}

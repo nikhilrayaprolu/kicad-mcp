@@ -389,3 +389,6 @@
 {"tool": "schematic_build", "args": {}, "s": 2.16, "resp_bytes": 334, "is_error": false}
 {"tool": "drc", "args": {}, "s": 9.98, "resp_bytes": 169, "is_error": false}
 {"tool": "expert_review", "args": {"images": true}, "s": 15.98, "resp_bytes": 500381, "is_error": false}
+{"tool": "project_open", "args": {"path": "/home/nikhil.r/llm-pcb/designs/rv1106-sbc"}, "s": 0.03, "resp_bytes": 1717, "is_error": false}
+{"tool": "export_fab", "args": {}, "s": 17.02, "resp_bytes": 174, "is_error": false}
+{"tool": "publish", "args": {"push": true, "message": "rv1106-sbc: expert-grade board images and gallery (DRC 0/0, symmetric pairs, pours on all layers)"}, "s": 25.2, "resp_bytes": 832, "is_error": false}
